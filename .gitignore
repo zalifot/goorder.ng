@@ -4,9 +4,10 @@
 /public/build
 /public/hot
 /public/storage
-/resources/js/actions
-# /resources/js/routes - Committed for Docker builds (contains manually created routes for closures)
-/resources/js/wayfinder
+# Wayfinder generated files - committed for Docker builds
+# /resources/js/actions
+# /resources/js/routes
+# /resources/js/wayfinder
 /storage/*.key
 /storage/pail
 /vendor
