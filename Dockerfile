@@ -39,8 +39,8 @@ RUN npm install
 # Create minimal .env for build process (real values come from Railway env vars at runtime)
 RUN echo "APP_KEY=base64:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=" > .env
 
-# Generate Wayfinder routes (required before Vite build)
-RUN php artisan wayfinder:generate --no-interaction || true
+# Routes are already committed to git (including manually created ones for closures)
+# Skip wayfinder:generate as it would overwrite manually created routes
 
 # Build frontend assets
 RUN npm run build
