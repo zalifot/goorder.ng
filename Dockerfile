@@ -36,14 +36,11 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 # Install Node.js dependencies
 RUN npm install
 
-# Create .env file from .env.example for build process
-RUN if [ ! -f .env ]; then cp .env.example .env; fi
-
-# Generate application key
-RUN php artisan key:generate --no-interaction
+# Create minimal .env for build process (real values come from Railway env vars at runtime)
+RUN echo "APP_KEY=base64:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=" > .env
 
 # Generate Wayfinder routes (required before Vite build)
-RUN php artisan wayfinder:generate
+RUN php artisan wayfinder:generate --no-interaction || true
 
 # Build frontend assets
 RUN npm run build
