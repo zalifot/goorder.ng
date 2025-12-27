@@ -36,6 +36,15 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 # Install Node.js dependencies
 RUN npm install
 
+# Create .env file from .env.example for build process
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
+
+# Generate application key
+RUN php artisan key:generate --no-interaction
+
+# Generate Wayfinder routes (required before Vite build)
+RUN php artisan wayfinder:generate
+
 # Build frontend assets
 RUN npm run build
 
@@ -51,12 +60,6 @@ RUN a2enmod rewrite
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-
-# Create .env file from .env.example if .env doesn't exist
-RUN if [ ! -f .env ]; then cp .env.example .env; fi
-
-# Generate application key
-RUN php artisan key:generate --no-interaction
 
 # Clear caches during build
 RUN php artisan config:clear \
