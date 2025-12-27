@@ -24,20 +24,17 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy package.json and package-lock.json (if available)
-COPY package*.json ./
+# Set Composer to allow running as root
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# Install Node.js dependencies
-RUN npm install
-
-# Copy composer files
-COPY composer.json composer.lock ./
+# Copy application code first (needed for artisan commands in composer scripts)
+COPY . .
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Copy application code
-COPY . .
+# Install Node.js dependencies
+RUN npm install
 
 # Build frontend assets
 RUN npm run build
