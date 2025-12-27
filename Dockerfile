@@ -58,9 +58,8 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Clear caches during build
+# Clear file-based caches only (no database connection during build)
 RUN php artisan config:clear \
-    && php artisan cache:clear \
     && php artisan route:clear \
     && php artisan view:clear
 
