@@ -8,7 +8,6 @@ vendor
 .git
 .gitignore
 README.md
-.env.example
 .editorconfig
 .eslintrc.json
 .phpunit.result.cache
