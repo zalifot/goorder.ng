@@ -151,7 +151,12 @@ export default function InventoryDashboard({ products, shops = [], stats, filter
             <Head title="Inventory Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-4">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold">Inventory Dashboard</h1>
+                    <div>
+                        <h1 className="text-2xl font-bold">Inventory Dashboard</h1>
+                        <p className="text-sm text-muted-foreground">
+                            Overview of all products across all your shops
+                        </p>
+                    </div>
                 </div>
 
                 {/* Stats Cards */}

@@ -1,17 +1,4 @@
 import { Button } from '@/components/ui/button';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import {
     Select,
@@ -31,7 +18,7 @@ import {
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { ExternalLink, MoreHorizontal, Package, Search, Store } from 'lucide-react';
+import { ExternalLink, Package, Search, Store } from 'lucide-react';
 import { useState } from 'react';
 
 interface Category {
@@ -94,8 +81,6 @@ interface Props {
 
 export default function ManageShop({ shop, products, categories = [], filters }: Props) {
     const productList = products?.data || [];
-    const [viewOpen, setViewOpen] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [searchQuery, setSearchQuery] = useState<string>(filters?.search || '');
     const [categoryFilter, setCategoryFilter] = useState<string>(filters?.category_id || '');
     const [stockFilter, setStockFilter] = useState<string>(filters?.stock_status || '');
@@ -142,19 +127,6 @@ export default function ManageShop({ shop, products, categories = [], filters }:
         const stockStatus = value === 'all' ? '' : value;
         setStockFilter(stockStatus);
         applyFilters({ stock_status: stockStatus });
-    };
-
-    const viewProduct = (product: Product) => {
-        setSelectedProduct(product);
-        setViewOpen(true);
-    };
-
-    const deleteProduct = (id: number) => {
-        if (confirm('Are you sure you want to delete this product?')) {
-            router.delete(`/manage/shop/${shop.public_id}/inventory/${id}`, {
-                preserveScroll: true,
-            });
-        }
     };
 
     return (
@@ -251,13 +223,11 @@ export default function ManageShop({ shop, products, categories = [], filters }:
                                 <SelectContent>
                                     <SelectItem value="all">All Status</SelectItem>
                                     <SelectItem value="in_stock">In Stock</SelectItem>
+                                    <SelectItem value="low_stock">Low Stock</SelectItem>
                                     <SelectItem value="out_of_stock">Out of Stock</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
-                        <Button onClick={() => router.visit('/inventory')}>
-                            Manage All Products
-                        </Button>
                     </div>
 
                     {/* Products Table */}
@@ -273,13 +243,12 @@ export default function ManageShop({ shop, products, categories = [], filters }:
                                     <TableHead>Stock</TableHead>
                                     <TableHead>Views</TableHead>
                                     <TableHead>Status</TableHead>
-                                    <TableHead>Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {productList.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={9} className="text-center text-muted-foreground">
+                                        <TableCell colSpan={8} className="text-center text-muted-foreground">
                                             No products in this shop yet.
                                         </TableCell>
                                     </TableRow>
@@ -322,33 +291,13 @@ export default function ManageShop({ shop, products, categories = [], filters }:
                                                     className={`rounded-full px-2 py-1 text-xs font-medium ${
                                                         product.stock_status === 'in_stock'
                                                             ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
+                                                            : product.stock_status === 'low_stock'
+                                                            ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300'
                                                             : 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
                                                     }`}
                                                 >
-                                                    {product.stock_status === 'in_stock' ? 'In Stock' : 'Out of Stock'}
+                                                    {product.stock_status === 'in_stock' ? 'In Stock' : product.stock_status === 'low_stock' ? 'Low Stock' : 'Out of Stock'}
                                                 </span>
-                                            </TableCell>
-                                            <TableCell>
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost" size="icon">
-                                                            <MoreHorizontal className="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end">
-                                                        <DropdownMenuItem onClick={() => viewProduct(product)}>
-                                                            <span className="material-symbols-outlined mr-2 text-base">visibility</span>
-                                                            View Details
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem
-                                                            onClick={() => deleteProduct(product.id)}
-                                                            className="text-red-600 focus:text-red-600"
-                                                        >
-                                                            <span className="material-symbols-outlined mr-2 text-base">delete</span>
-                                                            Delete
-                                                        </DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
                                             </TableCell>
                                         </TableRow>
                                     ))
@@ -378,115 +327,6 @@ export default function ManageShop({ shop, products, categories = [], filters }:
                         </div>
                     )}
                 </div>
-
-                {/* View Product Dialog */}
-                <Dialog open={viewOpen} onOpenChange={setViewOpen}>
-                    <DialogContent className="sm:max-w-[600px]">
-                        <DialogHeader>
-                            <DialogTitle>Product Details</DialogTitle>
-                            <DialogDescription>
-                                Viewing details for {selectedProduct?.name}
-                            </DialogDescription>
-                        </DialogHeader>
-                        {selectedProduct && (
-                            <div className="grid gap-6">
-                                <div className="flex gap-4">
-                                    {selectedProduct.image_url ? (
-                                        <img
-                                            src={selectedProduct.image_url}
-                                            alt={selectedProduct.name}
-                                            className="h-32 w-32 rounded-lg object-cover"
-                                        />
-                                    ) : (
-                                        <div className="flex h-32 w-32 items-center justify-center rounded-lg bg-muted text-sm text-muted-foreground">
-                                            No image
-                                        </div>
-                                    )}
-                                    <div className="flex-1 space-y-2">
-                                        <h3 className="text-xl font-semibold">{selectedProduct.name}</h3>
-                                        <p className="text-sm text-muted-foreground">
-                                            Category: {selectedProduct.category?.name}
-                                        </p>
-                                        <p className="text-sm text-muted-foreground">
-                                            Slug: {selectedProduct.slug}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-1">
-                                        <p className="text-sm text-muted-foreground">Price</p>
-                                        <p className="font-semibold">
-                                            {selectedProduct.discount_percentage > 0 ? (
-                                                <>
-                                                    <span className="text-muted-foreground line-through mr-2">
-                                                        ₦{selectedProduct.price.toLocaleString()}
-                                                    </span>
-                                                    <span className="text-green-600">
-                                                        ₦{selectedProduct.sale_price.toLocaleString()}
-                                                    </span>
-                                                </>
-                                            ) : (
-                                                `₦${selectedProduct.price.toLocaleString()}`
-                                            )}
-                                        </p>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="text-sm text-muted-foreground">Discount</p>
-                                        <p className="font-semibold">{selectedProduct.discount_percentage}%</p>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="text-sm text-muted-foreground">Stock Quantity</p>
-                                        <p className="font-semibold">{selectedProduct.stock_quantity}</p>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="text-sm text-muted-foreground">Stock Status</p>
-                                        <span
-                                            className={`rounded-full px-2 py-1 text-xs font-medium ${
-                                                selectedProduct.stock_status === 'in_stock'
-                                                    ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
-                                                    : 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
-                                            }`}
-                                        >
-                                            {selectedProduct.stock_status === 'in_stock' ? 'In Stock' : 'Out of Stock'}
-                                        </span>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="text-sm text-muted-foreground">Delivery Fee</p>
-                                        <p className="font-semibold">₦{selectedProduct.delivery_fee.toLocaleString()}</p>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="text-sm text-muted-foreground">Delivery Time</p>
-                                        <p className="font-semibold">{selectedProduct.delivery_time}</p>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="text-sm text-muted-foreground">Payment on Delivery</p>
-                                        <p className="font-semibold">
-                                            {selectedProduct.payment_on_delivery ? 'Yes' : 'No'}
-                                        </p>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className="text-sm text-muted-foreground">Views</p>
-                                        <p className="font-semibold">{selectedProduct.views.toLocaleString()}</p>
-                                    </div>
-                                </div>
-
-                                {selectedProduct.description && (
-                                    <div className="space-y-1">
-                                        <p className="text-sm text-muted-foreground">Description</p>
-                                        <p className="text-sm">{selectedProduct.description}</p>
-                                    </div>
-                                )}
-
-                                <div className="flex justify-end">
-                                    <Button variant="outline" onClick={() => setViewOpen(false)}>
-                                        Close
-                                    </Button>
-                                </div>
-                            </div>
-                        )}
-                    </DialogContent>
-                </Dialog>
             </div>
         </AppLayout>
     );

@@ -299,11 +299,15 @@ export default function Inventory({ shop, products, categories = [], filters }: 
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Inventory" />
+            <Head title={`${shop.name} - Inventory`} />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <h1 className="text-2xl font-bold">Inventory</h1>
+                        <div className="flex items-center gap-2">
+                            <Store className="h-5 w-5 text-muted-foreground" />
+                            <h1 className="text-2xl font-bold">{shop.name}</h1>
+                            <span className="text-muted-foreground">/ Inventory</span>
+                        </div>
                         {/* Search */}
                         <form onSubmit={handleSearch} className="flex gap-2">
                             <Input
@@ -763,10 +767,12 @@ export default function Inventory({ shop, products, categories = [], filters }: 
                                                 className={`rounded-full px-2 py-1 text-xs font-medium ${
                                                     product.stock_status === 'in_stock'
                                                         ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
+                                                        : product.stock_status === 'low_stock'
+                                                        ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300'
                                                         : 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
                                                 }`}
                                             >
-                                                {product.stock_status === 'in_stock' ? 'In Stock' : 'Out of Stock'}
+                                                {product.stock_status === 'in_stock' ? 'In Stock' : product.stock_status === 'low_stock' ? 'Low Stock' : 'Out of Stock'}
                                             </span>
                                         </TableCell>
                                         <TableCell>
@@ -910,10 +916,12 @@ export default function Inventory({ shop, products, categories = [], filters }: 
                                             className={`rounded-full px-2 py-1 text-xs font-medium ${
                                                 selectedProduct.stock_status === 'in_stock'
                                                     ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
+                                                    : selectedProduct.stock_status === 'low_stock'
+                                                    ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300'
                                                     : 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
                                             }`}
                                         >
-                                            {selectedProduct.stock_status === 'in_stock' ? 'In Stock' : 'Out of Stock'}
+                                            {selectedProduct.stock_status === 'in_stock' ? 'In Stock' : selectedProduct.stock_status === 'low_stock' ? 'Low Stock' : 'Out of Stock'}
                                         </span>
                                     </div>
                                     <div className="space-y-1">

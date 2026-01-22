@@ -1,6 +1,7 @@
+import InputError from '@/components/input-error';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, router } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -47,6 +48,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, MoreHorizontal, Pencil, Trash2, Users } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -59,6 +61,13 @@ interface Shop {
     name: string;
     public_id: string;
     role?: string;
+}
+
+interface StaffRole {
+    id: number;
+    name: string;
+    slug: string;
+    description: string | null;
 }
 
 interface StaffMember {
@@ -75,15 +84,11 @@ interface StaffMember {
 interface Props {
     staff: StaffMember[];
     shops: Shop[];
+    roles: StaffRole[];
 }
 
-const staffRoles = [
-    { value: 'manager', label: 'Manager', description: 'Full access to shop management' },
-    { value: 'cashier', label: 'Cashier', description: 'Process orders and payments' },
-    { value: 'inventory_clerk', label: 'Inventory Clerk', description: 'Manage products and stock' },
-];
-
-export default function Staff({ staff, shops }: Props) {
+export default function Staff({ staff, shops, roles }: Props) {
+    const { errors } = usePage().props;
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -95,7 +100,7 @@ export default function Staff({ staff, shops }: Props) {
         name: '',
         email: '',
         phone: '',
-        role: 'cashier',
+        role_id: 0,
         shop_ids: [] as number[],
     });
 
@@ -104,7 +109,7 @@ export default function Staff({ staff, shops }: Props) {
             name: '',
             email: '',
             phone: '',
-            role: 'cashier',
+            role_id: roles[0]?.id || 0,
             shop_ids: [],
         });
     };
@@ -147,11 +152,13 @@ export default function Staff({ staff, shops }: Props) {
 
     const openEditDialog = (staffMember: StaffMember) => {
         setSelectedStaff(staffMember);
+        const staffRoleSlug = staffMember.assigned_shops[0]?.role || '';
+        const matchingRole = roles.find((r) => r.slug === staffRoleSlug);
         setFormData({
             name: staffMember.name,
             email: staffMember.email,
             phone: staffMember.phone || '',
-            role: staffMember.assigned_shops[0]?.role || 'cashier',
+            role_id: matchingRole?.id || roles[0]?.id || 0,
             shop_ids: staffMember.assigned_shops.map((s) => s.id),
         });
         setIsEditDialogOpen(true);
@@ -171,21 +178,23 @@ export default function Staff({ staff, shops }: Props) {
         }));
     };
 
-    const getRoleBadgeColor = (role: string) => {
-        switch (role) {
-            case 'manager':
-                return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300';
-            case 'cashier':
-                return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
-            case 'inventory_clerk':
-                return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-            default:
-                return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
-        }
+    const getRoleBadgeColor = (roleSlug: string) => {
+        // Generate consistent colors based on role slug
+        const colors = [
+            'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
+            'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+            'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+            'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+            'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-300',
+            'bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-300',
+        ];
+        const index = roleSlug.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % colors.length;
+        return colors[index];
     };
 
-    const formatRoleLabel = (role: string) => {
-        return staffRoles.find((r) => r.value === role)?.label || role;
+    const formatRoleLabel = (roleSlug: string) => {
+        const role = roles.find((r) => r.slug === roleSlug);
+        return role?.name || roleSlug;
     };
 
     return (
@@ -195,14 +204,14 @@ export default function Staff({ staff, shops }: Props) {
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">Staff Management</h1>
+                        <h1 className="text-2xl font-bold tracking-tight">Staff Members</h1>
                         <p className="text-muted-foreground">
                             Manage your team members and their shop access.
                         </p>
                     </div>
                     <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
                         <DialogTrigger asChild>
-                            <Button onClick={resetForm}>
+                            <Button onClick={resetForm} disabled={roles.length === 0}>
                                 <Plus className="mr-2 h-4 w-4" />
                                 Add Staff
                             </Button>
@@ -225,6 +234,7 @@ export default function Staff({ staff, shops }: Props) {
                                         }
                                         placeholder="John Doe"
                                     />
+                                    <InputError message={(errors as Record<string, string>)?.name} />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="email">Email Address</Label>
@@ -237,6 +247,7 @@ export default function Staff({ staff, shops }: Props) {
                                         }
                                         placeholder="john@example.com"
                                     />
+                                    <InputError message={(errors as Record<string, string>)?.email} />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="phone">Phone Number</Label>
@@ -249,26 +260,29 @@ export default function Staff({ staff, shops }: Props) {
                                         }
                                         placeholder="+234 800 000 0000"
                                     />
+                                    <InputError message={(errors as Record<string, string>)?.phone} />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label>Role</Label>
                                     <Select
-                                        value={formData.role}
+                                        value={formData.role_id.toString()}
                                         onValueChange={(value) =>
-                                            setFormData({ ...formData, role: value })
+                                            setFormData({ ...formData, role_id: parseInt(value) })
                                         }
                                     >
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a role" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {staffRoles.map((role) => (
-                                                <SelectItem key={role.value} value={role.value}>
+                                            {roles.map((role) => (
+                                                <SelectItem key={role.id} value={role.id.toString()}>
                                                     <div className="flex flex-col">
-                                                        <span>{role.label}</span>
-                                                        <span className="text-xs text-muted-foreground">
-                                                            {role.description}
-                                                        </span>
+                                                        <span>{role.name}</span>
+                                                        {role.description && (
+                                                            <span className="text-xs text-muted-foreground">
+                                                                {role.description}
+                                                            </span>
+                                                        )}
                                                     </div>
                                                 </SelectItem>
                                             ))}
@@ -332,6 +346,7 @@ export default function Staff({ staff, shops }: Props) {
                                         processing ||
                                         !formData.name ||
                                         !formData.email ||
+                                        !formData.role_id ||
                                         formData.shop_ids.length === 0
                                     }
                                 >
@@ -472,6 +487,7 @@ export default function Staff({ staff, shops }: Props) {
                                     setFormData({ ...formData, name: e.target.value })
                                 }
                             />
+                            <InputError message={(errors as Record<string, string>)?.name} />
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="edit-email">Email Address</Label>
@@ -483,6 +499,7 @@ export default function Staff({ staff, shops }: Props) {
                                     setFormData({ ...formData, email: e.target.value })
                                 }
                             />
+                            <InputError message={(errors as Record<string, string>)?.email} />
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="edit-phone">Phone Number</Label>
@@ -494,26 +511,29 @@ export default function Staff({ staff, shops }: Props) {
                                     setFormData({ ...formData, phone: e.target.value })
                                 }
                             />
+                            <InputError message={(errors as Record<string, string>)?.phone} />
                         </div>
                         <div className="grid gap-2">
                             <Label>Role</Label>
                             <Select
-                                value={formData.role}
+                                value={formData.role_id.toString()}
                                 onValueChange={(value) =>
-                                    setFormData({ ...formData, role: value })
+                                    setFormData({ ...formData, role_id: parseInt(value) })
                                 }
                             >
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select a role" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {staffRoles.map((role) => (
-                                        <SelectItem key={role.value} value={role.value}>
+                                    {roles.map((role) => (
+                                        <SelectItem key={role.id} value={role.id.toString()}>
                                             <div className="flex flex-col">
-                                                <span>{role.label}</span>
-                                                <span className="text-xs text-muted-foreground">
-                                                    {role.description}
-                                                </span>
+                                                <span>{role.name}</span>
+                                                {role.description && (
+                                                    <span className="text-xs text-muted-foreground">
+                                                        {role.description}
+                                                    </span>
+                                                )}
                                             </div>
                                         </SelectItem>
                                     ))}
@@ -556,6 +576,7 @@ export default function Staff({ staff, shops }: Props) {
                                 processing ||
                                 !formData.name ||
                                 !formData.email ||
+                                !formData.role_id ||
                                 formData.shop_ids.length === 0
                             }
                         >

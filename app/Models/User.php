@@ -27,6 +27,9 @@ class User extends Authenticatable
         'phone',
         'password',
         'role',
+        'is_banned',
+        'google_id',
+        'avatar',
     ];
 
     /**
@@ -64,6 +67,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Staff roles created by this user.
+     */
+    public function staffRoles(): HasMany
+    {
+        return $this->hasMany(StaffRole::class);
+    }
+
+    /**
      * Shops this user has staff access to.
      */
     public function staffShops(): BelongsToMany
@@ -79,5 +90,48 @@ class User extends Authenticatable
     public function isStaffOf(Shop $shop): bool
     {
         return $this->staffShops()->where('shop_id', $shop->id)->exists();
+    }
+
+    /**
+     * Check if user is an admin (super_admin or admin role).
+     */
+    public function isAdmin(): bool
+    {
+        return in_array($this->role, ['super_admin', 'admin']);
+    }
+
+    /**
+     * Check if user is a shop owner.
+     */
+    public function isShopOwner(): bool
+    {
+        return $this->shops()->exists();
+    }
+
+    /**
+     * Check if user is staff (assigned to any shop).
+     */
+    public function isStaff(): bool
+    {
+        return $this->staffShops()->exists();
+    }
+
+    /**
+     * Check if user has access to dashboard (admin, owner, or staff).
+     */
+    public function hasDashboardAccess(): bool
+    {
+        return $this->isAdmin() || $this->isShopOwner() || $this->isStaff();
+    }
+
+    /**
+     * Get the appropriate redirect path after login.
+     */
+    public function getLoginRedirectPath(): string
+    {
+        if ($this->hasDashboardAccess()) {
+            return '/dashboard';
+        }
+        return '/';
     }
 }

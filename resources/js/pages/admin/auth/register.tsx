@@ -154,7 +154,7 @@ export default function AdminRegister() {
 
                 <div className="text-center text-sm text-muted-foreground">
                     Already have an account?{' '}
-                    <TextLink href="/admin-login" tabIndex={6}>
+                    <TextLink href="/vendor-login" tabIndex={6}>
                         Log in
                     </TextLink>
                 </div>

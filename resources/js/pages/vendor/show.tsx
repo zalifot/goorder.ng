@@ -13,6 +13,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/sonner';
 import { SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { AlertCircle, Bell, ChevronDown, ChevronRight, Clock, Construction, Eye, Filter, LogOut, MapPin, Minus, Pencil, Plus, Search, Settings, ShoppingCart, Store, Trash2, Truck, User, X } from 'lucide-react';
@@ -166,7 +167,7 @@ export default function VendorShow({ shop, products, categories, isOwner = false
     const handleCheckout = () => {
         if (isLoggedIn) {
             // Process checkout for logged-in users
-            alert('Processing checkout...');
+            toast.loading('Processing checkout...', 'Please wait while we process your order');
         } else {
             // Show checkout dialog for guests
             setCheckoutDialogOpen(true);
@@ -995,7 +996,7 @@ export default function VendorShow({ shop, products, categories, isOwner = false
                             <Button
                                 onClick={() => {
                                     // Process guest checkout
-                                    alert(`Checkout with phone: ${countryCode}${phoneNumber}`);
+                                    toast.success('Order placed!', `We'll contact you at ${countryCode}${phoneNumber}`);
                                     setCheckoutDialogOpen(false);
                                 }}
                                 disabled={!phoneNumber}

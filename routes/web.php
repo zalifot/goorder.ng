@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryOptionController;
+use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\StaffController;
 use App\Models\Shop;
 use App\Models\User;
@@ -20,6 +23,10 @@ Route::get('/', function () {
         'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('home');
+
+// Google OAuth Routes
+Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
 // Public vendor page
 Route::get('/vendor/{publicId}', function (string $publicId) {
@@ -85,13 +92,13 @@ Route::get('/vendor/{publicId}', function (string $publicId) {
 
 // Admin Auth Routes
 Route::middleware('guest')->group(function () {
-    Route::get('admin-login', function () {
+    Route::get('vendor-login', function () {
         return Inertia::render('admin/auth/login', [
             'canResetPassword' => Features::enabled(Features::resetPasswords()),
         ]);
     })->name('admin.login');
 
-    Route::post('admin-login', function (Request $request) {
+    Route::post('vendor-login', function (Request $request) {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -109,25 +116,23 @@ Route::middleware('guest')->group(function () {
         ]);
     });
 
-    Route::get('admin-register', function () {
-        return Inertia::render('admin/auth/register');
-    })->name('admin.register');
+    // Vendor Registration (shop_owner role)
+    Route::get('vendor-register', function () {
+        return Inertia::render('auth/vendor-register');
+    })->name('vendor.register');
 
-    Route::post('admin-register', function (Request $request) {
+    Route::post('vendor-register', function (Request $request) {
         $validated = $request->validate([
-            'username' => ['required', 'string', 'max:255', 'regex:/^\S+$/', 'unique:users'],
+            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Password::defaults()],
-            'role' => ['required', 'in:admin,super_admin'],
-        ], [
-            'username.regex' => 'The username must not contain any whitespaces.',
         ]);
 
         $user = User::create([
-            'username' => $validated['username'],
+            'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'role' => $validated['role'],
+            'role' => 'shop_owner',
         ]);
 
         Auth::login($user);
@@ -196,9 +201,7 @@ Route::post('logout', function (Request $request) {
 })->name('logout');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('user-dashboard', function () {
         return Inertia::render('user-dashboard');
@@ -243,11 +246,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('users');
     })->name('users');
 
+    Route::get('systems', function () {
+        return Inertia::render('systems');
+    })->name('systems');
+
     // Staff Management routes
     Route::get('manage/staff', [StaffController::class, 'index'])->name('staff.index');
     Route::post('manage/staff', [StaffController::class, 'store'])->name('staff.store');
     Route::put('manage/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
     Route::delete('manage/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
+
+    // Staff Role Management routes
+    Route::get('manage/roles', [StaffController::class, 'rolesIndex'])->name('roles.index');
+    Route::post('manage/roles', [StaffController::class, 'storeRole'])->name('roles.store');
+    Route::put('manage/roles/{role}', [StaffController::class, 'updateRole'])->name('roles.update');
+    Route::delete('manage/roles/{role}', [StaffController::class, 'destroyRole'])->name('roles.destroy');
 
     // Global Inventory Dashboard
     Route::get('inventory', [ProductController::class, 'dashboard'])->name('inventory.dashboard');
@@ -281,6 +294,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/manage/shop/{publicId}/inventory/template', [ProductController::class, 'downloadTemplate'])->name('shop.inventory.template');
     Route::put('/manage/shop/{publicId}/inventory/{product}', [ProductController::class, 'update'])->name('shop.inventory.update');
     Route::delete('/manage/shop/{publicId}/inventory/{product}', [ProductController::class, 'destroy'])->name('shop.inventory.destroy');
+
+    // Platform Admin Routes (admin only)
+    Route::get('/platform/analytics', [PlatformController::class, 'analytics'])->name('platform.analytics');
+    Route::get('/platform/shops', [PlatformController::class, 'shops'])->name('platform.shops');
+    Route::patch('/platform/shops/{shop}/toggle-status', [PlatformController::class, 'toggleShopStatus'])->name('platform.shops.toggle-status');
+    Route::get('/platform/users', [PlatformController::class, 'users'])->name('platform.users');
+    Route::patch('/platform/users/{user}/toggle-status', [PlatformController::class, 'toggleUserStatus'])->name('platform.users.toggle-status');
+    
+    // Super Admin Only - Admin Management
+    Route::post('/platform/admins', [PlatformController::class, 'createAdmin'])->name('platform.admins.store');
+    Route::delete('/platform/admins/{user}', [PlatformController::class, 'deleteAdmin'])->name('platform.admins.destroy');
 });
 
 require __DIR__.'/settings.php';

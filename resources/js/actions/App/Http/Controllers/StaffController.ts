@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\StaffController::index
- * @see app/Http/Controllers/StaffController.php:18
+ * @see app/Http/Controllers/StaffController.php:19
  * @route '/manage/staff'
  */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\StaffController::index
- * @see app/Http/Controllers/StaffController.php:18
+ * @see app/Http/Controllers/StaffController.php:19
  * @route '/manage/staff'
  */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\StaffController::index
- * @see app/Http/Controllers/StaffController.php:18
+ * @see app/Http/Controllers/StaffController.php:19
  * @route '/manage/staff'
  */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\StaffController::index
- * @see app/Http/Controllers/StaffController.php:18
+ * @see app/Http/Controllers/StaffController.php:19
  * @route '/manage/staff'
  */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -44,7 +44,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\StaffController::index
- * @see app/Http/Controllers/StaffController.php:18
+ * @see app/Http/Controllers/StaffController.php:19
  * @route '/manage/staff'
  */
     const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -54,7 +54,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\StaffController::index
- * @see app/Http/Controllers/StaffController.php:18
+ * @see app/Http/Controllers/StaffController.php:19
  * @route '/manage/staff'
  */
         indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -63,7 +63,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\StaffController::index
- * @see app/Http/Controllers/StaffController.php:18
+ * @see app/Http/Controllers/StaffController.php:19
  * @route '/manage/staff'
  */
         indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\StaffController::store
- * @see app/Http/Controllers/StaffController.php:64
+ * @see app/Http/Controllers/StaffController.php:94
  * @route '/manage/staff'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -94,7 +94,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\StaffController::store
- * @see app/Http/Controllers/StaffController.php:64
+ * @see app/Http/Controllers/StaffController.php:94
  * @route '/manage/staff'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -103,7 +103,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\StaffController::store
- * @see app/Http/Controllers/StaffController.php:64
+ * @see app/Http/Controllers/StaffController.php:94
  * @route '/manage/staff'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -113,7 +113,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\StaffController::store
- * @see app/Http/Controllers/StaffController.php:64
+ * @see app/Http/Controllers/StaffController.php:94
  * @route '/manage/staff'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -123,7 +123,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\StaffController::store
- * @see app/Http/Controllers/StaffController.php:64
+ * @see app/Http/Controllers/StaffController.php:94
  * @route '/manage/staff'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -134,7 +134,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:99
+ * @see app/Http/Controllers/StaffController.php:133
  * @route '/manage/staff/{staff}'
  */
 export const update = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -149,7 +149,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:99
+ * @see app/Http/Controllers/StaffController.php:133
  * @route '/manage/staff/{staff}'
  */
 update.url = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -182,7 +182,7 @@ update.url = (args: { staff: number | { id: number } } | [staff: number | { id: 
 
 /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:99
+ * @see app/Http/Controllers/StaffController.php:133
  * @route '/manage/staff/{staff}'
  */
 update.put = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -192,7 +192,7 @@ update.put = (args: { staff: number | { id: number } } | [staff: number | { id: 
 
     /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:99
+ * @see app/Http/Controllers/StaffController.php:133
  * @route '/manage/staff/{staff}'
  */
     const updateForm = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -207,7 +207,7 @@ update.put = (args: { staff: number | { id: number } } | [staff: number | { id: 
 
             /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:99
+ * @see app/Http/Controllers/StaffController.php:133
  * @route '/manage/staff/{staff}'
  */
         updateForm.put = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -223,7 +223,7 @@ update.put = (args: { staff: number | { id: number } } | [staff: number | { id: 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:137
+ * @see app/Http/Controllers/StaffController.php:175
  * @route '/manage/staff/{staff}'
  */
 export const destroy = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -238,7 +238,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:137
+ * @see app/Http/Controllers/StaffController.php:175
  * @route '/manage/staff/{staff}'
  */
 destroy.url = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -271,7 +271,7 @@ destroy.url = (args: { staff: number | { id: number } } | [staff: number | { id:
 
 /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:137
+ * @see app/Http/Controllers/StaffController.php:175
  * @route '/manage/staff/{staff}'
  */
 destroy.delete = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -281,7 +281,7 @@ destroy.delete = (args: { staff: number | { id: number } } | [staff: number | { 
 
     /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:137
+ * @see app/Http/Controllers/StaffController.php:175
  * @route '/manage/staff/{staff}'
  */
     const destroyForm = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -296,7 +296,7 @@ destroy.delete = (args: { staff: number | { id: number } } | [staff: number | { 
 
             /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:137
+ * @see app/Http/Controllers/StaffController.php:175
  * @route '/manage/staff/{staff}'
  */
         destroyForm.delete = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -310,6 +310,317 @@ destroy.delete = (args: { staff: number | { id: number } } | [staff: number | { 
         })
     
     destroy.form = destroyForm
-const StaffController = { index, store, update, destroy }
+/**
+* @see \App\Http\Controllers\StaffController::rolesIndex
+ * @see app/Http/Controllers/StaffController.php:69
+ * @route '/manage/roles'
+ */
+export const rolesIndex = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: rolesIndex.url(options),
+    method: 'get',
+})
+
+rolesIndex.definition = {
+    methods: ["get","head"],
+    url: '/manage/roles',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\StaffController::rolesIndex
+ * @see app/Http/Controllers/StaffController.php:69
+ * @route '/manage/roles'
+ */
+rolesIndex.url = (options?: RouteQueryOptions) => {
+    return rolesIndex.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\StaffController::rolesIndex
+ * @see app/Http/Controllers/StaffController.php:69
+ * @route '/manage/roles'
+ */
+rolesIndex.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: rolesIndex.url(options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\StaffController::rolesIndex
+ * @see app/Http/Controllers/StaffController.php:69
+ * @route '/manage/roles'
+ */
+rolesIndex.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: rolesIndex.url(options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\StaffController::rolesIndex
+ * @see app/Http/Controllers/StaffController.php:69
+ * @route '/manage/roles'
+ */
+    const rolesIndexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: rolesIndex.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\StaffController::rolesIndex
+ * @see app/Http/Controllers/StaffController.php:69
+ * @route '/manage/roles'
+ */
+        rolesIndexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: rolesIndex.url(options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\StaffController::rolesIndex
+ * @see app/Http/Controllers/StaffController.php:69
+ * @route '/manage/roles'
+ */
+        rolesIndexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: rolesIndex.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    rolesIndex.form = rolesIndexForm
+/**
+* @see \App\Http\Controllers\StaffController::storeRole
+ * @see app/Http/Controllers/StaffController.php:192
+ * @route '/manage/roles'
+ */
+export const storeRole = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: storeRole.url(options),
+    method: 'post',
+})
+
+storeRole.definition = {
+    methods: ["post"],
+    url: '/manage/roles',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\StaffController::storeRole
+ * @see app/Http/Controllers/StaffController.php:192
+ * @route '/manage/roles'
+ */
+storeRole.url = (options?: RouteQueryOptions) => {
+    return storeRole.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\StaffController::storeRole
+ * @see app/Http/Controllers/StaffController.php:192
+ * @route '/manage/roles'
+ */
+storeRole.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: storeRole.url(options),
+    method: 'post',
+})
+
+    /**
+* @see \App\Http\Controllers\StaffController::storeRole
+ * @see app/Http/Controllers/StaffController.php:192
+ * @route '/manage/roles'
+ */
+    const storeRoleForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: storeRole.url(options),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\StaffController::storeRole
+ * @see app/Http/Controllers/StaffController.php:192
+ * @route '/manage/roles'
+ */
+        storeRoleForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: storeRole.url(options),
+            method: 'post',
+        })
+    
+    storeRole.form = storeRoleForm
+/**
+* @see \App\Http\Controllers\StaffController::updateRole
+ * @see app/Http/Controllers/StaffController.php:218
+ * @route '/manage/roles/{role}'
+ */
+export const updateRole = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+    url: updateRole.url(args, options),
+    method: 'put',
+})
+
+updateRole.definition = {
+    methods: ["put"],
+    url: '/manage/roles/{role}',
+} satisfies RouteDefinition<["put"]>
+
+/**
+* @see \App\Http\Controllers\StaffController::updateRole
+ * @see app/Http/Controllers/StaffController.php:218
+ * @route '/manage/roles/{role}'
+ */
+updateRole.url = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { role: args }
+    }
+
+            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+            args = { role: args.id }
+        }
+    
+    if (Array.isArray(args)) {
+        args = {
+                    role: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+                        role: typeof args.role === 'object'
+                ? args.role.id
+                : args.role,
+                }
+
+    return updateRole.definition.url
+            .replace('{role}', parsedArgs.role.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\StaffController::updateRole
+ * @see app/Http/Controllers/StaffController.php:218
+ * @route '/manage/roles/{role}'
+ */
+updateRole.put = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+    url: updateRole.url(args, options),
+    method: 'put',
+})
+
+    /**
+* @see \App\Http\Controllers\StaffController::updateRole
+ * @see app/Http/Controllers/StaffController.php:218
+ * @route '/manage/roles/{role}'
+ */
+    const updateRoleForm = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: updateRole.url(args, {
+                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                        _method: 'PUT',
+                        ...(options?.query ?? options?.mergeQuery ?? {}),
+                    }
+                }),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\StaffController::updateRole
+ * @see app/Http/Controllers/StaffController.php:218
+ * @route '/manage/roles/{role}'
+ */
+        updateRoleForm.put = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: updateRole.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'PUT',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'post',
+        })
+    
+    updateRole.form = updateRoleForm
+/**
+* @see \App\Http\Controllers\StaffController::destroyRole
+ * @see app/Http/Controllers/StaffController.php:253
+ * @route '/manage/roles/{role}'
+ */
+export const destroyRole = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+    url: destroyRole.url(args, options),
+    method: 'delete',
+})
+
+destroyRole.definition = {
+    methods: ["delete"],
+    url: '/manage/roles/{role}',
+} satisfies RouteDefinition<["delete"]>
+
+/**
+* @see \App\Http\Controllers\StaffController::destroyRole
+ * @see app/Http/Controllers/StaffController.php:253
+ * @route '/manage/roles/{role}'
+ */
+destroyRole.url = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { role: args }
+    }
+
+            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+            args = { role: args.id }
+        }
+    
+    if (Array.isArray(args)) {
+        args = {
+                    role: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+                        role: typeof args.role === 'object'
+                ? args.role.id
+                : args.role,
+                }
+
+    return destroyRole.definition.url
+            .replace('{role}', parsedArgs.role.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\StaffController::destroyRole
+ * @see app/Http/Controllers/StaffController.php:253
+ * @route '/manage/roles/{role}'
+ */
+destroyRole.delete = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+    url: destroyRole.url(args, options),
+    method: 'delete',
+})
+
+    /**
+* @see \App\Http\Controllers\StaffController::destroyRole
+ * @see app/Http/Controllers/StaffController.php:253
+ * @route '/manage/roles/{role}'
+ */
+    const destroyRoleForm = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: destroyRole.url(args, {
+                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                        _method: 'DELETE',
+                        ...(options?.query ?? options?.mergeQuery ?? {}),
+                    }
+                }),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\StaffController::destroyRole
+ * @see app/Http/Controllers/StaffController.php:253
+ * @route '/manage/roles/{role}'
+ */
+        destroyRoleForm.delete = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: destroyRole.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'DELETE',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'post',
+        })
+    
+    destroyRole.form = destroyRoleForm
+const StaffController = { index, store, update, destroy, rolesIndex, storeRole, updateRole, destroyRole }
 
 export default StaffController
