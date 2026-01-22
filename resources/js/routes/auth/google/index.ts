@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\SocialAuthController::callback
  * @see app/Http/Controllers/SocialAuthController.php:27
@@ -41,42 +41,6 @@ callback.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: callback.url(options),
     method: 'head',
 })
-
-    /**
-* @see \App\Http\Controllers\SocialAuthController::callback
- * @see app/Http/Controllers/SocialAuthController.php:27
- * @route '/auth/google/callback'
- */
-    const callbackForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: callback.url(options),
-        method: 'get',
-    })
-
-            /**
-* @see \App\Http\Controllers\SocialAuthController::callback
- * @see app/Http/Controllers/SocialAuthController.php:27
- * @route '/auth/google/callback'
- */
-        callbackForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: callback.url(options),
-            method: 'get',
-        })
-            /**
-* @see \App\Http\Controllers\SocialAuthController::callback
- * @see app/Http/Controllers/SocialAuthController.php:27
- * @route '/auth/google/callback'
- */
-        callbackForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: callback.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    callback.form = callbackForm
 const google = {
     callback: Object.assign(callback, callback),
 }

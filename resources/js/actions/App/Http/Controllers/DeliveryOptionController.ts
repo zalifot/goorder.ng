@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::index
  * @see app/Http/Controllers/DeliveryOptionController.php:15
@@ -42,41 +42,6 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     method: 'head',
 })
 
-    /**
-* @see \App\Http\Controllers\DeliveryOptionController::index
- * @see app/Http/Controllers/DeliveryOptionController.php:15
- * @route '/delivery-options'
- */
-    const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: index.url(options),
-        method: 'get',
-    })
-
-            /**
-* @see \App\Http\Controllers\DeliveryOptionController::index
- * @see app/Http/Controllers/DeliveryOptionController.php:15
- * @route '/delivery-options'
- */
-        indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: index.url(options),
-            method: 'get',
-        })
-            /**
-* @see \App\Http\Controllers\DeliveryOptionController::index
- * @see app/Http/Controllers/DeliveryOptionController.php:15
- * @route '/delivery-options'
- */
-        indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: index.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    index.form = indexForm
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::storeState
  * @see app/Http/Controllers/DeliveryOptionController.php:53
@@ -111,27 +76,6 @@ storeState.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     method: 'post',
 })
 
-    /**
-* @see \App\Http\Controllers\DeliveryOptionController::storeState
- * @see app/Http/Controllers/DeliveryOptionController.php:53
- * @route '/delivery-options/states'
- */
-    const storeStateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: storeState.url(options),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\DeliveryOptionController::storeState
- * @see app/Http/Controllers/DeliveryOptionController.php:53
- * @route '/delivery-options/states'
- */
-        storeStateForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: storeState.url(options),
-            method: 'post',
-        })
-    
-    storeState.form = storeStateForm
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::updateState
  * @see app/Http/Controllers/DeliveryOptionController.php:69
@@ -190,37 +134,6 @@ updateState.put = (args: { state: number | { id: number } } | [state: number | {
     method: 'put',
 })
 
-    /**
-* @see \App\Http\Controllers\DeliveryOptionController::updateState
- * @see app/Http/Controllers/DeliveryOptionController.php:69
- * @route '/delivery-options/states/{state}'
- */
-    const updateStateForm = (args: { state: number | { id: number } } | [state: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: updateState.url(args, {
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'PUT',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\DeliveryOptionController::updateState
- * @see app/Http/Controllers/DeliveryOptionController.php:69
- * @route '/delivery-options/states/{state}'
- */
-        updateStateForm.put = (args: { state: number | { id: number } } | [state: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: updateState.url(args, {
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'PUT',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-    
-    updateState.form = updateStateForm
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::destroyState
  * @see app/Http/Controllers/DeliveryOptionController.php:81
@@ -279,37 +192,6 @@ destroyState.delete = (args: { state: number | { id: number } } | [state: number
     method: 'delete',
 })
 
-    /**
-* @see \App\Http\Controllers\DeliveryOptionController::destroyState
- * @see app/Http/Controllers/DeliveryOptionController.php:81
- * @route '/delivery-options/states/{state}'
- */
-    const destroyStateForm = (args: { state: number | { id: number } } | [state: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: destroyState.url(args, {
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'DELETE',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\DeliveryOptionController::destroyState
- * @see app/Http/Controllers/DeliveryOptionController.php:81
- * @route '/delivery-options/states/{state}'
- */
-        destroyStateForm.delete = (args: { state: number | { id: number } } | [state: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: destroyState.url(args, {
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'DELETE',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-    
-    destroyState.form = destroyStateForm
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::storeLocation
  * @see app/Http/Controllers/DeliveryOptionController.php:89
@@ -344,27 +226,6 @@ storeLocation.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => (
     method: 'post',
 })
 
-    /**
-* @see \App\Http\Controllers\DeliveryOptionController::storeLocation
- * @see app/Http/Controllers/DeliveryOptionController.php:89
- * @route '/delivery-options/locations'
- */
-    const storeLocationForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: storeLocation.url(options),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\DeliveryOptionController::storeLocation
- * @see app/Http/Controllers/DeliveryOptionController.php:89
- * @route '/delivery-options/locations'
- */
-        storeLocationForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: storeLocation.url(options),
-            method: 'post',
-        })
-    
-    storeLocation.form = storeLocationForm
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::updateLocation
  * @see app/Http/Controllers/DeliveryOptionController.php:103
@@ -423,37 +284,6 @@ updateLocation.put = (args: { location: number | { id: number } } | [location: n
     method: 'put',
 })
 
-    /**
-* @see \App\Http\Controllers\DeliveryOptionController::updateLocation
- * @see app/Http/Controllers/DeliveryOptionController.php:103
- * @route '/delivery-options/locations/{location}'
- */
-    const updateLocationForm = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: updateLocation.url(args, {
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'PUT',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\DeliveryOptionController::updateLocation
- * @see app/Http/Controllers/DeliveryOptionController.php:103
- * @route '/delivery-options/locations/{location}'
- */
-        updateLocationForm.put = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: updateLocation.url(args, {
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'PUT',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-    
-    updateLocation.form = updateLocationForm
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::destroyLocation
  * @see app/Http/Controllers/DeliveryOptionController.php:116
@@ -512,37 +342,6 @@ destroyLocation.delete = (args: { location: number | { id: number } } | [locatio
     method: 'delete',
 })
 
-    /**
-* @see \App\Http\Controllers\DeliveryOptionController::destroyLocation
- * @see app/Http/Controllers/DeliveryOptionController.php:116
- * @route '/delivery-options/locations/{location}'
- */
-    const destroyLocationForm = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: destroyLocation.url(args, {
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'DELETE',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\DeliveryOptionController::destroyLocation
- * @see app/Http/Controllers/DeliveryOptionController.php:116
- * @route '/delivery-options/locations/{location}'
- */
-        destroyLocationForm.delete = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: destroyLocation.url(args, {
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'DELETE',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-    
-    destroyLocation.form = destroyLocationForm
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::storeSlot
  * @see app/Http/Controllers/DeliveryOptionController.php:124
@@ -577,27 +376,6 @@ storeSlot.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     method: 'post',
 })
 
-    /**
-* @see \App\Http\Controllers\DeliveryOptionController::storeSlot
- * @see app/Http/Controllers/DeliveryOptionController.php:124
- * @route '/delivery-options/slots'
- */
-    const storeSlotForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: storeSlot.url(options),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\DeliveryOptionController::storeSlot
- * @see app/Http/Controllers/DeliveryOptionController.php:124
- * @route '/delivery-options/slots'
- */
-        storeSlotForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: storeSlot.url(options),
-            method: 'post',
-        })
-    
-    storeSlot.form = storeSlotForm
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::updateSlot
  * @see app/Http/Controllers/DeliveryOptionController.php:144
@@ -656,37 +434,6 @@ updateSlot.put = (args: { slot: number | { id: number } } | [slot: number | { id
     method: 'put',
 })
 
-    /**
-* @see \App\Http\Controllers\DeliveryOptionController::updateSlot
- * @see app/Http/Controllers/DeliveryOptionController.php:144
- * @route '/delivery-options/slots/{slot}'
- */
-    const updateSlotForm = (args: { slot: number | { id: number } } | [slot: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: updateSlot.url(args, {
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'PUT',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\DeliveryOptionController::updateSlot
- * @see app/Http/Controllers/DeliveryOptionController.php:144
- * @route '/delivery-options/slots/{slot}'
- */
-        updateSlotForm.put = (args: { slot: number | { id: number } } | [slot: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: updateSlot.url(args, {
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'PUT',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-    
-    updateSlot.form = updateSlotForm
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::destroySlot
  * @see app/Http/Controllers/DeliveryOptionController.php:158
@@ -744,38 +491,6 @@ destroySlot.delete = (args: { slot: number | { id: number } } | [slot: number | 
     url: destroySlot.url(args, options),
     method: 'delete',
 })
-
-    /**
-* @see \App\Http\Controllers\DeliveryOptionController::destroySlot
- * @see app/Http/Controllers/DeliveryOptionController.php:158
- * @route '/delivery-options/slots/{slot}'
- */
-    const destroySlotForm = (args: { slot: number | { id: number } } | [slot: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: destroySlot.url(args, {
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'DELETE',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\DeliveryOptionController::destroySlot
- * @see app/Http/Controllers/DeliveryOptionController.php:158
- * @route '/delivery-options/slots/{slot}'
- */
-        destroySlotForm.delete = (args: { slot: number | { id: number } } | [slot: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: destroySlot.url(args, {
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'DELETE',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-    
-    destroySlot.form = destroySlotForm
 const DeliveryOptionController = { index, storeState, updateState, destroyState, storeLocation, updateLocation, destroyLocation, storeSlot, updateSlot, destroySlot }
 
 export default DeliveryOptionController

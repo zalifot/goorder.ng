@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\CategoryController::index
  * @see app/Http/Controllers/CategoryController.php:13
@@ -42,41 +42,6 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     method: 'head',
 })
 
-    /**
-* @see \App\Http\Controllers\CategoryController::index
- * @see app/Http/Controllers/CategoryController.php:13
- * @route '/categories'
- */
-    const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: index.url(options),
-        method: 'get',
-    })
-
-            /**
-* @see \App\Http\Controllers\CategoryController::index
- * @see app/Http/Controllers/CategoryController.php:13
- * @route '/categories'
- */
-        indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: index.url(options),
-            method: 'get',
-        })
-            /**
-* @see \App\Http\Controllers\CategoryController::index
- * @see app/Http/Controllers/CategoryController.php:13
- * @route '/categories'
- */
-        indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: index.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    index.form = indexForm
 /**
 * @see \App\Http\Controllers\CategoryController::store
  * @see app/Http/Controllers/CategoryController.php:22
@@ -111,27 +76,6 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     method: 'post',
 })
 
-    /**
-* @see \App\Http\Controllers\CategoryController::store
- * @see app/Http/Controllers/CategoryController.php:22
- * @route '/categories'
- */
-    const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: store.url(options),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\CategoryController::store
- * @see app/Http/Controllers/CategoryController.php:22
- * @route '/categories'
- */
-        storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: store.url(options),
-            method: 'post',
-        })
-    
-    store.form = storeForm
 /**
 * @see \App\Http\Controllers\CategoryController::update
  * @see app/Http/Controllers/CategoryController.php:45
@@ -190,37 +134,6 @@ update.put = (args: { category: number | { id: number } } | [category: number | 
     method: 'put',
 })
 
-    /**
-* @see \App\Http\Controllers\CategoryController::update
- * @see app/Http/Controllers/CategoryController.php:45
- * @route '/categories/{category}'
- */
-    const updateForm = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: update.url(args, {
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'PUT',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\CategoryController::update
- * @see app/Http/Controllers/CategoryController.php:45
- * @route '/categories/{category}'
- */
-        updateForm.put = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: update.url(args, {
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'PUT',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-    
-    update.form = updateForm
 /**
 * @see \App\Http\Controllers\CategoryController::toggleStatus
  * @see app/Http/Controllers/CategoryController.php:100
@@ -279,37 +192,6 @@ toggleStatus.patch = (args: { category: number | { id: number } } | [category: n
     method: 'patch',
 })
 
-    /**
-* @see \App\Http\Controllers\CategoryController::toggleStatus
- * @see app/Http/Controllers/CategoryController.php:100
- * @route '/categories/{category}/toggle-status'
- */
-    const toggleStatusForm = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: toggleStatus.url(args, {
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'PATCH',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\CategoryController::toggleStatus
- * @see app/Http/Controllers/CategoryController.php:100
- * @route '/categories/{category}/toggle-status'
- */
-        toggleStatusForm.patch = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: toggleStatus.url(args, {
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'PATCH',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-    
-    toggleStatus.form = toggleStatusForm
 /**
 * @see \App\Http\Controllers\CategoryController::destroy
  * @see app/Http/Controllers/CategoryController.php:89
@@ -367,38 +249,6 @@ destroy.delete = (args: { category: number | { id: number } } | [category: numbe
     url: destroy.url(args, options),
     method: 'delete',
 })
-
-    /**
-* @see \App\Http\Controllers\CategoryController::destroy
- * @see app/Http/Controllers/CategoryController.php:89
- * @route '/categories/{category}'
- */
-    const destroyForm = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: destroy.url(args, {
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'DELETE',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\CategoryController::destroy
- * @see app/Http/Controllers/CategoryController.php:89
- * @route '/categories/{category}'
- */
-        destroyForm.delete = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: destroy.url(args, {
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'DELETE',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-    
-    destroy.form = destroyForm
 const CategoryController = { index, store, update, toggleStatus, destroy }
 
 export default CategoryController

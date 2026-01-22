@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\PlatformController::toggleStatus
  * @see app/Http/Controllers/PlatformController.php:209
@@ -51,38 +51,6 @@ toggleStatus.patch = (args: { user: string | number } | [user: string | number ]
     url: toggleStatus.url(args, options),
     method: 'patch',
 })
-
-    /**
-* @see \App\Http\Controllers\PlatformController::toggleStatus
- * @see app/Http/Controllers/PlatformController.php:209
- * @route '/users/{user}/toggle-status'
- */
-    const toggleStatusForm = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: toggleStatus.url(args, {
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'PATCH',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\PlatformController::toggleStatus
- * @see app/Http/Controllers/PlatformController.php:209
- * @route '/users/{user}/toggle-status'
- */
-        toggleStatusForm.patch = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: toggleStatus.url(args, {
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'PATCH',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-    
-    toggleStatus.form = toggleStatusForm
 const users = {
     toggleStatus: Object.assign(toggleStatus, toggleStatus),
 }

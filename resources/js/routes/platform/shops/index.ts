@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\PlatformController::toggleStatus
  * @see app/Http/Controllers/PlatformController.php:143
@@ -56,38 +56,6 @@ toggleStatus.patch = (args: { shop: number | { id: number } } | [shop: number | 
     url: toggleStatus.url(args, options),
     method: 'patch',
 })
-
-    /**
-* @see \App\Http\Controllers\PlatformController::toggleStatus
- * @see app/Http/Controllers/PlatformController.php:143
- * @route '/platform/shops/{shop}/toggle-status'
- */
-    const toggleStatusForm = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: toggleStatus.url(args, {
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'PATCH',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\PlatformController::toggleStatus
- * @see app/Http/Controllers/PlatformController.php:143
- * @route '/platform/shops/{shop}/toggle-status'
- */
-        toggleStatusForm.patch = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: toggleStatus.url(args, {
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'PATCH',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-    
-    toggleStatus.form = toggleStatusForm
 const shops = {
     toggleStatus: Object.assign(toggleStatus, toggleStatus),
 }
