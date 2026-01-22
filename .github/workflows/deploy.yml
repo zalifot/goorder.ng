@@ -1,0 +1,40 @@
+name: Deploy to Digital Ocean
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USERNAME }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          port: 22
+          script: |
+            cd /var/www/goorder
+            
+            # Pull latest changes
+            git pull origin main
+            
+            # Install dependencies
+            composer install --no-dev --optimize-autoloader --no-interaction
+            npm ci && npm run build
+            
+            # Laravel commands
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            
+            # Restart PHP-FPM
+            sudo systemctl reload php8.3-fpm
+            
+            echo "✅ Deployed!"
