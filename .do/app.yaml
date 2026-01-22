@@ -2,11 +2,14 @@ name: goorder
 region: nyc
 services:
   - name: web
-    dockerfile_path: Dockerfile
     github:
       repo: zalifot/goorder.ng
       branch: main
       deploy_on_push: true
+    build_command: |
+      npm ci && npm run build && composer install --no-dev --optimize-autoloader
+    run_command: |
+      php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && php -S 0.0.0.0:8080 -t public
     http_port: 8080
     instance_count: 1
     instance_size_slug: basic-xxs
