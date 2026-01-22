@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libzip-dev \
     unzip \
-    nodejs \
-    npm \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -27,20 +27,19 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set Composer to allow running as root
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# Copy application code first (needed for artisan commands in composer scripts)
+# Copy composer files first for better caching
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
+
+# Copy package files for npm caching
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Copy application code
 COPY . .
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Install Node.js dependencies
-RUN npm install
-
-# Create minimal .env for build process (real values come from Railway env vars at runtime)
-RUN echo "APP_KEY=base64:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=" > .env
-
-# Routes are already committed to git (including manually created ones for closures)
-# Skip wayfinder:generate as it would overwrite manually created routes
+# Run composer scripts now that we have all files
+RUN composer dump-autoload --optimize
 
 # Build frontend assets
 RUN npm run build
@@ -58,17 +57,16 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Clear file-based caches only (no database connection during build)
-RUN php artisan config:clear \
-    && php artisan route:clear \
-    && php artisan view:clear
+# Configure Apache to listen on port 8080 (DO App Platform default)
+RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf
+RUN sed -i 's/:80/:8080/' /etc/apache2/sites-available/000-default.conf
 
 # Copy startup script
 COPY docker/start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
-# Expose port 80
-EXPOSE 80
+# Expose port 8080 for Digital Ocean
+EXPOSE 8080
 
 # Use the startup script
 CMD ["/usr/local/bin/start.sh"]
