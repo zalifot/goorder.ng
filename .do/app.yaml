@@ -1,0 +1,49 @@
+name: goorder
+region: nyc
+services:
+  - name: web
+    dockerfile_path: Dockerfile
+    github:
+      repo: zalifot/goorder.ng
+      branch: main
+      deploy_on_push: true
+    http_port: 80
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /
+    envs:
+      - key: APP_NAME
+        value: GoOrder
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_URL
+        value: ${APP_URL}
+      - key: APP_KEY
+        type: SECRET
+        value: ${APP_KEY}
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        type: SECRET
+        value: ${DB_HOST}
+      - key: DB_PORT
+        value: "25060"
+      - key: DB_DATABASE
+        type: SECRET
+        value: ${DB_DATABASE}
+      - key: DB_USERNAME
+        type: SECRET
+        value: ${DB_USERNAME}
+      - key: DB_PASSWORD
+        type: SECRET
+        value: ${DB_PASSWORD}
+
+databases:
+  - name: goorder-db
+    engine: MYSQL
+    version: "8"
+    size: db-s-1vcpu-1gb
+    num_nodes: 1
