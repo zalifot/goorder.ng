@@ -29,7 +29,7 @@ interface Shop {
     description?: string;
     public_id: string;
     is_active: boolean;
-    is_construction: boolean;
+    is_under_construction: boolean;
     products_count: number;
     created_at: string;
     user?: {
@@ -226,7 +226,7 @@ export default function PlatformShops({ shops, filters }: Props) {
                                                 <Badge variant={shop.is_active ? 'default' : 'secondary'}>
                                                     {shop.is_active ? 'Active' : 'Inactive'}
                                                 </Badge>
-                                                {shop.is_construction && (
+                                                {shop.is_under_construction && (
                                                     <Badge variant="outline" className="gap-1">
                                                         <Construction className="h-3 w-3" />
                                                         Construction

@@ -55,7 +55,7 @@ class PlatformController extends Controller
             'total_shops' => Shop::count(),
             'active_shops' => Shop::where('is_active', true)->count(),
             'inactive_shops' => Shop::where('is_active', false)->count(),
-            'shops_under_construction' => Shop::where('is_construction', true)->count(),
+            'shops_under_construction' => Shop::where('is_under_construction', true)->count(),
             'new_shops_month' => Shop::where('created_at', '>=', $startOfMonth)->count(),
             
             // Products (all shops combined)
@@ -75,13 +75,13 @@ class PlatformController extends Controller
         // Recent users
         $recentUsers = User::latest()
             ->take(5)
-            ->get(['id', 'name', 'email', 'role', 'created_at']);
+            ->get(['id', 'username', 'email', 'role', 'created_at']);
 
         // Recent shops
-        $recentShops = Shop::with('user:id,name,email')
+        $recentShops = Shop::with('user:id,username,email')
             ->latest()
             ->take(5)
-            ->get(['id', 'name', 'public_id', 'is_active', 'is_construction', 'user_id', 'created_at']);
+            ->get(['id', 'name', 'public_id', 'is_active', 'is_under_construction', 'user_id', 'created_at']);
 
         return Inertia::render('admin/analytics', [
             'stats' => $stats,
@@ -102,7 +102,7 @@ class PlatformController extends Controller
             abort(403, 'Unauthorized access');
         }
 
-        $query = Shop::with(['user:id,name,email', 'products'])
+        $query = Shop::with(['user:id,username,email', 'products'])
             ->withCount('products');
 
         // Search filter
@@ -112,7 +112,7 @@ class PlatformController extends Controller
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('public_id', 'like', "%{$search}%")
                     ->orWhereHas('user', function ($uq) use ($search) {
-                        $uq->where('name', 'like', "%{$search}%")
+                        $uq->where('username', 'like', "%{$search}%")
                             ->orWhere('email', 'like', "%{$search}%");
                     });
             });
@@ -125,7 +125,7 @@ class PlatformController extends Controller
             } elseif ($request->status === 'inactive') {
                 $query->where('is_active', false);
             } elseif ($request->status === 'construction') {
-                $query->where('is_construction', true);
+                $query->where('is_under_construction', true);
             }
         }
 
@@ -170,9 +170,8 @@ class PlatformController extends Controller
         if ($request->has('search') && $request->search) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('username', 'like', "%{$search}%");
+                $q->where('username', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
             });
         }
 

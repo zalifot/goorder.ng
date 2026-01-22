@@ -48,19 +48,19 @@ interface Shop {
     name: string;
     public_id: string;
     is_active: boolean;
-    is_construction: boolean;
+    is_under_construction: boolean;
     products_count: number;
     created_at: string;
     user?: {
         id: number;
-        name: string;
+        username: string;
         email: string;
     };
 }
 
 interface User {
     id: number;
-    name: string;
+    username: string;
     email: string;
     role: string;
     created_at: string;
@@ -345,7 +345,7 @@ export default function PlatformAnalytics({ stats, topShops, recentUsers, recent
                                             <div>
                                                 <p className="font-medium">{shop.name}</p>
                                                 <p className="text-xs text-muted-foreground">
-                                                    by {shop.user?.name || 'Unknown'}
+                                                    by {shop.user?.username || 'Unknown'}
                                                 </p>
                                             </div>
                                         </div>
@@ -391,7 +391,7 @@ export default function PlatformAnalytics({ stats, topShops, recentUsers, recent
                                                 <Users className="h-4 w-4 text-primary" />
                                             </div>
                                             <div>
-                                                <p className="font-medium">{user.name || user.email}</p>
+                                                <p className="font-medium">{user.username || user.email}</p>
                                                 <p className="text-xs text-muted-foreground">{user.email}</p>
                                             </div>
                                         </div>

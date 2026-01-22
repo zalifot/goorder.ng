@@ -75,7 +75,7 @@ interface Props {
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Platform Users', href: '/platform/users' },
+    { title: 'Users', href: '/users' },
 ];
 
 function formatDate(dateString: string): string {
@@ -132,7 +132,7 @@ export default function PlatformUsers({ users, filters, stats }: Props) {
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        router.get('/platform/users', {
+        router.get('/users', {
             search: search || undefined,
             role: role !== 'all' ? role : undefined,
         }, { preserveState: true });
@@ -140,7 +140,7 @@ export default function PlatformUsers({ users, filters, stats }: Props) {
 
     const handleRoleChange = (value: string) => {
         setRole(value);
-        router.get('/platform/users', {
+        router.get('/users', {
             search: search || undefined,
             role: value !== 'all' ? value : undefined,
         }, { preserveState: true });
@@ -149,12 +149,12 @@ export default function PlatformUsers({ users, filters, stats }: Props) {
     const clearFilters = () => {
         setSearch('');
         setRole('all');
-        router.get('/platform/users');
+        router.get('/users');
     };
 
     const toggleBan = (userId: number) => {
         if (confirm('Are you sure you want to change this user\'s ban status?')) {
-            router.patch(`/platform/users/${userId}/toggle-status`, {}, {
+            router.patch(`/users/${userId}/toggle-status`, {}, {
                 preserveState: true,
                 preserveScroll: true,
             });

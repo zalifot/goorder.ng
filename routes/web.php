@@ -242,9 +242,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('wallet');
     })->name('wallet');
 
-    Route::get('users', function () {
-        return Inertia::render('users');
-    })->name('users');
+    Route::get('users', [PlatformController::class, 'users'])->name('users');
+    Route::patch('users/{user}/toggle-status', [PlatformController::class, 'toggleUserStatus'])->name('users.toggle-status');
 
     Route::get('systems', function () {
         return Inertia::render('systems');
