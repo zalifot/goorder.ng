@@ -16,8 +16,6 @@ export default function AuthAppleLayout({
 }: PropsWithChildren<AuthLayoutProps>) {
     useFlashToast();
     
-    const accentColor = variant === 'vendor' ? 'emerald' : 'blue';
-    
     return (
         <div className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-white p-6 md:p-10 dark:bg-black" style={{ fontFamily: "'Poppins', system-ui, sans-serif" }}>
             {/* Bunny Fonts */}

@@ -48,7 +48,6 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, MoreHorizontal, Pencil, Trash2, Users } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [

@@ -30,7 +30,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
 import { MoreHorizontal, Plus } from 'lucide-react';
-import { FormEventHandler, useState, useEffect } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 interface Category {
     id: number;

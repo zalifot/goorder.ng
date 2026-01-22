@@ -99,7 +99,7 @@ function calculateGrowth(current: number, previous: number): number {
     return Math.round(((current - previous) / previous) * 100);
 }
 
-export default function PlatformAnalytics({ stats, topShops, recentUsers, recentShops }: Props) {
+export default function PlatformAnalytics({ stats, recentUsers, recentShops }: Props) {
     const revenueGrowth = calculateGrowth(stats.monthly_revenue, stats.last_month_revenue);
 
     return (

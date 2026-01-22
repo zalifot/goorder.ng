@@ -1,5 +1,3 @@
-import { useForm } from '@inertiajs/react';
-import { useEffect } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export function ShopSelect({ shops, value, onChange, required = false }) {

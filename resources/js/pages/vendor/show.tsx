@@ -16,7 +16,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import { SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { AlertCircle, Bell, ChevronDown, ChevronRight, Clock, Construction, Eye, Filter, LogOut, MapPin, Minus, Pencil, Plus, Search, Settings, ShoppingCart, Store, Trash2, Truck, User, X } from 'lucide-react';
+import { AlertCircle, ChevronDown, ChevronRight, Clock, Construction, Eye, Filter, LogOut, MapPin, Minus, Pencil, Plus, Search, Settings, ShoppingCart, Store, Truck, User } from 'lucide-react';
 import { useState } from 'react';
 
 interface Category {
@@ -162,7 +162,8 @@ export default function VendorShow({ shop, products, categories, isOwner = false
     const [phoneNumber, setPhoneNumber] = useState('');
     const [countryCode, setCountryCode] = useState('+234');
 
-    const isLoggedIn = !!usePage<SharedData>().props.auth?.user;
+    const { auth } = usePage<SharedData>().props;
+    const isLoggedIn = !!auth?.user;
 
     const handleCheckout = () => {
         if (isLoggedIn) {
@@ -336,12 +337,12 @@ export default function VendorShow({ shop, products, categories, isOwner = false
                                         </span>
                                     )}
                                 </button>
-                                {usePage<SharedData>().props.auth?.user ? (
+                                {auth?.user ? (
                                     <DropdownMenu>
                                         <DropdownMenuTrigger className="flex items-center gap-2 rounded-lg px-2 py-1 hover:bg-gray-100">
                                             <User className="h-4 w-4 text-gray-600" />
                                             <span className="text-sm font-medium text-gray-700">
-                                                {usePage<SharedData>().props.auth.user.username || usePage<SharedData>().props.auth.user.name}
+                                                {auth.user.username || auth.user.name}
                                             </span>
                                             <ChevronDown className="h-4 w-4 text-gray-400" />
                                         </DropdownMenuTrigger>
