@@ -17,12 +17,16 @@ return new class extends Migration
             $table->string('shop_public_id', 12)->nullable()->after('category_id');
         });
 
-        // Migrate existing data: convert shop_id to shop_public_id
-        DB::statement('
-            UPDATE products p
-            INNER JOIN shops s ON p.shop_id = s.id
-            SET p.shop_public_id = s.public_id
-        ');
+        // Migrate existing data: convert shop_id to shop_public_id (cross-database compatible)
+        $products = DB::table('products')->whereNotNull('shop_id')->get();
+        foreach ($products as $product) {
+            $shop = DB::table('shops')->where('id', $product->shop_id)->first();
+            if ($shop) {
+                DB::table('products')
+                    ->where('id', $product->id)
+                    ->update(['shop_public_id' => $shop->public_id]);
+            }
+        }
 
         // Drop the old shop_id column
         Schema::table('products', function (Blueprint $table) {
@@ -40,12 +44,16 @@ return new class extends Migration
             $table->foreignId('shop_id')->nullable()->after('category_id');
         });
 
-        // Migrate data back: convert shop_public_id to shop_id
-        DB::statement('
-            UPDATE products p
-            INNER JOIN shops s ON p.shop_public_id = s.public_id
-            SET p.shop_id = s.id
-        ');
+        // Migrate data back: convert shop_public_id to shop_id (cross-database compatible)
+        $products = DB::table('products')->whereNotNull('shop_public_id')->get();
+        foreach ($products as $product) {
+            $shop = DB::table('shops')->where('public_id', $product->shop_public_id)->first();
+            if ($shop) {
+                DB::table('products')
+                    ->where('id', $product->id)
+                    ->update(['shop_id' => $shop->id]);
+            }
+        }
 
         // Drop the shop_public_id column
         Schema::table('products', function (Blueprint $table) {
