@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\SocialAuthController::redirectToGoogle
  * @see app/Http/Controllers/SocialAuthController.php:15
@@ -42,6 +42,41 @@ redirectToGoogle.head = (options?: RouteQueryOptions): RouteDefinition<'head'> =
     method: 'head',
 })
 
+    /**
+* @see \App\Http\Controllers\SocialAuthController::redirectToGoogle
+ * @see app/Http/Controllers/SocialAuthController.php:15
+ * @route '/auth/google'
+ */
+    const redirectToGoogleForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: redirectToGoogle.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\SocialAuthController::redirectToGoogle
+ * @see app/Http/Controllers/SocialAuthController.php:15
+ * @route '/auth/google'
+ */
+        redirectToGoogleForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: redirectToGoogle.url(options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\SocialAuthController::redirectToGoogle
+ * @see app/Http/Controllers/SocialAuthController.php:15
+ * @route '/auth/google'
+ */
+        redirectToGoogleForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: redirectToGoogle.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    redirectToGoogle.form = redirectToGoogleForm
 /**
 * @see \App\Http\Controllers\SocialAuthController::handleGoogleCallback
  * @see app/Http/Controllers/SocialAuthController.php:27
@@ -84,6 +119,42 @@ handleGoogleCallback.head = (options?: RouteQueryOptions): RouteDefinition<'head
     url: handleGoogleCallback.url(options),
     method: 'head',
 })
+
+    /**
+* @see \App\Http\Controllers\SocialAuthController::handleGoogleCallback
+ * @see app/Http/Controllers/SocialAuthController.php:27
+ * @route '/auth/google/callback'
+ */
+    const handleGoogleCallbackForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: handleGoogleCallback.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\SocialAuthController::handleGoogleCallback
+ * @see app/Http/Controllers/SocialAuthController.php:27
+ * @route '/auth/google/callback'
+ */
+        handleGoogleCallbackForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: handleGoogleCallback.url(options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\SocialAuthController::handleGoogleCallback
+ * @see app/Http/Controllers/SocialAuthController.php:27
+ * @route '/auth/google/callback'
+ */
+        handleGoogleCallbackForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: handleGoogleCallback.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    handleGoogleCallback.form = handleGoogleCallbackForm
 const SocialAuthController = { redirectToGoogle, handleGoogleCallback }
 
 export default SocialAuthController
