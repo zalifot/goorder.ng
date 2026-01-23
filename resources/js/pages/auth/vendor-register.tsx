@@ -12,7 +12,7 @@ export default function VendorRegister() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const { data, setData, post, processing, errors } = useForm({
-        name: '',
+        username: '',
         email: '',
         password: '',
         password_confirmation: '',
@@ -34,23 +34,23 @@ export default function VendorRegister() {
             <form onSubmit={submit} className="flex flex-col gap-5">
                 <div className="grid gap-5">
                     <div className="grid gap-2">
-                        <Label htmlFor="name" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Full Name
+                        <Label htmlFor="username" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Username
                         </Label>
                         <Input
-                            id="name"
+                            id="username"
                             type="text"
-                            value={data.name}
-                            onChange={(e) => setData('name', e.target.value)}
+                            value={data.username}
+                            onChange={(e) => setData('username', e.target.value)}
                             required
                             autoFocus
                             tabIndex={1}
-                            autoComplete="name"
-                            name="name"
-                            placeholder="Your full name"
+                            autoComplete="username"
+                            name="username"
+                            placeholder="yourshopname"
                             className="h-12 rounded-xl border-gray-300 bg-gray-50 px-4 transition focus:border-emerald-500 focus:bg-white focus:ring-emerald-500 dark:border-gray-700 dark:bg-gray-800 dark:focus:border-emerald-500"
                         />
-                        <InputError message={errors.name} />
+                        <InputError message={errors.username} />
                     </div>
 
                     <div className="grid gap-2">
