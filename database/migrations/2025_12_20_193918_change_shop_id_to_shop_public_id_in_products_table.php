@@ -28,10 +28,26 @@ return new class extends Migration
             }
         }
 
-        // Drop the old shop_id column
+        // Drop foreign key first (if exists), then drop the column
+        Schema::table('products', function (Blueprint $table) {
+            // SQLite doesn't support dropping foreign keys, so we check the driver
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign(['shop_id']);
+            }
+        });
+
+        // For SQLite, we need to disable foreign key checks
+        if (DB::getDriverName() === 'sqlite') {
+            DB::statement('PRAGMA foreign_keys=off');
+        }
+        
         Schema::table('products', function (Blueprint $table) {
             $table->dropColumn('shop_id');
         });
+
+        if (DB::getDriverName() === 'sqlite') {
+            DB::statement('PRAGMA foreign_keys=on');
+        }
     }
 
     /**
@@ -41,7 +57,7 @@ return new class extends Migration
     {
         // Add back the shop_id column
         Schema::table('products', function (Blueprint $table) {
-            $table->foreignId('shop_id')->nullable()->after('category_id');
+            $table->unsignedBigInteger('shop_id')->nullable()->after('category_id');
         });
 
         // Migrate data back: convert shop_public_id to shop_id (cross-database compatible)
@@ -53,6 +69,13 @@ return new class extends Migration
                     ->where('id', $product->id)
                     ->update(['shop_id' => $shop->id]);
             }
+        }
+
+        // Add foreign key back (only for non-SQLite)
+        if (DB::getDriverName() !== 'sqlite') {
+            Schema::table('products', function (Blueprint $table) {
+                $table->foreign('shop_id')->references('id')->on('shops')->onDelete('set null');
+            });
         }
 
         // Drop the shop_public_id column
