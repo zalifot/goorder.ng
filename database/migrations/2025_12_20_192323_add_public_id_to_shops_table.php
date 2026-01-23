@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('shops', function (Blueprint $table) {
-            $table->string('public_id', 12)->unique()->nullable()->after('id');
-        });
+        // Only add column if it doesn't exist
+        if (!Schema::hasColumn('shops', 'public_id')) {
+            Schema::table('shops', function (Blueprint $table) {
+                $table->string('public_id', 12)->unique()->nullable()->after('id');
+            });
+        }
 
         // Generate public_id for existing shops using raw DB query (avoids Eloquent model issues)
         $shops = DB::table('shops')->whereNull('public_id')->get();
@@ -25,10 +28,12 @@ return new class extends Migration
                 ->update(['public_id' => $this->generateUniquePublicId()]);
         }
 
-        // Make it non-nullable after populating
-        Schema::table('shops', function (Blueprint $table) {
-            $table->string('public_id', 12)->nullable(false)->change();
-        });
+        // Make it non-nullable after populating (only if column exists)
+        if (Schema::hasColumn('shops', 'public_id')) {
+            Schema::table('shops', function (Blueprint $table) {
+                $table->string('public_id', 12)->nullable(false)->change();
+            });
+        }
     }
 
     /**
@@ -36,9 +41,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('shops', function (Blueprint $table) {
-            $table->dropColumn('public_id');
-        });
+        if (Schema::hasColumn('shops', 'public_id')) {
+            Schema::table('shops', function (Blueprint $table) {
+                $table->dropColumn('public_id');
+            });
+        }
     }
 
     private function generateUniquePublicId(): string

@@ -11,17 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->softDeletes();
-        });
+        if (!Schema::hasColumn('products', 'deleted_at')) {
+            Schema::table('products', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
 
-        Schema::table('categories', function (Blueprint $table) {
-            $table->softDeletes();
-        });
+        if (!Schema::hasColumn('categories', 'deleted_at')) {
+            Schema::table('categories', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
 
-        Schema::table('shops', function (Blueprint $table) {
-            $table->softDeletes();
-        });
+        if (!Schema::hasColumn('shops', 'deleted_at')) {
+            Schema::table('shops', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
     }
 
     /**
@@ -29,16 +35,22 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+        if (Schema::hasColumn('products', 'deleted_at')) {
+            Schema::table('products', function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
 
-        Schema::table('categories', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+        if (Schema::hasColumn('categories', 'deleted_at')) {
+            Schema::table('categories', function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
 
-        Schema::table('shops', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+        if (Schema::hasColumn('shops', 'deleted_at')) {
+            Schema::table('shops', function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
     }
 };
