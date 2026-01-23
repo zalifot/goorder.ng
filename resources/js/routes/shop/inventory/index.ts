@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\ProductController::store
  * @see app/Http/Controllers/ProductController.php:104
@@ -52,6 +52,27 @@ store.post = (args: { publicId: string | number } | [publicId: string | number ]
     method: 'post',
 })
 
+    /**
+* @see \App\Http\Controllers\ProductController::store
+ * @see app/Http/Controllers/ProductController.php:104
+ * @route '/manage/shop/{publicId}/inventory'
+ */
+    const storeForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: store.url(args, options),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\ProductController::store
+ * @see app/Http/Controllers/ProductController.php:104
+ * @route '/manage/shop/{publicId}/inventory'
+ */
+        storeForm.post = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: store.url(args, options),
+            method: 'post',
+        })
+    
+    store.form = storeForm
 /**
 * @see \App\Http\Controllers\ProductController::importMethod
  * @see app/Http/Controllers/ProductController.php:201
@@ -105,6 +126,27 @@ importMethod.post = (args: { publicId: string | number } | [publicId: string | n
     method: 'post',
 })
 
+    /**
+* @see \App\Http\Controllers\ProductController::importMethod
+ * @see app/Http/Controllers/ProductController.php:201
+ * @route '/manage/shop/{publicId}/inventory/import'
+ */
+    const importMethodForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: importMethod.url(args, options),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\ProductController::importMethod
+ * @see app/Http/Controllers/ProductController.php:201
+ * @route '/manage/shop/{publicId}/inventory/import'
+ */
+        importMethodForm.post = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: importMethod.url(args, options),
+            method: 'post',
+        })
+    
+    importMethod.form = importMethodForm
 /**
 * @see \App\Http\Controllers\ProductController::template
  * @see app/Http/Controllers/ProductController.php:214
@@ -167,6 +209,41 @@ template.head = (args: { publicId: string | number } | [publicId: string | numbe
     method: 'head',
 })
 
+    /**
+* @see \App\Http\Controllers\ProductController::template
+ * @see app/Http/Controllers/ProductController.php:214
+ * @route '/manage/shop/{publicId}/inventory/template'
+ */
+    const templateForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: template.url(args, options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\ProductController::template
+ * @see app/Http/Controllers/ProductController.php:214
+ * @route '/manage/shop/{publicId}/inventory/template'
+ */
+        templateForm.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: template.url(args, options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\ProductController::template
+ * @see app/Http/Controllers/ProductController.php:214
+ * @route '/manage/shop/{publicId}/inventory/template'
+ */
+        templateForm.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: template.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    template.form = templateForm
 /**
 * @see \App\Http\Controllers\ProductController::update
  * @see app/Http/Controllers/ProductController.php:148
@@ -220,6 +297,37 @@ update.put = (args: { publicId: string | number, product: number | { id: number 
     method: 'put',
 })
 
+    /**
+* @see \App\Http\Controllers\ProductController::update
+ * @see app/Http/Controllers/ProductController.php:148
+ * @route '/manage/shop/{publicId}/inventory/{product}'
+ */
+    const updateForm = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: update.url(args, {
+                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                        _method: 'PUT',
+                        ...(options?.query ?? options?.mergeQuery ?? {}),
+                    }
+                }),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\ProductController::update
+ * @see app/Http/Controllers/ProductController.php:148
+ * @route '/manage/shop/{publicId}/inventory/{product}'
+ */
+        updateForm.put = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: update.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'PUT',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'post',
+        })
+    
+    update.form = updateForm
 /**
 * @see \App\Http\Controllers\ProductController::destroy
  * @see app/Http/Controllers/ProductController.php:233
@@ -272,6 +380,38 @@ destroy.delete = (args: { publicId: string | number, product: number | { id: num
     url: destroy.url(args, options),
     method: 'delete',
 })
+
+    /**
+* @see \App\Http\Controllers\ProductController::destroy
+ * @see app/Http/Controllers/ProductController.php:233
+ * @route '/manage/shop/{publicId}/inventory/{product}'
+ */
+    const destroyForm = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: destroy.url(args, {
+                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                        _method: 'DELETE',
+                        ...(options?.query ?? options?.mergeQuery ?? {}),
+                    }
+                }),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\ProductController::destroy
+ * @see app/Http/Controllers/ProductController.php:233
+ * @route '/manage/shop/{publicId}/inventory/{product}'
+ */
+        destroyForm.delete = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: destroy.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'DELETE',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'post',
+        })
+    
+    destroy.form = destroyForm
 const inventory = {
     store: Object.assign(store, store),
 import: Object.assign(importMethod, importMethod),

@@ -24,7 +24,7 @@ export default function AdminRegister() {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post('/admin-register');
+        post('/platform/admins');
     };
 
     return (

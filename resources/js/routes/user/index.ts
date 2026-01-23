@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
 /**
  * @see routes/web.php:206
  * @route '/user-dashboard'
@@ -38,6 +38,38 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     method: 'head',
 })
 
+    /**
+ * @see routes/web.php:206
+ * @route '/user-dashboard'
+ */
+    const dashboardForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: dashboard.url(options),
+        method: 'get',
+    })
+
+            /**
+ * @see routes/web.php:206
+ * @route '/user-dashboard'
+ */
+        dashboardForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: dashboard.url(options),
+            method: 'get',
+        })
+            /**
+ * @see routes/web.php:206
+ * @route '/user-dashboard'
+ */
+        dashboardForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: dashboard.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    dashboard.form = dashboardForm
 /**
  * @see routes/web.php:268
  * @route '/user/orders'
@@ -77,6 +109,38 @@ orders.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     method: 'head',
 })
 
+    /**
+ * @see routes/web.php:268
+ * @route '/user/orders'
+ */
+    const ordersForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: orders.url(options),
+        method: 'get',
+    })
+
+            /**
+ * @see routes/web.php:268
+ * @route '/user/orders'
+ */
+        ordersForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: orders.url(options),
+            method: 'get',
+        })
+            /**
+ * @see routes/web.php:268
+ * @route '/user/orders'
+ */
+        ordersForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: orders.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    orders.form = ordersForm
 /**
  * @see routes/web.php:272
  * @route '/user/cart'
@@ -116,6 +180,38 @@ cart.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     method: 'head',
 })
 
+    /**
+ * @see routes/web.php:272
+ * @route '/user/cart'
+ */
+    const cartForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: cart.url(options),
+        method: 'get',
+    })
+
+            /**
+ * @see routes/web.php:272
+ * @route '/user/cart'
+ */
+        cartForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: cart.url(options),
+            method: 'get',
+        })
+            /**
+ * @see routes/web.php:272
+ * @route '/user/cart'
+ */
+        cartForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: cart.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    cart.form = cartForm
 /**
  * @see routes/web.php:276
  * @route '/user/favorites'
@@ -154,6 +250,39 @@ favorites.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: favorites.url(options),
     method: 'head',
 })
+
+    /**
+ * @see routes/web.php:276
+ * @route '/user/favorites'
+ */
+    const favoritesForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: favorites.url(options),
+        method: 'get',
+    })
+
+            /**
+ * @see routes/web.php:276
+ * @route '/user/favorites'
+ */
+        favoritesForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: favorites.url(options),
+            method: 'get',
+        })
+            /**
+ * @see routes/web.php:276
+ * @route '/user/favorites'
+ */
+        favoritesForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: favorites.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    favorites.form = favoritesForm
 const user = {
     dashboard: Object.assign(dashboard, dashboard),
 orders: Object.assign(orders, orders),

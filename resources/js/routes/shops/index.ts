@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\ShopController::index
  * @see app/Http/Controllers/ShopController.php:15
@@ -42,6 +42,41 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     method: 'head',
 })
 
+    /**
+* @see \App\Http\Controllers\ShopController::index
+ * @see app/Http/Controllers/ShopController.php:15
+ * @route '/shops'
+ */
+    const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: index.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\ShopController::index
+ * @see app/Http/Controllers/ShopController.php:15
+ * @route '/shops'
+ */
+        indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: index.url(options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\ShopController::index
+ * @see app/Http/Controllers/ShopController.php:15
+ * @route '/shops'
+ */
+        indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: index.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    index.form = indexForm
 /**
 * @see \App\Http\Controllers\ShopController::show
  * @see app/Http/Controllers/ShopController.php:23
@@ -104,6 +139,41 @@ show.head = (args: { publicId: string | number } | [publicId: string | number ] 
     method: 'head',
 })
 
+    /**
+* @see \App\Http\Controllers\ShopController::show
+ * @see app/Http/Controllers/ShopController.php:23
+ * @route '/manage/shop/{publicId}'
+ */
+    const showForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: show.url(args, options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\ShopController::show
+ * @see app/Http/Controllers/ShopController.php:23
+ * @route '/manage/shop/{publicId}'
+ */
+        showForm.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: show.url(args, options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\ShopController::show
+ * @see app/Http/Controllers/ShopController.php:23
+ * @route '/manage/shop/{publicId}'
+ */
+        showForm.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: show.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    show.form = showForm
 /**
 * @see \App\Http\Controllers\ShopController::store
  * @see app/Http/Controllers/ShopController.php:62
@@ -138,6 +208,27 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     method: 'post',
 })
 
+    /**
+* @see \App\Http\Controllers\ShopController::store
+ * @see app/Http/Controllers/ShopController.php:62
+ * @route '/shops'
+ */
+    const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: store.url(options),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\ShopController::store
+ * @see app/Http/Controllers/ShopController.php:62
+ * @route '/shops'
+ */
+        storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: store.url(options),
+            method: 'post',
+        })
+    
+    store.form = storeForm
 /**
 * @see \App\Http\Controllers\ShopController::update
  * @see app/Http/Controllers/ShopController.php:92
@@ -196,6 +287,37 @@ update.put = (args: { shop: number | { id: number } } | [shop: number | { id: nu
     method: 'put',
 })
 
+    /**
+* @see \App\Http\Controllers\ShopController::update
+ * @see app/Http/Controllers/ShopController.php:92
+ * @route '/shops/{shop}'
+ */
+    const updateForm = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: update.url(args, {
+                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                        _method: 'PUT',
+                        ...(options?.query ?? options?.mergeQuery ?? {}),
+                    }
+                }),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\ShopController::update
+ * @see app/Http/Controllers/ShopController.php:92
+ * @route '/shops/{shop}'
+ */
+        updateForm.put = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: update.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'PUT',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'post',
+        })
+    
+    update.form = updateForm
 /**
 * @see \App\Http\Controllers\ShopController::toggleActive
  * @see app/Http/Controllers/ShopController.php:144
@@ -254,6 +376,37 @@ toggleActive.patch = (args: { shop: number | { id: number } } | [shop: number | 
     method: 'patch',
 })
 
+    /**
+* @see \App\Http\Controllers\ShopController::toggleActive
+ * @see app/Http/Controllers/ShopController.php:144
+ * @route '/shops/{shop}/toggle-active'
+ */
+    const toggleActiveForm = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: toggleActive.url(args, {
+                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                        _method: 'PATCH',
+                        ...(options?.query ?? options?.mergeQuery ?? {}),
+                    }
+                }),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\ShopController::toggleActive
+ * @see app/Http/Controllers/ShopController.php:144
+ * @route '/shops/{shop}/toggle-active'
+ */
+        toggleActiveForm.patch = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: toggleActive.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'PATCH',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'post',
+        })
+    
+    toggleActive.form = toggleActiveForm
 /**
 * @see \App\Http\Controllers\ShopController::toggleConstruction
  * @see app/Http/Controllers/ShopController.php:157
@@ -312,6 +465,37 @@ toggleConstruction.patch = (args: { shop: number | { id: number } } | [shop: num
     method: 'patch',
 })
 
+    /**
+* @see \App\Http\Controllers\ShopController::toggleConstruction
+ * @see app/Http/Controllers/ShopController.php:157
+ * @route '/shops/{shop}/toggle-construction'
+ */
+    const toggleConstructionForm = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: toggleConstruction.url(args, {
+                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                        _method: 'PATCH',
+                        ...(options?.query ?? options?.mergeQuery ?? {}),
+                    }
+                }),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\ShopController::toggleConstruction
+ * @see app/Http/Controllers/ShopController.php:157
+ * @route '/shops/{shop}/toggle-construction'
+ */
+        toggleConstructionForm.patch = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: toggleConstruction.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'PATCH',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'post',
+        })
+    
+    toggleConstruction.form = toggleConstructionForm
 /**
 * @see \App\Http\Controllers\ShopController::destroy
  * @see app/Http/Controllers/ShopController.php:132
@@ -369,6 +553,38 @@ destroy.delete = (args: { shop: number | { id: number } } | [shop: number | { id
     url: destroy.url(args, options),
     method: 'delete',
 })
+
+    /**
+* @see \App\Http\Controllers\ShopController::destroy
+ * @see app/Http/Controllers/ShopController.php:132
+ * @route '/shops/{shop}'
+ */
+    const destroyForm = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: destroy.url(args, {
+                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                        _method: 'DELETE',
+                        ...(options?.query ?? options?.mergeQuery ?? {}),
+                    }
+                }),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\ShopController::destroy
+ * @see app/Http/Controllers/ShopController.php:132
+ * @route '/shops/{shop}'
+ */
+        destroyForm.delete = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: destroy.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'DELETE',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'post',
+        })
+    
+    destroy.form = destroyForm
 const shops = {
     index: Object.assign(index, index),
 show: Object.assign(show, show),
