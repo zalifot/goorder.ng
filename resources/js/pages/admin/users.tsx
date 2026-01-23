@@ -123,7 +123,7 @@ export default function PlatformUsers({ users, filters, stats }: Props) {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     
     const adminForm = useForm({
-        name: '',
+        username: '',
         email: '',
         password: '',
         password_confirmation: '',
@@ -214,16 +214,16 @@ export default function PlatformUsers({ users, filters, stats }: Props) {
                                 </DialogHeader>
                                 <form onSubmit={handleCreateAdmin} className="space-y-4">
                                     <div className="space-y-2">
-                                        <Label htmlFor="admin-name">Full Name</Label>
+                                        <Label htmlFor="admin-username">Username</Label>
                                         <Input
-                                            id="admin-name"
-                                            value={adminForm.data.name}
-                                            onChange={(e) => adminForm.setData('name', e.target.value)}
-                                            placeholder="John Doe"
+                                            id="admin-username"
+                                            value={adminForm.data.username}
+                                            onChange={(e) => adminForm.setData('username', e.target.value)}
+                                            placeholder="johndoe"
                                             required
                                         />
-                                        {adminForm.errors.name && (
-                                            <p className="text-sm text-destructive">{adminForm.errors.name}</p>
+                                        {adminForm.errors.username && (
+                                            <p className="text-sm text-destructive">{adminForm.errors.username}</p>
                                         )}
                                     </div>
                                     <div className="space-y-2">
