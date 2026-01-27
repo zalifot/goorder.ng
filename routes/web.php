@@ -24,6 +24,23 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+// Public Marketplace - List all active shops
+Route::get('/marketplace', function () {
+    $shops = Shop::where('is_active', true)
+        ->where('is_under_construction', false)
+        ->withCount(['products' => function ($query) {
+            $query->where('is_active', true);
+        }])
+        ->with('user:id,username')
+        ->latest()
+        ->get();
+    
+    return Inertia::render('marketplace', [
+        'shops' => $shops,
+        'canRegister' => Features::enabled(Features::registration()),
+    ]);
+})->name('marketplace');
+
 // Google OAuth Routes
 Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');

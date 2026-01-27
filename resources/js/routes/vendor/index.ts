@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
- * @see routes/web.php:32
+ * @see routes/web.php:49
  * @route '/vendor/{publicId}'
  */
 export const show = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -14,7 +14,7 @@ show.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:32
+ * @see routes/web.php:49
  * @route '/vendor/{publicId}'
  */
 show.url = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -41,7 +41,7 @@ show.url = (args: { publicId: string | number } | [publicId: string | number ] |
 }
 
 /**
- * @see routes/web.php:32
+ * @see routes/web.php:49
  * @route '/vendor/{publicId}'
  */
 show.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -49,7 +49,7 @@ show.get = (args: { publicId: string | number } | [publicId: string | number ] |
     method: 'get',
 })
 /**
- * @see routes/web.php:32
+ * @see routes/web.php:49
  * @route '/vendor/{publicId}'
  */
 show.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -58,7 +58,7 @@ show.head = (args: { publicId: string | number } | [publicId: string | number ] 
 })
 
     /**
- * @see routes/web.php:32
+ * @see routes/web.php:49
  * @route '/vendor/{publicId}'
  */
     const showForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -67,7 +67,7 @@ show.head = (args: { publicId: string | number } | [publicId: string | number ] 
     })
 
             /**
- * @see routes/web.php:32
+ * @see routes/web.php:49
  * @route '/vendor/{publicId}'
  */
         showForm.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -75,7 +75,7 @@ show.head = (args: { publicId: string | number } | [publicId: string | number ] 
             method: 'get',
         })
             /**
- * @see routes/web.php:32
+ * @see routes/web.php:49
  * @route '/vendor/{publicId}'
  */
         showForm.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -90,7 +90,7 @@ show.head = (args: { publicId: string | number } | [publicId: string | number ] 
     
     show.form = showForm
 /**
- * @see routes/web.php:120
+ * @see routes/web.php:137
  * @route '/vendor-register'
  */
 export const register = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -104,7 +104,7 @@ register.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:120
+ * @see routes/web.php:137
  * @route '/vendor-register'
  */
 register.url = (options?: RouteQueryOptions) => {
@@ -112,7 +112,7 @@ register.url = (options?: RouteQueryOptions) => {
 }
 
 /**
- * @see routes/web.php:120
+ * @see routes/web.php:137
  * @route '/vendor-register'
  */
 register.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -120,7 +120,7 @@ register.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
- * @see routes/web.php:120
+ * @see routes/web.php:137
  * @route '/vendor-register'
  */
 register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -129,7 +129,7 @@ register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
- * @see routes/web.php:120
+ * @see routes/web.php:137
  * @route '/vendor-register'
  */
     const registerForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -138,7 +138,7 @@ register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
- * @see routes/web.php:120
+ * @see routes/web.php:137
  * @route '/vendor-register'
  */
         registerForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -146,7 +146,7 @@ register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
- * @see routes/web.php:120
+ * @see routes/web.php:137
  * @route '/vendor-register'
  */
         registerForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

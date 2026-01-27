@@ -25,9 +25,9 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                             <a href="#vendors" className="text-sm text-gray-600 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                                 For Vendors
                             </a>
-                            <a href="#customers" className="text-sm text-gray-600 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                                For Customers
-                            </a>
+                            <Link href="/marketplace" className="text-sm text-gray-600 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                                Marketplace
+                            </Link>
                             <a href="#features" className="text-sm text-gray-600 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                                 Features
                             </a>
@@ -92,7 +92,7 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                                     <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
                             </Link>
-                            <Link href="/register">
+                            <Link href="/marketplace">
                                 <Button size="lg" variant="outline" className="h-14 w-full rounded-full border-gray-300 px-8 text-base font-medium sm:w-auto dark:border-gray-700">
                                     Shop as Customer
                                 </Button>
@@ -168,87 +168,7 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                     </div>
                 </section>
 
-                {/* For Customers Section */}
-                <section id="customers" className="py-28">
-                    <div className="mx-auto max-w-6xl px-6">
-                        <div className="mb-16 text-center">
-                            <span className="mb-4 inline-block rounded-full bg-blue-100 px-4 py-1 text-sm font-semibold uppercase tracking-wider text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
-                                For Customers
-                            </span>
-                            <h2 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 md:text-5xl dark:text-white">
-                                Shop local, delivered fast
-                            </h2>
-                            <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-400">
-                                Discover amazing products from Nigerian vendors. Order with confidence.
-                            </p>
-                        </div>
-
-                        <div className="grid gap-6 md:grid-cols-2">
-                            <div className="flex items-start gap-5 rounded-3xl bg-gray-50 p-8 dark:bg-gray-900">
-                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-800">
-                                    <Store className="h-6 w-6 text-gray-500 dark:text-gray-400" />
-                                </div>
-                                <div>
-                                    <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-                                        Browse Local Shops
-                                    </h3>
-                                    <p className="text-gray-600 dark:text-gray-400">
-                                        Find verified vendors selling quality products near you. Each shop has its own unique storefront.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-start gap-5 rounded-3xl bg-gray-50 p-8 dark:bg-gray-900">
-                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-800">
-                                    <Shield className="h-6 w-6 text-gray-500 dark:text-gray-400" />
-                                </div>
-                                <div>
-                                    <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-                                        Shop with Confidence
-                                    </h3>
-                                    <p className="text-gray-600 dark:text-gray-400">
-                                        Secure checkout, order tracking, and customer protection on every purchase.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-start gap-5 rounded-3xl bg-gray-50 p-8 dark:bg-gray-900">
-                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-800">
-                                    <Truck className="h-6 w-6 text-gray-500 dark:text-gray-400" />
-                                </div>
-                                <div>
-                                    <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-                                        Flexible Delivery
-                                    </h3>
-                                    <p className="text-gray-600 dark:text-gray-400">
-                                        Choose your preferred delivery time and location. Track your order in real-time.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-start gap-5 rounded-3xl bg-gray-50 p-8 dark:bg-gray-900">
-                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-800">
-                                    <Users className="h-6 w-6 text-gray-500 dark:text-gray-400" />
-                                </div>
-                                <div>
-                                    <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-                                        Support Local Business
-                                    </h3>
-                                    <p className="text-gray-600 dark:text-gray-400">
-                                        Every purchase supports Nigerian entrepreneurs. Be part of the local commerce movement.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="mt-14 text-center">
-                            <Link href="/register" className="group inline-flex items-center gap-2 rounded-full border-2 border-gray-900 px-8 py-4 font-medium text-gray-900 transition hover:bg-gray-900 hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black">
-                                <span>Create a customer account</span>
-                                <ChevronRight className="h-5 w-5 transition group-hover:translate-x-1" />
-                            </Link>
-                        </div>
-                    </div>
-                </section>
+                // ...existing code...
 
                 {/* Features Section */}
                 <section id="features" className="bg-gray-900 py-28 dark:bg-black">
@@ -305,7 +225,7 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                                     <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
                             </Link>
-                            <Link href="/register">
+                            <Link href="/marketplace">
                                 <Button size="lg" variant="outline" className="h-14 w-full rounded-full border-gray-300 px-10 text-base font-medium sm:w-auto dark:border-gray-700">
                                     Shop as Customer
                                 </Button>
@@ -329,7 +249,7 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
 
                             <div className="flex items-center gap-8 text-sm text-gray-600 dark:text-gray-400">
                                 <a href="#vendors" className="transition hover:text-gray-900 dark:hover:text-white">For Vendors</a>
-                                <a href="#customers" className="transition hover:text-gray-900 dark:hover:text-white">For Customers</a>
+                                <Link href="/marketplace" className="transition hover:text-gray-900 dark:hover:text-white">Marketplace</Link>
                                 <a href="#features" className="transition hover:text-gray-900 dark:hover:text-white">Features</a>
                                 <Link href="/vendor-login" className="transition hover:text-gray-900 dark:hover:text-white">Vendor Login</Link>
                             </div>

@@ -21,6 +21,11 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
+        title: 'Marketplace',
+        href: '/marketplace',
+        icon: Store,
+    },
+    {
         title: 'Orders',
         href: '/user/orders',
         icon: ShoppingBag,
@@ -34,11 +39,6 @@ const mainNavItems: NavItem[] = [
         title: 'Favorites',
         href: '/user/favorites',
         icon: Heart,
-    },
-    {
-        title: 'Shops',
-        href: '/shops',
-        icon: Store,
     },
 ];
 

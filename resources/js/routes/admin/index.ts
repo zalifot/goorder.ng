@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
 /**
- * @see routes/web.php:95
+ * @see routes/web.php:112
  * @route '/vendor-login'
  */
 export const login = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -14,7 +14,7 @@ login.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:95
+ * @see routes/web.php:112
  * @route '/vendor-login'
  */
 login.url = (options?: RouteQueryOptions) => {
@@ -22,7 +22,7 @@ login.url = (options?: RouteQueryOptions) => {
 }
 
 /**
- * @see routes/web.php:95
+ * @see routes/web.php:112
  * @route '/vendor-login'
  */
 login.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -30,7 +30,7 @@ login.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
- * @see routes/web.php:95
+ * @see routes/web.php:112
  * @route '/vendor-login'
  */
 login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -39,7 +39,7 @@ login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
- * @see routes/web.php:95
+ * @see routes/web.php:112
  * @route '/vendor-login'
  */
     const loginForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -48,7 +48,7 @@ login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
- * @see routes/web.php:95
+ * @see routes/web.php:112
  * @route '/vendor-login'
  */
         loginForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -56,7 +56,7 @@ login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
- * @see routes/web.php:95
+ * @see routes/web.php:112
  * @route '/vendor-login'
  */
         loginForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
