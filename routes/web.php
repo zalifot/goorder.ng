@@ -218,11 +218,25 @@ Route::post('logout', function (Request $request) {
 })->name('logout');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
     Route::get('user-dashboard', function () {
         return Inertia::render('user-dashboard');
     })->name('user.dashboard');
+    
+    Route::get('user/orders', function () {
+        return Inertia::render('user/orders');
+    })->name('user.orders');
+
+    Route::get('user/cart', function () {
+        return Inertia::render('user/cart');
+    })->name('user.cart');
+
+    Route::get('user/favorites', function () {
+        return Inertia::render('user/favorites');
+    })->name('user.favorites');
+});
+
+Route::middleware(['auth', 'verified', 'role:admin,super_admin,shop_owner'])->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Admin Categories routes
     Route::get('categories', [CategoryController::class, 'index'])->name('categories');
@@ -280,19 +294,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Global Inventory Dashboard
     Route::get('inventory', [ProductController::class, 'dashboard'])->name('inventory.dashboard');
-
-    // User routes
-    Route::get('user/orders', function () {
-        return Inertia::render('user/orders');
-    })->name('user.orders');
-
-    Route::get('user/cart', function () {
-        return Inertia::render('user/cart');
-    })->name('user.cart');
-
-    Route::get('user/favorites', function () {
-        return Inertia::render('user/favorites');
-    })->name('user.favorites');
 
     // Shop routes
     Route::get('/shops', [ShopController::class, 'index'])->name('shops.index');

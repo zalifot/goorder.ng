@@ -6,15 +6,21 @@ use App\Imports\ProductsImport;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Shop;
+use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
+    protected CloudinaryService $cloudinary;
+
+    public function __construct(CloudinaryService $cloudinary)
+    {
+        $this->cloudinary = $cloudinary;
+    }
     /**
      * Global inventory dashboard showing all products across all shops owned by the user.
      */
@@ -109,7 +115,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'image_url' => 'nullable|url|max:500',
             'price' => 'required|numeric|min:0',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
@@ -127,7 +133,7 @@ class ProductController extends Controller
 
         // Handle image - prefer uploaded file over URL
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('products', 'public');
+            $validated['image'] = $this->cloudinary->upload($request->file('image'), 'products');
         } elseif (!empty($validated['image_url'])) {
             $validated['image'] = $validated['image_url'];
         }
@@ -151,7 +157,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:products,slug,' . $product->id,
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'image_url' => 'nullable|url|max:500',
             'price' => 'required|numeric|min:0',
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
@@ -170,19 +176,21 @@ class ProductController extends Controller
 
         // Handle image removal
         if ($request->boolean('remove_image') && $product->image) {
-            // Only delete if it's a local file, not a URL
-            if (!filter_var($product->image, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete($product->image);
+            // Delete from Cloudinary if it's a Cloudinary URL
+            if ($this->cloudinary->isCloudinaryUrl($product->image)) {
+                $this->cloudinary->delete($product->image);
             }
             $validated['image'] = null;
         } elseif ($request->hasFile('image')) {
-            if ($product->image && !filter_var($product->image, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete($product->image);
+            // Delete old image from Cloudinary if exists
+            if ($product->image && $this->cloudinary->isCloudinaryUrl($product->image)) {
+                $this->cloudinary->delete($product->image);
             }
-            $validated['image'] = $request->file('image')->store('products', 'public');
+            $validated['image'] = $this->cloudinary->upload($request->file('image'), 'products');
         } elseif (!empty($validated['image_url'])) {
-            if ($product->image && !filter_var($product->image, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete($product->image);
+            // Delete old image from Cloudinary if exists
+            if ($product->image && $this->cloudinary->isCloudinaryUrl($product->image)) {
+                $this->cloudinary->delete($product->image);
             }
             $validated['image'] = $validated['image_url'];
         } else {
@@ -232,8 +240,9 @@ class ProductController extends Controller
 
     public function destroy(string $publicId, Product $product)
     {
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
+        // Delete image from Cloudinary if exists
+        if ($product->image && $this->cloudinary->isCloudinaryUrl($product->image)) {
+            $this->cloudinary->delete($product->image);
         }
 
         $product->delete();

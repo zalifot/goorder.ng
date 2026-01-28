@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\ProductController::dashboard
- * @see app/Http/Controllers/ProductController.php:21
+ * @see app/Http/Controllers/ProductController.php:27
  * @route '/inventory'
  */
 export const dashboard = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ dashboard.definition = {
 
 /**
 * @see \App\Http\Controllers\ProductController::dashboard
- * @see app/Http/Controllers/ProductController.php:21
+ * @see app/Http/Controllers/ProductController.php:27
  * @route '/inventory'
  */
 dashboard.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ dashboard.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\ProductController::dashboard
- * @see app/Http/Controllers/ProductController.php:21
+ * @see app/Http/Controllers/ProductController.php:27
  * @route '/inventory'
  */
 dashboard.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ dashboard.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\ProductController::dashboard
- * @see app/Http/Controllers/ProductController.php:21
+ * @see app/Http/Controllers/ProductController.php:27
  * @route '/inventory'
  */
 dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -44,7 +44,7 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\ProductController::dashboard
- * @see app/Http/Controllers/ProductController.php:21
+ * @see app/Http/Controllers/ProductController.php:27
  * @route '/inventory'
  */
     const dashboardForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -54,7 +54,7 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\ProductController::dashboard
- * @see app/Http/Controllers/ProductController.php:21
+ * @see app/Http/Controllers/ProductController.php:27
  * @route '/inventory'
  */
         dashboardForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -63,7 +63,7 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\ProductController::dashboard
- * @see app/Http/Controllers/ProductController.php:21
+ * @see app/Http/Controllers/ProductController.php:27
  * @route '/inventory'
  */
         dashboardForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -79,7 +79,7 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     dashboard.form = dashboardForm
 /**
 * @see \App\Http\Controllers\ProductController::index
- * @see app/Http/Controllers/ProductController.php:72
+ * @see app/Http/Controllers/ProductController.php:78
  * @route '/manage/shop/{publicId}/inventory'
  */
 export const index = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +94,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\ProductController::index
- * @see app/Http/Controllers/ProductController.php:72
+ * @see app/Http/Controllers/ProductController.php:78
  * @route '/manage/shop/{publicId}/inventory'
  */
 index.url = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -122,7 +122,7 @@ index.url = (args: { publicId: string | number } | [publicId: string | number ] 
 
 /**
 * @see \App\Http\Controllers\ProductController::index
- * @see app/Http/Controllers/ProductController.php:72
+ * @see app/Http/Controllers/ProductController.php:78
  * @route '/manage/shop/{publicId}/inventory'
  */
 index.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -131,7 +131,7 @@ index.get = (args: { publicId: string | number } | [publicId: string | number ] 
 })
 /**
 * @see \App\Http\Controllers\ProductController::index
- * @see app/Http/Controllers/ProductController.php:72
+ * @see app/Http/Controllers/ProductController.php:78
  * @route '/manage/shop/{publicId}/inventory'
  */
 index.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -141,7 +141,7 @@ index.head = (args: { publicId: string | number } | [publicId: string | number ]
 
     /**
 * @see \App\Http\Controllers\ProductController::index
- * @see app/Http/Controllers/ProductController.php:72
+ * @see app/Http/Controllers/ProductController.php:78
  * @route '/manage/shop/{publicId}/inventory'
  */
     const indexForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -151,7 +151,7 @@ index.head = (args: { publicId: string | number } | [publicId: string | number ]
 
             /**
 * @see \App\Http\Controllers\ProductController::index
- * @see app/Http/Controllers/ProductController.php:72
+ * @see app/Http/Controllers/ProductController.php:78
  * @route '/manage/shop/{publicId}/inventory'
  */
         indexForm.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -160,7 +160,7 @@ index.head = (args: { publicId: string | number } | [publicId: string | number ]
         })
             /**
 * @see \App\Http\Controllers\ProductController::index
- * @see app/Http/Controllers/ProductController.php:72
+ * @see app/Http/Controllers/ProductController.php:78
  * @route '/manage/shop/{publicId}/inventory'
  */
         indexForm.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -176,7 +176,7 @@ index.head = (args: { publicId: string | number } | [publicId: string | number ]
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\ProductController::store
- * @see app/Http/Controllers/ProductController.php:104
+ * @see app/Http/Controllers/ProductController.php:110
  * @route '/manage/shop/{publicId}/inventory'
  */
 export const store = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -191,7 +191,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\ProductController::store
- * @see app/Http/Controllers/ProductController.php:104
+ * @see app/Http/Controllers/ProductController.php:110
  * @route '/manage/shop/{publicId}/inventory'
  */
 store.url = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -219,7 +219,7 @@ store.url = (args: { publicId: string | number } | [publicId: string | number ] 
 
 /**
 * @see \App\Http\Controllers\ProductController::store
- * @see app/Http/Controllers/ProductController.php:104
+ * @see app/Http/Controllers/ProductController.php:110
  * @route '/manage/shop/{publicId}/inventory'
  */
 store.post = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -229,7 +229,7 @@ store.post = (args: { publicId: string | number } | [publicId: string | number ]
 
     /**
 * @see \App\Http\Controllers\ProductController::store
- * @see app/Http/Controllers/ProductController.php:104
+ * @see app/Http/Controllers/ProductController.php:110
  * @route '/manage/shop/{publicId}/inventory'
  */
     const storeForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -239,7 +239,7 @@ store.post = (args: { publicId: string | number } | [publicId: string | number ]
 
             /**
 * @see \App\Http\Controllers\ProductController::store
- * @see app/Http/Controllers/ProductController.php:104
+ * @see app/Http/Controllers/ProductController.php:110
  * @route '/manage/shop/{publicId}/inventory'
  */
         storeForm.post = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -250,7 +250,7 @@ store.post = (args: { publicId: string | number } | [publicId: string | number ]
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\ProductController::importMethod
- * @see app/Http/Controllers/ProductController.php:201
+ * @see app/Http/Controllers/ProductController.php:209
  * @route '/manage/shop/{publicId}/inventory/import'
  */
 export const importMethod = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -265,7 +265,7 @@ importMethod.definition = {
 
 /**
 * @see \App\Http\Controllers\ProductController::importMethod
- * @see app/Http/Controllers/ProductController.php:201
+ * @see app/Http/Controllers/ProductController.php:209
  * @route '/manage/shop/{publicId}/inventory/import'
  */
 importMethod.url = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -293,7 +293,7 @@ importMethod.url = (args: { publicId: string | number } | [publicId: string | nu
 
 /**
 * @see \App\Http\Controllers\ProductController::importMethod
- * @see app/Http/Controllers/ProductController.php:201
+ * @see app/Http/Controllers/ProductController.php:209
  * @route '/manage/shop/{publicId}/inventory/import'
  */
 importMethod.post = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -303,7 +303,7 @@ importMethod.post = (args: { publicId: string | number } | [publicId: string | n
 
     /**
 * @see \App\Http\Controllers\ProductController::importMethod
- * @see app/Http/Controllers/ProductController.php:201
+ * @see app/Http/Controllers/ProductController.php:209
  * @route '/manage/shop/{publicId}/inventory/import'
  */
     const importMethodForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -313,7 +313,7 @@ importMethod.post = (args: { publicId: string | number } | [publicId: string | n
 
             /**
 * @see \App\Http\Controllers\ProductController::importMethod
- * @see app/Http/Controllers/ProductController.php:201
+ * @see app/Http/Controllers/ProductController.php:209
  * @route '/manage/shop/{publicId}/inventory/import'
  */
         importMethodForm.post = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -324,7 +324,7 @@ importMethod.post = (args: { publicId: string | number } | [publicId: string | n
     importMethod.form = importMethodForm
 /**
 * @see \App\Http\Controllers\ProductController::downloadTemplate
- * @see app/Http/Controllers/ProductController.php:214
+ * @see app/Http/Controllers/ProductController.php:222
  * @route '/manage/shop/{publicId}/inventory/template'
  */
 export const downloadTemplate = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -339,7 +339,7 @@ downloadTemplate.definition = {
 
 /**
 * @see \App\Http\Controllers\ProductController::downloadTemplate
- * @see app/Http/Controllers/ProductController.php:214
+ * @see app/Http/Controllers/ProductController.php:222
  * @route '/manage/shop/{publicId}/inventory/template'
  */
 downloadTemplate.url = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -367,7 +367,7 @@ downloadTemplate.url = (args: { publicId: string | number } | [publicId: string 
 
 /**
 * @see \App\Http\Controllers\ProductController::downloadTemplate
- * @see app/Http/Controllers/ProductController.php:214
+ * @see app/Http/Controllers/ProductController.php:222
  * @route '/manage/shop/{publicId}/inventory/template'
  */
 downloadTemplate.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -376,7 +376,7 @@ downloadTemplate.get = (args: { publicId: string | number } | [publicId: string 
 })
 /**
 * @see \App\Http\Controllers\ProductController::downloadTemplate
- * @see app/Http/Controllers/ProductController.php:214
+ * @see app/Http/Controllers/ProductController.php:222
  * @route '/manage/shop/{publicId}/inventory/template'
  */
 downloadTemplate.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -386,7 +386,7 @@ downloadTemplate.head = (args: { publicId: string | number } | [publicId: string
 
     /**
 * @see \App\Http\Controllers\ProductController::downloadTemplate
- * @see app/Http/Controllers/ProductController.php:214
+ * @see app/Http/Controllers/ProductController.php:222
  * @route '/manage/shop/{publicId}/inventory/template'
  */
     const downloadTemplateForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -396,7 +396,7 @@ downloadTemplate.head = (args: { publicId: string | number } | [publicId: string
 
             /**
 * @see \App\Http\Controllers\ProductController::downloadTemplate
- * @see app/Http/Controllers/ProductController.php:214
+ * @see app/Http/Controllers/ProductController.php:222
  * @route '/manage/shop/{publicId}/inventory/template'
  */
         downloadTemplateForm.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -405,7 +405,7 @@ downloadTemplate.head = (args: { publicId: string | number } | [publicId: string
         })
             /**
 * @see \App\Http\Controllers\ProductController::downloadTemplate
- * @see app/Http/Controllers/ProductController.php:214
+ * @see app/Http/Controllers/ProductController.php:222
  * @route '/manage/shop/{publicId}/inventory/template'
  */
         downloadTemplateForm.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -421,7 +421,7 @@ downloadTemplate.head = (args: { publicId: string | number } | [publicId: string
     downloadTemplate.form = downloadTemplateForm
 /**
 * @see \App\Http\Controllers\ProductController::update
- * @see app/Http/Controllers/ProductController.php:148
+ * @see app/Http/Controllers/ProductController.php:154
  * @route '/manage/shop/{publicId}/inventory/{product}'
  */
 export const update = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -436,7 +436,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\ProductController::update
- * @see app/Http/Controllers/ProductController.php:148
+ * @see app/Http/Controllers/ProductController.php:154
  * @route '/manage/shop/{publicId}/inventory/{product}'
  */
 update.url = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions) => {
@@ -464,7 +464,7 @@ update.url = (args: { publicId: string | number, product: number | { id: number 
 
 /**
 * @see \App\Http\Controllers\ProductController::update
- * @see app/Http/Controllers/ProductController.php:148
+ * @see app/Http/Controllers/ProductController.php:154
  * @route '/manage/shop/{publicId}/inventory/{product}'
  */
 update.put = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -474,7 +474,7 @@ update.put = (args: { publicId: string | number, product: number | { id: number 
 
     /**
 * @see \App\Http\Controllers\ProductController::update
- * @see app/Http/Controllers/ProductController.php:148
+ * @see app/Http/Controllers/ProductController.php:154
  * @route '/manage/shop/{publicId}/inventory/{product}'
  */
     const updateForm = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -489,7 +489,7 @@ update.put = (args: { publicId: string | number, product: number | { id: number 
 
             /**
 * @see \App\Http\Controllers\ProductController::update
- * @see app/Http/Controllers/ProductController.php:148
+ * @see app/Http/Controllers/ProductController.php:154
  * @route '/manage/shop/{publicId}/inventory/{product}'
  */
         updateForm.put = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -505,7 +505,7 @@ update.put = (args: { publicId: string | number, product: number | { id: number 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\ProductController::destroy
- * @see app/Http/Controllers/ProductController.php:233
+ * @see app/Http/Controllers/ProductController.php:241
  * @route '/manage/shop/{publicId}/inventory/{product}'
  */
 export const destroy = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -520,7 +520,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\ProductController::destroy
- * @see app/Http/Controllers/ProductController.php:233
+ * @see app/Http/Controllers/ProductController.php:241
  * @route '/manage/shop/{publicId}/inventory/{product}'
  */
 destroy.url = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions) => {
@@ -548,7 +548,7 @@ destroy.url = (args: { publicId: string | number, product: number | { id: number
 
 /**
 * @see \App\Http\Controllers\ProductController::destroy
- * @see app/Http/Controllers/ProductController.php:233
+ * @see app/Http/Controllers/ProductController.php:241
  * @route '/manage/shop/{publicId}/inventory/{product}'
  */
 destroy.delete = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -558,7 +558,7 @@ destroy.delete = (args: { publicId: string | number, product: number | { id: num
 
     /**
 * @see \App\Http\Controllers\ProductController::destroy
- * @see app/Http/Controllers/ProductController.php:233
+ * @see app/Http/Controllers/ProductController.php:241
  * @route '/manage/shop/{publicId}/inventory/{product}'
  */
     const destroyForm = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -573,7 +573,7 @@ destroy.delete = (args: { publicId: string | number, product: number | { id: num
 
             /**
 * @see \App\Http\Controllers\ProductController::destroy
- * @see app/Http/Controllers/ProductController.php:233
+ * @see app/Http/Controllers/ProductController.php:241
  * @route '/manage/shop/{publicId}/inventory/{product}'
  */
         destroyForm.delete = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

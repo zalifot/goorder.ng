@@ -138,14 +138,49 @@ const platformGroups: NavGroup[] = [
     },
 ];
 
+// Items visible to standard users
+const userNavItems: NavItem[] = [
+    {
+        title: 'Dashboard',
+        href: '/user-dashboard',
+        icon: LayoutGrid,
+    },
+    {
+        title: 'My Orders',
+        href: '/user/orders',
+        icon: ShoppingCart,
+    },
+    {
+        title: 'Cart',
+        href: '/user/cart',
+        icon: Package,
+    },
+    {
+        title: 'Favorites',
+        href: '/user/favorites',
+        icon: Store,
+    },
+];
+
 export function AppSidebar() {
-    const { auth } = usePage().props as { auth: { permissions?: { isAdmin: boolean; isShopOwner: boolean; isStaff: boolean } } };
+    const { auth } = usePage().props as unknown as { auth: { user: { role: string }, permissions?: { isAdmin: boolean; isShopOwner: boolean; isStaff: boolean } } };
     const permissions = auth?.permissions;
+    const userRole = auth?.user?.role;
 
     // Determine which nav items to show
     const isOwnerOrAdmin = permissions?.isAdmin || permissions?.isShopOwner;
     const isAdmin = permissions?.isAdmin;
-    const navItems = isOwnerOrAdmin ? ownerNavItems : staffNavItems;
+
+    let navItems = isOwnerOrAdmin ? ownerNavItems : staffNavItems;
+
+    // If not admin/owner/staff (i.e., just a user), show user items
+    if (!permissions?.isAdmin && !permissions?.isShopOwner && !permissions?.isStaff) {
+        navItems = userNavItems;
+    }
+
+    if (userRole === 'user') {
+        navItems = userNavItems;
+    }
 
     return (
         <Sidebar collapsible="icon" variant="inset">
@@ -153,7 +188,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href={userRole === 'user' ? '/user-dashboard' : dashboard()} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>

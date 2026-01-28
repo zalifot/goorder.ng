@@ -4,13 +4,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthAppleLayout from '@/layouts/auth/auth-apple-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Eye, EyeOff, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, ShoppingBag } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
 export default function CustomerRegister() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    
+
     const { data, setData, post, processing, errors } = useForm({
         username: '',
         email: '',
@@ -29,8 +29,17 @@ export default function CustomerRegister() {
             description="Start shopping from amazing Nigerian vendors"
             variant="customer"
         >
+
             <Head title="Create Account" />
-            
+
+            <button
+                onClick={() => window.history.back()}
+                className="mb-6 flex items-center gap-2 text-sm font-medium text-gray-500 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+            >
+                <ArrowLeft className="h-4 w-4" />
+                Back
+            </button>
+
             <form onSubmit={submit} className="flex flex-col gap-5">
                 <div className="grid gap-5">
                     <div className="grid gap-2">
@@ -189,12 +198,7 @@ export default function CustomerRegister() {
                     </Link>
                 </div>
 
-                <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-                    Want to sell on GoOrder?{' '}
-                    <Link href="/vendor-register" className="font-medium text-emerald-600 transition hover:text-emerald-700" tabIndex={7}>
-                        Become a vendor
-                    </Link>
-                </div>
+
             </form>
         </AuthAppleLayout>
     );

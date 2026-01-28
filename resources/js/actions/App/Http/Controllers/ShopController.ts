@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\ShopController::index
- * @see app/Http/Controllers/ShopController.php:15
+ * @see app/Http/Controllers/ShopController.php:21
  * @route '/shops'
  */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\ShopController::index
- * @see app/Http/Controllers/ShopController.php:15
+ * @see app/Http/Controllers/ShopController.php:21
  * @route '/shops'
  */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\ShopController::index
- * @see app/Http/Controllers/ShopController.php:15
+ * @see app/Http/Controllers/ShopController.php:21
  * @route '/shops'
  */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\ShopController::index
- * @see app/Http/Controllers/ShopController.php:15
+ * @see app/Http/Controllers/ShopController.php:21
  * @route '/shops'
  */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -44,7 +44,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\ShopController::index
- * @see app/Http/Controllers/ShopController.php:15
+ * @see app/Http/Controllers/ShopController.php:21
  * @route '/shops'
  */
     const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -54,7 +54,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\ShopController::index
- * @see app/Http/Controllers/ShopController.php:15
+ * @see app/Http/Controllers/ShopController.php:21
  * @route '/shops'
  */
         indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -63,7 +63,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\ShopController::index
- * @see app/Http/Controllers/ShopController.php:15
+ * @see app/Http/Controllers/ShopController.php:21
  * @route '/shops'
  */
         indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\ShopController::show
- * @see app/Http/Controllers/ShopController.php:23
+ * @see app/Http/Controllers/ShopController.php:29
  * @route '/manage/shop/{publicId}'
  */
 export const show = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +94,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\ShopController::show
- * @see app/Http/Controllers/ShopController.php:23
+ * @see app/Http/Controllers/ShopController.php:29
  * @route '/manage/shop/{publicId}'
  */
 show.url = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -122,7 +122,7 @@ show.url = (args: { publicId: string | number } | [publicId: string | number ] |
 
 /**
 * @see \App\Http\Controllers\ShopController::show
- * @see app/Http/Controllers/ShopController.php:23
+ * @see app/Http/Controllers/ShopController.php:29
  * @route '/manage/shop/{publicId}'
  */
 show.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -131,7 +131,7 @@ show.get = (args: { publicId: string | number } | [publicId: string | number ] |
 })
 /**
 * @see \App\Http\Controllers\ShopController::show
- * @see app/Http/Controllers/ShopController.php:23
+ * @see app/Http/Controllers/ShopController.php:29
  * @route '/manage/shop/{publicId}'
  */
 show.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -141,7 +141,7 @@ show.head = (args: { publicId: string | number } | [publicId: string | number ] 
 
     /**
 * @see \App\Http\Controllers\ShopController::show
- * @see app/Http/Controllers/ShopController.php:23
+ * @see app/Http/Controllers/ShopController.php:29
  * @route '/manage/shop/{publicId}'
  */
     const showForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -151,7 +151,7 @@ show.head = (args: { publicId: string | number } | [publicId: string | number ] 
 
             /**
 * @see \App\Http\Controllers\ShopController::show
- * @see app/Http/Controllers/ShopController.php:23
+ * @see app/Http/Controllers/ShopController.php:29
  * @route '/manage/shop/{publicId}'
  */
         showForm.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -160,7 +160,7 @@ show.head = (args: { publicId: string | number } | [publicId: string | number ] 
         })
             /**
 * @see \App\Http\Controllers\ShopController::show
- * @see app/Http/Controllers/ShopController.php:23
+ * @see app/Http/Controllers/ShopController.php:29
  * @route '/manage/shop/{publicId}'
  */
         showForm.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -176,7 +176,7 @@ show.head = (args: { publicId: string | number } | [publicId: string | number ] 
     show.form = showForm
 /**
 * @see \App\Http\Controllers\ShopController::store
- * @see app/Http/Controllers/ShopController.php:62
+ * @see app/Http/Controllers/ShopController.php:68
  * @route '/shops'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -191,7 +191,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\ShopController::store
- * @see app/Http/Controllers/ShopController.php:62
+ * @see app/Http/Controllers/ShopController.php:68
  * @route '/shops'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -200,7 +200,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\ShopController::store
- * @see app/Http/Controllers/ShopController.php:62
+ * @see app/Http/Controllers/ShopController.php:68
  * @route '/shops'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -210,7 +210,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\ShopController::store
- * @see app/Http/Controllers/ShopController.php:62
+ * @see app/Http/Controllers/ShopController.php:68
  * @route '/shops'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -220,7 +220,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\ShopController::store
- * @see app/Http/Controllers/ShopController.php:62
+ * @see app/Http/Controllers/ShopController.php:68
  * @route '/shops'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -231,7 +231,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\ShopController::update
- * @see app/Http/Controllers/ShopController.php:92
+ * @see app/Http/Controllers/ShopController.php:98
  * @route '/shops/{shop}'
  */
 export const update = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -246,7 +246,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\ShopController::update
- * @see app/Http/Controllers/ShopController.php:92
+ * @see app/Http/Controllers/ShopController.php:98
  * @route '/shops/{shop}'
  */
 update.url = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -279,7 +279,7 @@ update.url = (args: { shop: number | { id: number } } | [shop: number | { id: nu
 
 /**
 * @see \App\Http\Controllers\ShopController::update
- * @see app/Http/Controllers/ShopController.php:92
+ * @see app/Http/Controllers/ShopController.php:98
  * @route '/shops/{shop}'
  */
 update.put = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -289,7 +289,7 @@ update.put = (args: { shop: number | { id: number } } | [shop: number | { id: nu
 
     /**
 * @see \App\Http\Controllers\ShopController::update
- * @see app/Http/Controllers/ShopController.php:92
+ * @see app/Http/Controllers/ShopController.php:98
  * @route '/shops/{shop}'
  */
     const updateForm = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -304,7 +304,7 @@ update.put = (args: { shop: number | { id: number } } | [shop: number | { id: nu
 
             /**
 * @see \App\Http\Controllers\ShopController::update
- * @see app/Http/Controllers/ShopController.php:92
+ * @see app/Http/Controllers/ShopController.php:98
  * @route '/shops/{shop}'
  */
         updateForm.put = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -320,7 +320,7 @@ update.put = (args: { shop: number | { id: number } } | [shop: number | { id: nu
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\ShopController::toggleActive
- * @see app/Http/Controllers/ShopController.php:144
+ * @see app/Http/Controllers/ShopController.php:154
  * @route '/shops/{shop}/toggle-active'
  */
 export const toggleActive = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -335,7 +335,7 @@ toggleActive.definition = {
 
 /**
 * @see \App\Http\Controllers\ShopController::toggleActive
- * @see app/Http/Controllers/ShopController.php:144
+ * @see app/Http/Controllers/ShopController.php:154
  * @route '/shops/{shop}/toggle-active'
  */
 toggleActive.url = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -368,7 +368,7 @@ toggleActive.url = (args: { shop: number | { id: number } } | [shop: number | { 
 
 /**
 * @see \App\Http\Controllers\ShopController::toggleActive
- * @see app/Http/Controllers/ShopController.php:144
+ * @see app/Http/Controllers/ShopController.php:154
  * @route '/shops/{shop}/toggle-active'
  */
 toggleActive.patch = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -378,7 +378,7 @@ toggleActive.patch = (args: { shop: number | { id: number } } | [shop: number | 
 
     /**
 * @see \App\Http\Controllers\ShopController::toggleActive
- * @see app/Http/Controllers/ShopController.php:144
+ * @see app/Http/Controllers/ShopController.php:154
  * @route '/shops/{shop}/toggle-active'
  */
     const toggleActiveForm = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -393,7 +393,7 @@ toggleActive.patch = (args: { shop: number | { id: number } } | [shop: number | 
 
             /**
 * @see \App\Http\Controllers\ShopController::toggleActive
- * @see app/Http/Controllers/ShopController.php:144
+ * @see app/Http/Controllers/ShopController.php:154
  * @route '/shops/{shop}/toggle-active'
  */
         toggleActiveForm.patch = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -409,7 +409,7 @@ toggleActive.patch = (args: { shop: number | { id: number } } | [shop: number | 
     toggleActive.form = toggleActiveForm
 /**
 * @see \App\Http\Controllers\ShopController::toggleConstruction
- * @see app/Http/Controllers/ShopController.php:157
+ * @see app/Http/Controllers/ShopController.php:167
  * @route '/shops/{shop}/toggle-construction'
  */
 export const toggleConstruction = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -424,7 +424,7 @@ toggleConstruction.definition = {
 
 /**
 * @see \App\Http\Controllers\ShopController::toggleConstruction
- * @see app/Http/Controllers/ShopController.php:157
+ * @see app/Http/Controllers/ShopController.php:167
  * @route '/shops/{shop}/toggle-construction'
  */
 toggleConstruction.url = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -457,7 +457,7 @@ toggleConstruction.url = (args: { shop: number | { id: number } } | [shop: numbe
 
 /**
 * @see \App\Http\Controllers\ShopController::toggleConstruction
- * @see app/Http/Controllers/ShopController.php:157
+ * @see app/Http/Controllers/ShopController.php:167
  * @route '/shops/{shop}/toggle-construction'
  */
 toggleConstruction.patch = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -467,7 +467,7 @@ toggleConstruction.patch = (args: { shop: number | { id: number } } | [shop: num
 
     /**
 * @see \App\Http\Controllers\ShopController::toggleConstruction
- * @see app/Http/Controllers/ShopController.php:157
+ * @see app/Http/Controllers/ShopController.php:167
  * @route '/shops/{shop}/toggle-construction'
  */
     const toggleConstructionForm = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -482,7 +482,7 @@ toggleConstruction.patch = (args: { shop: number | { id: number } } | [shop: num
 
             /**
 * @see \App\Http\Controllers\ShopController::toggleConstruction
- * @see app/Http/Controllers/ShopController.php:157
+ * @see app/Http/Controllers/ShopController.php:167
  * @route '/shops/{shop}/toggle-construction'
  */
         toggleConstructionForm.patch = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -498,7 +498,7 @@ toggleConstruction.patch = (args: { shop: number | { id: number } } | [shop: num
     toggleConstruction.form = toggleConstructionForm
 /**
 * @see \App\Http\Controllers\ShopController::destroy
- * @see app/Http/Controllers/ShopController.php:132
+ * @see app/Http/Controllers/ShopController.php:141
  * @route '/shops/{shop}'
  */
 export const destroy = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -513,7 +513,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\ShopController::destroy
- * @see app/Http/Controllers/ShopController.php:132
+ * @see app/Http/Controllers/ShopController.php:141
  * @route '/shops/{shop}'
  */
 destroy.url = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -546,7 +546,7 @@ destroy.url = (args: { shop: number | { id: number } } | [shop: number | { id: n
 
 /**
 * @see \App\Http\Controllers\ShopController::destroy
- * @see app/Http/Controllers/ShopController.php:132
+ * @see app/Http/Controllers/ShopController.php:141
  * @route '/shops/{shop}'
  */
 destroy.delete = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -556,7 +556,7 @@ destroy.delete = (args: { shop: number | { id: number } } | [shop: number | { id
 
     /**
 * @see \App\Http\Controllers\ShopController::destroy
- * @see app/Http/Controllers/ShopController.php:132
+ * @see app/Http/Controllers/ShopController.php:141
  * @route '/shops/{shop}'
  */
     const destroyForm = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -571,7 +571,7 @@ destroy.delete = (args: { shop: number | { id: number } } | [shop: number | { id
 
             /**
 * @see \App\Http\Controllers\ShopController::destroy
- * @see app/Http/Controllers/ShopController.php:132
+ * @see app/Http/Controllers/ShopController.php:141
  * @route '/shops/{shop}'
  */
         destroyForm.delete = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

@@ -3,13 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
+    protected CloudinaryService $cloudinary;
+
+    public function __construct(CloudinaryService $cloudinary)
+    {
+        $this->cloudinary = $cloudinary;
+    }
     public function index()
     {
         $categories = Category::latest()->paginate(20);
@@ -24,14 +30,14 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'image_url' => 'nullable|url|max:500',
             'is_active' => 'boolean',
         ]);
 
         // Handle image - prefer uploaded file over URL
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('categories', 'public');
+            $validated['image'] = $this->cloudinary->upload($request->file('image'), 'categories');
         } elseif (!empty($validated['image_url'])) {
             $validated['image'] = $validated['image_url'];
         }
@@ -48,7 +54,7 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
             'slug' => 'nullable|string|max:255|unique:categories,slug,' . $category->id,
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'image_url' => 'nullable|url|max:500',
             'is_active' => 'boolean',
             'remove_image' => 'boolean',
@@ -61,19 +67,21 @@ class CategoryController extends Controller
 
         // Handle image removal
         if ($request->boolean('remove_image') && $category->image) {
-            // Only delete if it's a local file, not a URL
-            if (!filter_var($category->image, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete($category->image);
+            // Delete from Cloudinary if it's a Cloudinary URL
+            if ($this->cloudinary->isCloudinaryUrl($category->image)) {
+                $this->cloudinary->delete($category->image);
             }
             $validated['image'] = null;
         } elseif ($request->hasFile('image')) {
-            if ($category->image && !filter_var($category->image, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete($category->image);
+            // Delete old image from Cloudinary if exists
+            if ($category->image && $this->cloudinary->isCloudinaryUrl($category->image)) {
+                $this->cloudinary->delete($category->image);
             }
-            $validated['image'] = $request->file('image')->store('categories', 'public');
+            $validated['image'] = $this->cloudinary->upload($request->file('image'), 'categories');
         } elseif (!empty($validated['image_url'])) {
-            if ($category->image && !filter_var($category->image, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete($category->image);
+            // Delete old image from Cloudinary if exists
+            if ($category->image && $this->cloudinary->isCloudinaryUrl($category->image)) {
+                $this->cloudinary->delete($category->image);
             }
             $validated['image'] = $validated['image_url'];
         } else {
@@ -88,8 +96,9 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        if ($category->image && !filter_var($category->image, FILTER_VALIDATE_URL)) {
-            Storage::disk('public')->delete($category->image);
+        // Delete image from Cloudinary if exists
+        if ($category->image && $this->cloudinary->isCloudinaryUrl($category->image)) {
+            $this->cloudinary->delete($category->image);
         }
 
         $category->delete();

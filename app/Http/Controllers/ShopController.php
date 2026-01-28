@@ -5,13 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Shop;
+use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class ShopController extends Controller
 {
+    protected CloudinaryService $cloudinary;
+
+    public function __construct(CloudinaryService $cloudinary)
+    {
+        $this->cloudinary = $cloudinary;
+    }
     public function index()
     {
         $shops = Shop::where('user_id', auth()->id())->latest()->get();
@@ -65,13 +71,13 @@ class ShopController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'address' => 'nullable|string|max:500',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'image_url' => 'nullable|url|max:500',
         ]);
 
         // Handle image
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('shops', 'public');
+            $validated['image'] = $this->cloudinary->upload($request->file('image'), 'shops');
         } elseif (!empty($validated['image_url'])) {
             $validated['image'] = $validated['image_url'];
         }
@@ -97,25 +103,28 @@ class ShopController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'address' => 'nullable|string|max:500',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'image_url' => 'nullable|url|max:500',
             'remove_image' => 'boolean',
         ]);
 
         // Handle image removal
         if ($request->boolean('remove_image') && $shop->image) {
-            if (!filter_var($shop->image, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete($shop->image);
+            // Delete from Cloudinary if it's a Cloudinary URL
+            if ($this->cloudinary->isCloudinaryUrl($shop->image)) {
+                $this->cloudinary->delete($shop->image);
             }
             $validated['image'] = null;
         } elseif ($request->hasFile('image')) {
-            if ($shop->image && !filter_var($shop->image, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete($shop->image);
+            // Delete old image from Cloudinary if exists
+            if ($shop->image && $this->cloudinary->isCloudinaryUrl($shop->image)) {
+                $this->cloudinary->delete($shop->image);
             }
-            $validated['image'] = $request->file('image')->store('shops', 'public');
+            $validated['image'] = $this->cloudinary->upload($request->file('image'), 'shops');
         } elseif (!empty($validated['image_url'])) {
-            if ($shop->image && !filter_var($shop->image, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete($shop->image);
+            // Delete old image from Cloudinary if exists
+            if ($shop->image && $this->cloudinary->isCloudinaryUrl($shop->image)) {
+                $this->cloudinary->delete($shop->image);
             }
             $validated['image'] = $validated['image_url'];
         } else {
@@ -133,8 +142,9 @@ class ShopController extends Controller
     {
         $this->authorize('delete', $shop);
 
-        if ($shop->image && !filter_var($shop->image, FILTER_VALIDATE_URL)) {
-            Storage::disk('public')->delete($shop->image);
+        // Delete image from Cloudinary if exists
+        if ($shop->image && $this->cloudinary->isCloudinaryUrl($shop->image)) {
+            $this->cloudinary->delete($shop->image);
         }
 
         $shop->delete();

@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\CategoryController::store
- * @see app/Http/Controllers/CategoryController.php:22
+ * @see app/Http/Controllers/CategoryController.php:28
  * @route '/categories'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\CategoryController::store
- * @see app/Http/Controllers/CategoryController.php:22
+ * @see app/Http/Controllers/CategoryController.php:28
  * @route '/categories'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\CategoryController::store
- * @see app/Http/Controllers/CategoryController.php:22
+ * @see app/Http/Controllers/CategoryController.php:28
  * @route '/categories'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -35,7 +35,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\CategoryController::store
- * @see app/Http/Controllers/CategoryController.php:22
+ * @see app/Http/Controllers/CategoryController.php:28
  * @route '/categories'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -45,7 +45,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\CategoryController::store
- * @see app/Http/Controllers/CategoryController.php:22
+ * @see app/Http/Controllers/CategoryController.php:28
  * @route '/categories'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -56,7 +56,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\CategoryController::update
- * @see app/Http/Controllers/CategoryController.php:45
+ * @see app/Http/Controllers/CategoryController.php:51
  * @route '/categories/{category}'
  */
 export const update = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -71,7 +71,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\CategoryController::update
- * @see app/Http/Controllers/CategoryController.php:45
+ * @see app/Http/Controllers/CategoryController.php:51
  * @route '/categories/{category}'
  */
 update.url = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -104,7 +104,7 @@ update.url = (args: { category: number | { id: number } } | [category: number | 
 
 /**
 * @see \App\Http\Controllers\CategoryController::update
- * @see app/Http/Controllers/CategoryController.php:45
+ * @see app/Http/Controllers/CategoryController.php:51
  * @route '/categories/{category}'
  */
 update.put = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -114,7 +114,7 @@ update.put = (args: { category: number | { id: number } } | [category: number | 
 
     /**
 * @see \App\Http\Controllers\CategoryController::update
- * @see app/Http/Controllers/CategoryController.php:45
+ * @see app/Http/Controllers/CategoryController.php:51
  * @route '/categories/{category}'
  */
     const updateForm = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -129,7 +129,7 @@ update.put = (args: { category: number | { id: number } } | [category: number | 
 
             /**
 * @see \App\Http\Controllers\CategoryController::update
- * @see app/Http/Controllers/CategoryController.php:45
+ * @see app/Http/Controllers/CategoryController.php:51
  * @route '/categories/{category}'
  */
         updateForm.put = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -145,7 +145,7 @@ update.put = (args: { category: number | { id: number } } | [category: number | 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\CategoryController::toggleStatus
- * @see app/Http/Controllers/CategoryController.php:100
+ * @see app/Http/Controllers/CategoryController.php:109
  * @route '/categories/{category}/toggle-status'
  */
 export const toggleStatus = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -160,7 +160,7 @@ toggleStatus.definition = {
 
 /**
 * @see \App\Http\Controllers\CategoryController::toggleStatus
- * @see app/Http/Controllers/CategoryController.php:100
+ * @see app/Http/Controllers/CategoryController.php:109
  * @route '/categories/{category}/toggle-status'
  */
 toggleStatus.url = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -193,7 +193,7 @@ toggleStatus.url = (args: { category: number | { id: number } } | [category: num
 
 /**
 * @see \App\Http\Controllers\CategoryController::toggleStatus
- * @see app/Http/Controllers/CategoryController.php:100
+ * @see app/Http/Controllers/CategoryController.php:109
  * @route '/categories/{category}/toggle-status'
  */
 toggleStatus.patch = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -203,7 +203,7 @@ toggleStatus.patch = (args: { category: number | { id: number } } | [category: n
 
     /**
 * @see \App\Http\Controllers\CategoryController::toggleStatus
- * @see app/Http/Controllers/CategoryController.php:100
+ * @see app/Http/Controllers/CategoryController.php:109
  * @route '/categories/{category}/toggle-status'
  */
     const toggleStatusForm = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -218,7 +218,7 @@ toggleStatus.patch = (args: { category: number | { id: number } } | [category: n
 
             /**
 * @see \App\Http\Controllers\CategoryController::toggleStatus
- * @see app/Http/Controllers/CategoryController.php:100
+ * @see app/Http/Controllers/CategoryController.php:109
  * @route '/categories/{category}/toggle-status'
  */
         toggleStatusForm.patch = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -234,7 +234,7 @@ toggleStatus.patch = (args: { category: number | { id: number } } | [category: n
     toggleStatus.form = toggleStatusForm
 /**
 * @see \App\Http\Controllers\CategoryController::destroy
- * @see app/Http/Controllers/CategoryController.php:89
+ * @see app/Http/Controllers/CategoryController.php:97
  * @route '/categories/{category}'
  */
 export const destroy = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -249,7 +249,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\CategoryController::destroy
- * @see app/Http/Controllers/CategoryController.php:89
+ * @see app/Http/Controllers/CategoryController.php:97
  * @route '/categories/{category}'
  */
 destroy.url = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -282,7 +282,7 @@ destroy.url = (args: { category: number | { id: number } } | [category: number |
 
 /**
 * @see \App\Http\Controllers\CategoryController::destroy
- * @see app/Http/Controllers/CategoryController.php:89
+ * @see app/Http/Controllers/CategoryController.php:97
  * @route '/categories/{category}'
  */
 destroy.delete = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -292,7 +292,7 @@ destroy.delete = (args: { category: number | { id: number } } | [category: numbe
 
     /**
 * @see \App\Http\Controllers\CategoryController::destroy
- * @see app/Http/Controllers/CategoryController.php:89
+ * @see app/Http/Controllers/CategoryController.php:97
  * @route '/categories/{category}'
  */
     const destroyForm = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -307,7 +307,7 @@ destroy.delete = (args: { category: number | { id: number } } | [category: numbe
 
             /**
 * @see \App\Http\Controllers\CategoryController::destroy
- * @see app/Http/Controllers/CategoryController.php:89
+ * @see app/Http/Controllers/CategoryController.php:97
  * @route '/categories/{category}'
  */
         destroyForm.delete = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

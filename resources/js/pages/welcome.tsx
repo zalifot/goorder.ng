@@ -42,7 +42,7 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                                 </Link>
                             ) : (
                                 <>
-                                    <Link href="/login" className="text-sm font-medium text-gray-600 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                                    <Link href="/vendor-login" className="text-sm font-medium text-gray-600 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                                         Sign In
                                     </Link>
                                     {canRegister && (
@@ -62,7 +62,7 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                 <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pt-16">
                     {/* Background gradient */}
                     <div className="absolute inset-0 bg-gradient-to-b from-emerald-50/50 via-white to-white dark:from-emerald-950/20 dark:via-black dark:to-black" />
-                    
+
                     {/* Decorative circles */}
                     <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-emerald-200/30 blur-3xl dark:bg-emerald-900/20" />
                     <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-blue-200/30 blur-3xl dark:bg-blue-900/20" />
@@ -168,7 +168,7 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                     </div>
                 </section>
 
-                // ...existing code...
+
 
                 {/* Features Section */}
                 <section id="features" className="bg-gray-900 py-28 dark:bg-black">

@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthAppleLayout from '@/layouts/auth/auth-apple-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Eye, EyeOff, LogIn } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, LogIn } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
 interface LoginProps {
@@ -18,7 +18,7 @@ export default function CustomerLogin({
     canResetPassword,
 }: LoginProps) {
     const [showPassword, setShowPassword] = useState(false);
-    
+
     const { data, setData, post, processing, errors } = useForm({
         email: '',
         password: '',
@@ -36,7 +36,16 @@ export default function CustomerLogin({
             description="Sign in to continue shopping"
             variant="customer"
         >
+
             <Head title="Sign In" />
+
+            <button
+                onClick={() => window.history.back()}
+                className="mb-6 flex items-center gap-2 text-sm font-medium text-gray-500 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+            >
+                <ArrowLeft className="h-4 w-4" />
+                Back
+            </button>
 
             {status && (
                 <div className="mb-4 rounded-xl bg-green-50 p-4 text-center text-sm font-medium text-green-600 dark:bg-green-900/20 dark:text-green-400">
@@ -179,12 +188,7 @@ export default function CustomerLogin({
                     </Link>
                 </div>
 
-                <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-                    Are you a vendor?{' '}
-                    <Link href="/vendor-login" className="font-medium text-emerald-600 transition hover:text-emerald-700" tabIndex={7}>
-                        Vendor login
-                    </Link>
-                </div>
+
             </form>
         </AuthAppleLayout>
     );

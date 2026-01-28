@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 import inventoryEd84cf from './inventory'
 /**
 * @see \App\Http\Controllers\ProductController::inventory
- * @see app/Http/Controllers/ProductController.php:72
+ * @see app/Http/Controllers/ProductController.php:78
  * @route '/manage/shop/{publicId}/inventory'
  */
 export const inventory = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -17,7 +17,7 @@ inventory.definition = {
 
 /**
 * @see \App\Http\Controllers\ProductController::inventory
- * @see app/Http/Controllers/ProductController.php:72
+ * @see app/Http/Controllers/ProductController.php:78
  * @route '/manage/shop/{publicId}/inventory'
  */
 inventory.url = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -45,7 +45,7 @@ inventory.url = (args: { publicId: string | number } | [publicId: string | numbe
 
 /**
 * @see \App\Http\Controllers\ProductController::inventory
- * @see app/Http/Controllers/ProductController.php:72
+ * @see app/Http/Controllers/ProductController.php:78
  * @route '/manage/shop/{publicId}/inventory'
  */
 inventory.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -54,7 +54,7 @@ inventory.get = (args: { publicId: string | number } | [publicId: string | numbe
 })
 /**
 * @see \App\Http\Controllers\ProductController::inventory
- * @see app/Http/Controllers/ProductController.php:72
+ * @see app/Http/Controllers/ProductController.php:78
  * @route '/manage/shop/{publicId}/inventory'
  */
 inventory.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -64,7 +64,7 @@ inventory.head = (args: { publicId: string | number } | [publicId: string | numb
 
     /**
 * @see \App\Http\Controllers\ProductController::inventory
- * @see app/Http/Controllers/ProductController.php:72
+ * @see app/Http/Controllers/ProductController.php:78
  * @route '/manage/shop/{publicId}/inventory'
  */
     const inventoryForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -74,7 +74,7 @@ inventory.head = (args: { publicId: string | number } | [publicId: string | numb
 
             /**
 * @see \App\Http\Controllers\ProductController::inventory
- * @see app/Http/Controllers/ProductController.php:72
+ * @see app/Http/Controllers/ProductController.php:78
  * @route '/manage/shop/{publicId}/inventory'
  */
         inventoryForm.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -83,7 +83,7 @@ inventory.head = (args: { publicId: string | number } | [publicId: string | numb
         })
             /**
 * @see \App\Http\Controllers\ProductController::inventory
- * @see app/Http/Controllers/ProductController.php:72
+ * @see app/Http/Controllers/ProductController.php:78
  * @route '/manage/shop/{publicId}/inventory'
  */
         inventoryForm.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

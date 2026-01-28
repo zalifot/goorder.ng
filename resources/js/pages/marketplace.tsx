@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { ArrowRight, MapPin, Package, Search, Store } from 'lucide-react';
+import { ArrowRight, Package, Search, Store } from 'lucide-react';
 import { useState } from 'react';
 
 interface Shop {
@@ -91,13 +91,13 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
                 <section className="relative overflow-hidden px-6 pt-28 pb-16">
                     {/* Background gradient */}
                     <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 via-white to-white dark:from-blue-950/20 dark:via-black dark:to-black" />
-                    
+
                     {/* Decorative circles */}
                     <div className="absolute top-0 left-1/4 h-64 w-64 rounded-full bg-blue-200/30 blur-3xl dark:bg-blue-900/20" />
                     <div className="absolute top-0 right-1/4 h-64 w-64 rounded-full bg-emerald-200/30 blur-3xl dark:bg-emerald-900/20" />
 
                     <div className="relative z-10 mx-auto max-w-4xl text-center">
-                        <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+                        <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 dark:bg-gray-800 dark:text-gray-200">
                             <Store className="h-4 w-4" />
                             Explore Local Shops
                         </div>
@@ -105,7 +105,7 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
                         <h1 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
                             Discover Amazing
                             <br />
-                            <span className="bg-gradient-to-r from-blue-600 to-emerald-500 bg-clip-text text-transparent">
+                            <span className="text-black dark:text-white">
                                 Local Products
                             </span>
                         </h1>
@@ -146,7 +146,7 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
                                 </p>
                             </div>
                         ) : (
-                            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                                 {filteredShops.map((shop) => (
                                     <Link
                                         key={shop.id}
@@ -188,12 +188,7 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
                                                     <Package className="h-4 w-4" />
                                                     {shop.products_count} {shop.products_count === 1 ? 'product' : 'products'}
                                                 </span>
-                                                {shop.address && (
-                                                    <span className="flex items-center gap-1.5">
-                                                        <MapPin className="h-4 w-4" />
-                                                        {shop.address}
-                                                    </span>
-                                                )}
+
                                             </div>
                                         </div>
                                     </Link>

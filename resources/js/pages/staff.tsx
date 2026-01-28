@@ -48,7 +48,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
-import { Plus, MoreHorizontal, Pencil, Trash2, Users } from 'lucide-react';
+import { Plus, MoreHorizontal, Pencil, Trash2, Users, User } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
@@ -387,12 +387,7 @@ export default function Staff({ staff, shops, roles }: Props) {
                                         <TableCell>
                                             <div className="flex items-center gap-3">
                                                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted font-medium">
-                                                    {member.name
-                                                        .split(' ')
-                                                        .map((n) => n[0])
-                                                        .join('')
-                                                        .toUpperCase()
-                                                        .slice(0, 2)}
+                                                    <User className="h-5 w-5 text-muted-foreground" />
                                                 </div>
                                                 <div>
                                                     <p className="font-medium">{member.name}</p>
