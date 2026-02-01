@@ -24,6 +24,19 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+// Legal Pages
+Route::get('/privacy-policy', function () {
+    return Inertia::render('legal/privacy-policy');
+})->name('privacy-policy');
+
+Route::get('/data-protection', function () {
+    return Inertia::render('legal/data-protection');
+})->name('data-protection');
+
+Route::get('/terms-and-conditions', function () {
+    return Inertia::render('legal/terms-and-conditions');
+})->name('terms-and-conditions');
+
 // Public Marketplace - List all active shops
 Route::get('/marketplace', function () {
     $shops = Shop::where('is_active', true)

@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { ArrowRight, Package, Search, Store } from 'lucide-react';
+import { ArrowRight, Mail, MapPin, Package, Phone, Search, Store } from 'lucide-react';
 import { useState } from 'react';
 
 interface Shop {
@@ -91,13 +91,13 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
                 <section className="relative overflow-hidden px-6 pt-28 pb-16">
                     {/* Background gradient */}
                     <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 via-white to-white dark:from-blue-950/20 dark:via-black dark:to-black" />
-
+                    
                     {/* Decorative circles */}
                     <div className="absolute top-0 left-1/4 h-64 w-64 rounded-full bg-blue-200/30 blur-3xl dark:bg-blue-900/20" />
                     <div className="absolute top-0 right-1/4 h-64 w-64 rounded-full bg-emerald-200/30 blur-3xl dark:bg-emerald-900/20" />
 
                     <div className="relative z-10 mx-auto max-w-4xl text-center">
-                        <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 dark:bg-gray-800 dark:text-gray-200">
+                        <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
                             <Store className="h-4 w-4" />
                             Explore Local Shops
                         </div>
@@ -105,7 +105,7 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
                         <h1 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
                             Discover Amazing
                             <br />
-                            <span className="text-black dark:text-white">
+                            <span className="bg-gradient-to-r from-blue-600 to-emerald-500 bg-clip-text text-transparent">
                                 Local Products
                             </span>
                         </h1>
@@ -188,7 +188,12 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
                                                     <Package className="h-4 w-4" />
                                                     {shop.products_count} {shop.products_count === 1 ? 'product' : 'products'}
                                                 </span>
-
+                                                {shop.address && (
+                                                    <span className="flex items-center gap-1.5">
+                                                        <MapPin className="h-4 w-4" />
+                                                        {shop.address}
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
                                     </Link>
@@ -217,27 +222,90 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
                 </section>
 
                 {/* Footer */}
-                <footer className="border-t border-gray-200 py-12 dark:border-gray-800">
+                <footer className="border-t border-gray-200 bg-gray-50 py-16 dark:border-gray-800 dark:bg-gray-950">
                     <div className="mx-auto max-w-6xl px-6">
-                        <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-                            <div className="text-center md:text-left">
-                                <Link href="/" className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        {/* Footer Grid */}
+                        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+                            {/* Company Info */}
+                            <div>
+                                <Link href="/" className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                     goorder<span className="text-emerald-600">.ng</span>
                                 </Link>
-                                <p className="mt-1 text-sm text-gray-500">
-                                    Empowering Nigerian Commerce
+                                <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                                    Empowering Nigerian Commerce. The all-in-one platform for vendors to sell and customers to discover amazing local products.
                                 </p>
+                                <div className="mt-6 space-y-3">
+                                    <a href="mailto:hello@goorder.ng" className="flex items-center gap-3 text-sm text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">
+                                        <Mail className="h-4 w-4" />
+                                        hello@goorder.ng
+                                    </a>
+                                    <a href="tel:+2348000000000" className="flex items-center gap-3 text-sm text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">
+                                        <Phone className="h-4 w-4" />
+                                        +234 800 000 0000
+                                    </a>
+                                </div>
                             </div>
 
-                            <div className="flex items-center gap-6 text-sm text-gray-600 dark:text-gray-400">
-                                <Link href="/#vendors" className="transition hover:text-gray-900 dark:hover:text-white">For Vendors</Link>
-                                <Link href="/marketplace" className="transition hover:text-gray-900 dark:hover:text-white">Marketplace</Link>
-                                <Link href="/#features" className="transition hover:text-gray-900 dark:hover:text-white">Features</Link>
+                            {/* Quick Links */}
+                            <div>
+                                <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-white">Quick Links</h4>
+                                <ul className="space-y-3 text-sm">
+                                    <li>
+                                        <Link href="/marketplace" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Marketplace</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/#vendors" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">For Vendors</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/#features" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Features</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/vendor-register" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Start Selling</Link>
+                                    </li>
+                                </ul>
                             </div>
 
-                            <div className="text-sm text-gray-500">
-                                © {new Date().getFullYear()} GoOrder. All rights reserved.
+                            {/* Support */}
+                            <div>
+                                <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-white">Support</h4>
+                                <ul className="space-y-3 text-sm">
+                                    <li>
+                                        <Link href="/vendor-login" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Vendor Login</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/login" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Customer Login</Link>
+                                    </li>
+                                    <li>
+                                        <a href="mailto:support@goorder.ng" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Help Center</a>
+                                    </li>
+                                    <li>
+                                        <a href="mailto:support@goorder.ng" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Contact Us</a>
+                                    </li>
+                                </ul>
                             </div>
+
+                            {/* Legal */}
+                            <div>
+                                <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-white">Legal</h4>
+                                <ul className="space-y-3 text-sm">
+                                    <li>
+                                        <Link href="/privacy-policy" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Privacy Policy</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/data-protection" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Data Protection</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/terms-and-conditions" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Terms & Conditions</Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        {/* Copyright */}
+                        <div className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-800">
+                            <p className="text-center text-sm text-gray-500 dark:text-gray-500">
+                                © {new Date().getFullYear()} GoOrder Nigeria. All rights reserved.
+                            </p>
                         </div>
                     </div>
                 </footer>
