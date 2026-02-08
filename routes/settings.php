@@ -9,6 +9,11 @@ use Inertia\Inertia;
 Route::middleware('auth')->group(function () {
     Route::redirect('settings', '/settings/profile');
 
+    // Password confirmation route (required for password.confirm middleware)
+    Route::get('user/confirm-password', function () {
+        return Inertia::render('auth/confirm-password');
+    })->name('password.confirm');
+
     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

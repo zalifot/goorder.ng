@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::store
  * @see app/Http/Controllers/DeliveryOptionController.php:124
- * @route '/delivery-options/slots'
+ * @route '/vendor/delivery-options/slots'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -11,13 +11,13 @@ export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => (
 
 store.definition = {
     methods: ["post"],
-    url: '/delivery-options/slots',
+    url: '/vendor/delivery-options/slots',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::store
  * @see app/Http/Controllers/DeliveryOptionController.php:124
- * @route '/delivery-options/slots'
+ * @route '/vendor/delivery-options/slots'
  */
 store.url = (options?: RouteQueryOptions) => {
     return store.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ store.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::store
  * @see app/Http/Controllers/DeliveryOptionController.php:124
- * @route '/delivery-options/slots'
+ * @route '/vendor/delivery-options/slots'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -36,7 +36,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     /**
 * @see \App\Http\Controllers\DeliveryOptionController::store
  * @see app/Http/Controllers/DeliveryOptionController.php:124
- * @route '/delivery-options/slots'
+ * @route '/vendor/delivery-options/slots'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(options),
@@ -46,7 +46,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             /**
 * @see \App\Http\Controllers\DeliveryOptionController::store
  * @see app/Http/Controllers/DeliveryOptionController.php:124
- * @route '/delivery-options/slots'
+ * @route '/vendor/delivery-options/slots'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(options),
@@ -57,7 +57,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::update
  * @see app/Http/Controllers/DeliveryOptionController.php:144
- * @route '/delivery-options/slots/{slot}'
+ * @route '/vendor/delivery-options/slots/{slot}'
  */
 export const update = (args: { slot: number | { id: number } } | [slot: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
@@ -66,13 +66,13 @@ export const update = (args: { slot: number | { id: number } } | [slot: number |
 
 update.definition = {
     methods: ["put"],
-    url: '/delivery-options/slots/{slot}',
+    url: '/vendor/delivery-options/slots/{slot}',
 } satisfies RouteDefinition<["put"]>
 
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::update
  * @see app/Http/Controllers/DeliveryOptionController.php:144
- * @route '/delivery-options/slots/{slot}'
+ * @route '/vendor/delivery-options/slots/{slot}'
  */
 update.url = (args: { slot: number | { id: number } } | [slot: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -105,7 +105,7 @@ update.url = (args: { slot: number | { id: number } } | [slot: number | { id: nu
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::update
  * @see app/Http/Controllers/DeliveryOptionController.php:144
- * @route '/delivery-options/slots/{slot}'
+ * @route '/vendor/delivery-options/slots/{slot}'
  */
 update.put = (args: { slot: number | { id: number } } | [slot: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
@@ -115,7 +115,7 @@ update.put = (args: { slot: number | { id: number } } | [slot: number | { id: nu
     /**
 * @see \App\Http\Controllers\DeliveryOptionController::update
  * @see app/Http/Controllers/DeliveryOptionController.php:144
- * @route '/delivery-options/slots/{slot}'
+ * @route '/vendor/delivery-options/slots/{slot}'
  */
     const updateForm = (args: { slot: number | { id: number } } | [slot: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
@@ -130,7 +130,7 @@ update.put = (args: { slot: number | { id: number } } | [slot: number | { id: nu
             /**
 * @see \App\Http\Controllers\DeliveryOptionController::update
  * @see app/Http/Controllers/DeliveryOptionController.php:144
- * @route '/delivery-options/slots/{slot}'
+ * @route '/vendor/delivery-options/slots/{slot}'
  */
         updateForm.put = (args: { slot: number | { id: number } } | [slot: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
@@ -146,7 +146,7 @@ update.put = (args: { slot: number | { id: number } } | [slot: number | { id: nu
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::destroy
  * @see app/Http/Controllers/DeliveryOptionController.php:158
- * @route '/delivery-options/slots/{slot}'
+ * @route '/vendor/delivery-options/slots/{slot}'
  */
 export const destroy = (args: { slot: number | { id: number } } | [slot: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
@@ -155,13 +155,13 @@ export const destroy = (args: { slot: number | { id: number } } | [slot: number 
 
 destroy.definition = {
     methods: ["delete"],
-    url: '/delivery-options/slots/{slot}',
+    url: '/vendor/delivery-options/slots/{slot}',
 } satisfies RouteDefinition<["delete"]>
 
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::destroy
  * @see app/Http/Controllers/DeliveryOptionController.php:158
- * @route '/delivery-options/slots/{slot}'
+ * @route '/vendor/delivery-options/slots/{slot}'
  */
 destroy.url = (args: { slot: number | { id: number } } | [slot: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -194,7 +194,7 @@ destroy.url = (args: { slot: number | { id: number } } | [slot: number | { id: n
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::destroy
  * @see app/Http/Controllers/DeliveryOptionController.php:158
- * @route '/delivery-options/slots/{slot}'
+ * @route '/vendor/delivery-options/slots/{slot}'
  */
 destroy.delete = (args: { slot: number | { id: number } } | [slot: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
@@ -204,7 +204,7 @@ destroy.delete = (args: { slot: number | { id: number } } | [slot: number | { id
     /**
 * @see \App\Http\Controllers\DeliveryOptionController::destroy
  * @see app/Http/Controllers/DeliveryOptionController.php:158
- * @route '/delivery-options/slots/{slot}'
+ * @route '/vendor/delivery-options/slots/{slot}'
  */
     const destroyForm = (args: { slot: number | { id: number } } | [slot: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
@@ -219,7 +219,7 @@ destroy.delete = (args: { slot: number | { id: number } } | [slot: number | { id
             /**
 * @see \App\Http\Controllers\DeliveryOptionController::destroy
  * @see app/Http/Controllers/DeliveryOptionController.php:158
- * @route '/delivery-options/slots/{slot}'
+ * @route '/vendor/delivery-options/slots/{slot}'
  */
         destroyForm.delete = (args: { slot: number | { id: number } } | [slot: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {

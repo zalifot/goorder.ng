@@ -149,9 +149,81 @@ send.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
         })
     
     send.form = sendForm
+/**
+ * @see routes/web.php:72
+ * @route '/email/verify'
+ */
+export const notice = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: notice.url(options),
+    method: 'get',
+})
+
+notice.definition = {
+    methods: ["get","head"],
+    url: '/email/verify',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+ * @see routes/web.php:72
+ * @route '/email/verify'
+ */
+notice.url = (options?: RouteQueryOptions) => {
+    return notice.definition.url + queryParams(options)
+}
+
+/**
+ * @see routes/web.php:72
+ * @route '/email/verify'
+ */
+notice.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: notice.url(options),
+    method: 'get',
+})
+/**
+ * @see routes/web.php:72
+ * @route '/email/verify'
+ */
+notice.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: notice.url(options),
+    method: 'head',
+})
+
+    /**
+ * @see routes/web.php:72
+ * @route '/email/verify'
+ */
+    const noticeForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: notice.url(options),
+        method: 'get',
+    })
+
+            /**
+ * @see routes/web.php:72
+ * @route '/email/verify'
+ */
+        noticeForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: notice.url(options),
+            method: 'get',
+        })
+            /**
+ * @see routes/web.php:72
+ * @route '/email/verify'
+ */
+        noticeForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: notice.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    notice.form = noticeForm
 const verification = {
     verify: Object.assign(verify, verify),
 send: Object.assign(send, send),
+notice: Object.assign(notice, notice),
 }
 
 export default verification

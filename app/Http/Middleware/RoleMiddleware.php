@@ -24,7 +24,7 @@ class RoleMiddleware
         }
 
         if ($request->user()->role === 'user') {
-            return redirect('/user-dashboard');
+            return redirect('/customer/dashboard');
         }
 
         return redirect('/');

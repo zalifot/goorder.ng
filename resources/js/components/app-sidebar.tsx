@@ -10,63 +10,58 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
+import { dashboard } from '@/routes/vendor';
 import { type NavGroup, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Activity, Building2, FolderTree, LayoutGrid, Package, Plug, Receipt, Settings, Shield, ShoppingCart, Store, Truck, UserCog, Users, Wallet } from 'lucide-react';
+import { Activity, Building2, FolderTree, LayoutGrid, Package, Plug, Receipt, Shield, ShoppingCart, Store, Truck, UserCog, Users, Wallet } from 'lucide-react';
 import AppLogo from './app-logo';
 
 // Items visible to owners and admins only
 const ownerNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: dashboard(),
+        href: dashboard().url,
         icon: LayoutGrid,
     },
     {
         title: 'Inventory',
-        href: '/inventory',
+        href: '/vendor/inventory',
         icon: Package,
     },
     {
-        title: 'Categories',
-        href: '/categories',
+        title: 'Product Categories',
+        href: '/vendor/product-categories',
         icon: FolderTree,
     },
     {
         title: 'Shops',
-        href: '/shops',
+        href: '/vendor/shops',
         icon: Store,
     },
     {
         title: 'Delivery Options',
-        href: '/delivery-options',
+        href: '/vendor/delivery-options',
         icon: Truck,
     },
     {
         title: 'Orders',
-        href: '/orders',
+        href: '/vendor/orders',
         icon: ShoppingCart,
     },
     {
         title: 'Transactions',
-        href: '/transactions',
+        href: '/vendor/transactions',
         icon: Receipt,
     },
     {
         title: 'Wallet',
-        href: '/wallet',
+        href: '/vendor/wallet',
         icon: Wallet,
     },
     {
         title: 'Integrations',
-        href: '/integrations',
+        href: '/vendor/integrations',
         icon: Plug,
-    },
-    {
-        title: 'Systems',
-        href: '/systems',
-        icon: Settings,
     },
 ];
 
@@ -74,39 +69,60 @@ const ownerNavItems: NavItem[] = [
 const staffNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: dashboard(),
+        href: dashboard().url,
         icon: LayoutGrid,
     },
     {
         title: 'My Shops',
-        href: '/staff/shops',
+        href: '/vendor/staff/shops',
         icon: Store,
     },
     {
         title: 'Orders',
-        href: '/orders',
+        href: '/vendor/orders',
         icon: ShoppingCart,
     },
 ];
 
-const managementGroups: NavGroup[] = [
+// Management groups for shop owners (no Users access)
+const ownerManagementGroups: NavGroup[] = [
     {
         title: 'User Management',
         icon: Users,
         items: [
             {
                 title: 'Staff',
-                href: '/manage/staff',
+                href: '/vendor/manage/staff',
                 icon: UserCog,
             },
             {
                 title: 'Roles',
-                href: '/manage/roles',
+                href: '/vendor/manage/roles',
+                icon: Shield,
+            },
+        ],
+    },
+];
+
+// Management groups for admins (includes Users)
+const adminManagementGroups: NavGroup[] = [
+    {
+        title: 'User Management',
+        icon: Users,
+        items: [
+            {
+                title: 'Staff',
+                href: '/vendor/manage/staff',
+                icon: UserCog,
+            },
+            {
+                title: 'Roles',
+                href: '/vendor/manage/roles',
                 icon: Shield,
             },
             {
                 title: 'Users',
-                href: '/users',
+                href: '/vendor/users',
                 icon: Users,
             },
         ],
@@ -121,17 +137,22 @@ const platformGroups: NavGroup[] = [
         items: [
             {
                 title: 'Analytics',
-                href: '/platform/analytics',
+                href: '/vendor/platform/analytics',
                 icon: Activity,
             },
             {
+                title: 'General Categories',
+                href: '/vendor/general-categories',
+                icon: FolderTree,
+            },
+            {
                 title: 'All Shops',
-                href: '/platform/shops',
+                href: '/vendor/platform/shops',
                 icon: Building2,
             },
             {
                 title: 'All Users',
-                href: '/platform/users',
+                href: '/vendor/platform/users',
                 icon: Users,
             },
         ],
@@ -142,22 +163,22 @@ const platformGroups: NavGroup[] = [
 const userNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: '/user-dashboard',
+        href: '/customer/dashboard',
         icon: LayoutGrid,
     },
     {
         title: 'My Orders',
-        href: '/user/orders',
+        href: '/customer/orders',
         icon: ShoppingCart,
     },
     {
         title: 'Cart',
-        href: '/user/cart',
+        href: '/customer/cart',
         icon: Package,
     },
     {
         title: 'Favorites',
-        href: '/user/favorites',
+        href: '/customer/favorites',
         icon: Store,
     },
 ];
@@ -188,7 +209,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={userRole === 'user' ? '/user-dashboard' : dashboard()} prefetch>
+                            <Link href={userRole === 'user' ? '/customer/dashboard' : dashboard().url} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
@@ -198,7 +219,8 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={navItems} />
-                {isOwnerOrAdmin && <NavGroups groups={managementGroups} />}
+                {isAdmin && <NavGroups groups={adminManagementGroups} />}
+                {!isAdmin && permissions?.isShopOwner && <NavGroups groups={ownerManagementGroups} />}
                 {isAdmin && <NavGroups groups={platformGroups} />}
             </SidebarContent>
 

@@ -2,72 +2,72 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\PlatformController::users
  * @see app/Http/Controllers/PlatformController.php:159
- * @route '/users'
+ * @route '/vendor/users'
  */
-const users6e8299a085c11017e62ab420951fb27c = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: users6e8299a085c11017e62ab420951fb27c.url(options),
+const usersef7f0983f1006e5fcf50e3218c9e5d56 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: usersef7f0983f1006e5fcf50e3218c9e5d56.url(options),
     method: 'get',
 })
 
-users6e8299a085c11017e62ab420951fb27c.definition = {
+usersef7f0983f1006e5fcf50e3218c9e5d56.definition = {
     methods: ["get","head"],
-    url: '/users',
+    url: '/vendor/users',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\PlatformController::users
  * @see app/Http/Controllers/PlatformController.php:159
- * @route '/users'
+ * @route '/vendor/users'
  */
-users6e8299a085c11017e62ab420951fb27c.url = (options?: RouteQueryOptions) => {
-    return users6e8299a085c11017e62ab420951fb27c.definition.url + queryParams(options)
+usersef7f0983f1006e5fcf50e3218c9e5d56.url = (options?: RouteQueryOptions) => {
+    return usersef7f0983f1006e5fcf50e3218c9e5d56.definition.url + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\PlatformController::users
  * @see app/Http/Controllers/PlatformController.php:159
- * @route '/users'
+ * @route '/vendor/users'
  */
-users6e8299a085c11017e62ab420951fb27c.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: users6e8299a085c11017e62ab420951fb27c.url(options),
+usersef7f0983f1006e5fcf50e3218c9e5d56.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: usersef7f0983f1006e5fcf50e3218c9e5d56.url(options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\PlatformController::users
  * @see app/Http/Controllers/PlatformController.php:159
- * @route '/users'
+ * @route '/vendor/users'
  */
-users6e8299a085c11017e62ab420951fb27c.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: users6e8299a085c11017e62ab420951fb27c.url(options),
+usersef7f0983f1006e5fcf50e3218c9e5d56.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: usersef7f0983f1006e5fcf50e3218c9e5d56.url(options),
     method: 'head',
 })
 
     /**
 * @see \App\Http\Controllers\PlatformController::users
  * @see app/Http/Controllers/PlatformController.php:159
- * @route '/users'
+ * @route '/vendor/users'
  */
-    const users6e8299a085c11017e62ab420951fb27cForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: users6e8299a085c11017e62ab420951fb27c.url(options),
+    const usersef7f0983f1006e5fcf50e3218c9e5d56Form = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: usersef7f0983f1006e5fcf50e3218c9e5d56.url(options),
         method: 'get',
     })
 
             /**
 * @see \App\Http\Controllers\PlatformController::users
  * @see app/Http/Controllers/PlatformController.php:159
- * @route '/users'
+ * @route '/vendor/users'
  */
-        users6e8299a085c11017e62ab420951fb27cForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: users6e8299a085c11017e62ab420951fb27c.url(options),
+        usersef7f0983f1006e5fcf50e3218c9e5d56Form.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: usersef7f0983f1006e5fcf50e3218c9e5d56.url(options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\PlatformController::users
  * @see app/Http/Controllers/PlatformController.php:159
- * @route '/users'
+ * @route '/vendor/users'
  */
-        users6e8299a085c11017e62ab420951fb27cForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: users6e8299a085c11017e62ab420951fb27c.url({
+        usersef7f0983f1006e5fcf50e3218c9e5d56Form.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: usersef7f0983f1006e5fcf50e3218c9e5d56.url({
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -76,76 +76,76 @@ users6e8299a085c11017e62ab420951fb27c.head = (options?: RouteQueryOptions): Rout
             method: 'get',
         })
     
-    users6e8299a085c11017e62ab420951fb27c.form = users6e8299a085c11017e62ab420951fb27cForm
+    usersef7f0983f1006e5fcf50e3218c9e5d56.form = usersef7f0983f1006e5fcf50e3218c9e5d56Form
     /**
 * @see \App\Http\Controllers\PlatformController::users
  * @see app/Http/Controllers/PlatformController.php:159
- * @route '/platform/users'
+ * @route '/vendor/platform/users'
  */
-const users4a47f1fc35ebf9b2e4ec0472a82562c1 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: users4a47f1fc35ebf9b2e4ec0472a82562c1.url(options),
+const users5dca7613bd768e171579cb71b8678140 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: users5dca7613bd768e171579cb71b8678140.url(options),
     method: 'get',
 })
 
-users4a47f1fc35ebf9b2e4ec0472a82562c1.definition = {
+users5dca7613bd768e171579cb71b8678140.definition = {
     methods: ["get","head"],
-    url: '/platform/users',
+    url: '/vendor/platform/users',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\PlatformController::users
  * @see app/Http/Controllers/PlatformController.php:159
- * @route '/platform/users'
+ * @route '/vendor/platform/users'
  */
-users4a47f1fc35ebf9b2e4ec0472a82562c1.url = (options?: RouteQueryOptions) => {
-    return users4a47f1fc35ebf9b2e4ec0472a82562c1.definition.url + queryParams(options)
+users5dca7613bd768e171579cb71b8678140.url = (options?: RouteQueryOptions) => {
+    return users5dca7613bd768e171579cb71b8678140.definition.url + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\PlatformController::users
  * @see app/Http/Controllers/PlatformController.php:159
- * @route '/platform/users'
+ * @route '/vendor/platform/users'
  */
-users4a47f1fc35ebf9b2e4ec0472a82562c1.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: users4a47f1fc35ebf9b2e4ec0472a82562c1.url(options),
+users5dca7613bd768e171579cb71b8678140.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: users5dca7613bd768e171579cb71b8678140.url(options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\PlatformController::users
  * @see app/Http/Controllers/PlatformController.php:159
- * @route '/platform/users'
+ * @route '/vendor/platform/users'
  */
-users4a47f1fc35ebf9b2e4ec0472a82562c1.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: users4a47f1fc35ebf9b2e4ec0472a82562c1.url(options),
+users5dca7613bd768e171579cb71b8678140.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: users5dca7613bd768e171579cb71b8678140.url(options),
     method: 'head',
 })
 
     /**
 * @see \App\Http\Controllers\PlatformController::users
  * @see app/Http/Controllers/PlatformController.php:159
- * @route '/platform/users'
+ * @route '/vendor/platform/users'
  */
-    const users4a47f1fc35ebf9b2e4ec0472a82562c1Form = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: users4a47f1fc35ebf9b2e4ec0472a82562c1.url(options),
+    const users5dca7613bd768e171579cb71b8678140Form = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: users5dca7613bd768e171579cb71b8678140.url(options),
         method: 'get',
     })
 
             /**
 * @see \App\Http\Controllers\PlatformController::users
  * @see app/Http/Controllers/PlatformController.php:159
- * @route '/platform/users'
+ * @route '/vendor/platform/users'
  */
-        users4a47f1fc35ebf9b2e4ec0472a82562c1Form.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: users4a47f1fc35ebf9b2e4ec0472a82562c1.url(options),
+        users5dca7613bd768e171579cb71b8678140Form.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: users5dca7613bd768e171579cb71b8678140.url(options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\PlatformController::users
  * @see app/Http/Controllers/PlatformController.php:159
- * @route '/platform/users'
+ * @route '/vendor/platform/users'
  */
-        users4a47f1fc35ebf9b2e4ec0472a82562c1Form.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: users4a47f1fc35ebf9b2e4ec0472a82562c1.url({
+        users5dca7613bd768e171579cb71b8678140Form.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: users5dca7613bd768e171579cb71b8678140.url({
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -154,34 +154,34 @@ users4a47f1fc35ebf9b2e4ec0472a82562c1.head = (options?: RouteQueryOptions): Rout
             method: 'get',
         })
     
-    users4a47f1fc35ebf9b2e4ec0472a82562c1.form = users4a47f1fc35ebf9b2e4ec0472a82562c1Form
+    users5dca7613bd768e171579cb71b8678140.form = users5dca7613bd768e171579cb71b8678140Form
 
 export const users = {
-    '/users': users6e8299a085c11017e62ab420951fb27c,
-    '/platform/users': users4a47f1fc35ebf9b2e4ec0472a82562c1,
+    '/vendor/users': usersef7f0983f1006e5fcf50e3218c9e5d56,
+    '/vendor/platform/users': users5dca7613bd768e171579cb71b8678140,
 }
 
 /**
 * @see \App\Http\Controllers\PlatformController::toggleUserStatus
  * @see app/Http/Controllers/PlatformController.php:209
- * @route '/users/{user}/toggle-status'
+ * @route '/vendor/users/{user}/toggle-status'
  */
-const toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
-    url: toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e.url(args, options),
+const toggleUserStatus25985e08f1f628f536cee3467c6c01b4 = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: toggleUserStatus25985e08f1f628f536cee3467c6c01b4.url(args, options),
     method: 'patch',
 })
 
-toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e.definition = {
+toggleUserStatus25985e08f1f628f536cee3467c6c01b4.definition = {
     methods: ["patch"],
-    url: '/users/{user}/toggle-status',
+    url: '/vendor/users/{user}/toggle-status',
 } satisfies RouteDefinition<["patch"]>
 
 /**
 * @see \App\Http\Controllers\PlatformController::toggleUserStatus
  * @see app/Http/Controllers/PlatformController.php:209
- * @route '/users/{user}/toggle-status'
+ * @route '/vendor/users/{user}/toggle-status'
  */
-toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e.url = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions) => {
+toggleUserStatus25985e08f1f628f536cee3467c6c01b4.url = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { user: args }
     }
@@ -199,7 +199,7 @@ toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e.url = (args: { user: string | n
                         user: args.user,
                 }
 
-    return toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e.definition.url
+    return toggleUserStatus25985e08f1f628f536cee3467c6c01b4.definition.url
             .replace('{user}', parsedArgs.user.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
@@ -207,20 +207,20 @@ toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e.url = (args: { user: string | n
 /**
 * @see \App\Http\Controllers\PlatformController::toggleUserStatus
  * @see app/Http/Controllers/PlatformController.php:209
- * @route '/users/{user}/toggle-status'
+ * @route '/vendor/users/{user}/toggle-status'
  */
-toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e.patch = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
-    url: toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e.url(args, options),
+toggleUserStatus25985e08f1f628f536cee3467c6c01b4.patch = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: toggleUserStatus25985e08f1f628f536cee3467c6c01b4.url(args, options),
     method: 'patch',
 })
 
     /**
 * @see \App\Http\Controllers\PlatformController::toggleUserStatus
  * @see app/Http/Controllers/PlatformController.php:209
- * @route '/users/{user}/toggle-status'
+ * @route '/vendor/users/{user}/toggle-status'
  */
-    const toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964eForm = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e.url(args, {
+    const toggleUserStatus25985e08f1f628f536cee3467c6c01b4Form = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: toggleUserStatus25985e08f1f628f536cee3467c6c01b4.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PATCH',
                         ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -232,10 +232,10 @@ toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e.patch = (args: { user: string |
             /**
 * @see \App\Http\Controllers\PlatformController::toggleUserStatus
  * @see app/Http/Controllers/PlatformController.php:209
- * @route '/users/{user}/toggle-status'
+ * @route '/vendor/users/{user}/toggle-status'
  */
-        toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964eForm.patch = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e.url(args, {
+        toggleUserStatus25985e08f1f628f536cee3467c6c01b4Form.patch = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: toggleUserStatus25985e08f1f628f536cee3467c6c01b4.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PATCH',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -244,28 +244,28 @@ toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e.patch = (args: { user: string |
             method: 'post',
         })
     
-    toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e.form = toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964eForm
+    toggleUserStatus25985e08f1f628f536cee3467c6c01b4.form = toggleUserStatus25985e08f1f628f536cee3467c6c01b4Form
     /**
 * @see \App\Http\Controllers\PlatformController::toggleUserStatus
  * @see app/Http/Controllers/PlatformController.php:209
- * @route '/platform/users/{user}/toggle-status'
+ * @route '/vendor/platform/users/{user}/toggle-status'
  */
-const toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
-    url: toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f.url(args, options),
+const toggleUserStatus93e55dd5d6bf485c4fb8e53c9d0e4987 = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: toggleUserStatus93e55dd5d6bf485c4fb8e53c9d0e4987.url(args, options),
     method: 'patch',
 })
 
-toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f.definition = {
+toggleUserStatus93e55dd5d6bf485c4fb8e53c9d0e4987.definition = {
     methods: ["patch"],
-    url: '/platform/users/{user}/toggle-status',
+    url: '/vendor/platform/users/{user}/toggle-status',
 } satisfies RouteDefinition<["patch"]>
 
 /**
 * @see \App\Http\Controllers\PlatformController::toggleUserStatus
  * @see app/Http/Controllers/PlatformController.php:209
- * @route '/platform/users/{user}/toggle-status'
+ * @route '/vendor/platform/users/{user}/toggle-status'
  */
-toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f.url = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions) => {
+toggleUserStatus93e55dd5d6bf485c4fb8e53c9d0e4987.url = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { user: args }
     }
@@ -283,7 +283,7 @@ toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f.url = (args: { user: string | n
                         user: args.user,
                 }
 
-    return toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f.definition.url
+    return toggleUserStatus93e55dd5d6bf485c4fb8e53c9d0e4987.definition.url
             .replace('{user}', parsedArgs.user.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
@@ -291,20 +291,20 @@ toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f.url = (args: { user: string | n
 /**
 * @see \App\Http\Controllers\PlatformController::toggleUserStatus
  * @see app/Http/Controllers/PlatformController.php:209
- * @route '/platform/users/{user}/toggle-status'
+ * @route '/vendor/platform/users/{user}/toggle-status'
  */
-toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f.patch = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
-    url: toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f.url(args, options),
+toggleUserStatus93e55dd5d6bf485c4fb8e53c9d0e4987.patch = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: toggleUserStatus93e55dd5d6bf485c4fb8e53c9d0e4987.url(args, options),
     method: 'patch',
 })
 
     /**
 * @see \App\Http\Controllers\PlatformController::toggleUserStatus
  * @see app/Http/Controllers/PlatformController.php:209
- * @route '/platform/users/{user}/toggle-status'
+ * @route '/vendor/platform/users/{user}/toggle-status'
  */
-    const toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282fForm = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f.url(args, {
+    const toggleUserStatus93e55dd5d6bf485c4fb8e53c9d0e4987Form = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: toggleUserStatus93e55dd5d6bf485c4fb8e53c9d0e4987.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PATCH',
                         ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -316,10 +316,10 @@ toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f.patch = (args: { user: string |
             /**
 * @see \App\Http\Controllers\PlatformController::toggleUserStatus
  * @see app/Http/Controllers/PlatformController.php:209
- * @route '/platform/users/{user}/toggle-status'
+ * @route '/vendor/platform/users/{user}/toggle-status'
  */
-        toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282fForm.patch = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f.url(args, {
+        toggleUserStatus93e55dd5d6bf485c4fb8e53c9d0e4987Form.patch = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: toggleUserStatus93e55dd5d6bf485c4fb8e53c9d0e4987.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PATCH',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -328,17 +328,17 @@ toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f.patch = (args: { user: string |
             method: 'post',
         })
     
-    toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f.form = toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282fForm
+    toggleUserStatus93e55dd5d6bf485c4fb8e53c9d0e4987.form = toggleUserStatus93e55dd5d6bf485c4fb8e53c9d0e4987Form
 
 export const toggleUserStatus = {
-    '/users/{user}/toggle-status': toggleUserStatus80284dd8ccce6bc822aaa4a22e5f964e,
-    '/platform/users/{user}/toggle-status': toggleUserStatus3b6c8aa6d9f588f5b669a64105b8282f,
+    '/vendor/users/{user}/toggle-status': toggleUserStatus25985e08f1f628f536cee3467c6c01b4,
+    '/vendor/platform/users/{user}/toggle-status': toggleUserStatus93e55dd5d6bf485c4fb8e53c9d0e4987,
 }
 
 /**
 * @see \App\Http\Controllers\PlatformController::analytics
  * @see app/Http/Controllers/PlatformController.php:18
- * @route '/platform/analytics'
+ * @route '/vendor/platform/analytics'
  */
 export const analytics = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: analytics.url(options),
@@ -347,13 +347,13 @@ export const analytics = (options?: RouteQueryOptions): RouteDefinition<'get'> =
 
 analytics.definition = {
     methods: ["get","head"],
-    url: '/platform/analytics',
+    url: '/vendor/platform/analytics',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\PlatformController::analytics
  * @see app/Http/Controllers/PlatformController.php:18
- * @route '/platform/analytics'
+ * @route '/vendor/platform/analytics'
  */
 analytics.url = (options?: RouteQueryOptions) => {
     return analytics.definition.url + queryParams(options)
@@ -362,7 +362,7 @@ analytics.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\PlatformController::analytics
  * @see app/Http/Controllers/PlatformController.php:18
- * @route '/platform/analytics'
+ * @route '/vendor/platform/analytics'
  */
 analytics.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: analytics.url(options),
@@ -371,7 +371,7 @@ analytics.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 /**
 * @see \App\Http\Controllers\PlatformController::analytics
  * @see app/Http/Controllers/PlatformController.php:18
- * @route '/platform/analytics'
+ * @route '/vendor/platform/analytics'
  */
 analytics.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: analytics.url(options),
@@ -381,7 +381,7 @@ analytics.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     /**
 * @see \App\Http\Controllers\PlatformController::analytics
  * @see app/Http/Controllers/PlatformController.php:18
- * @route '/platform/analytics'
+ * @route '/vendor/platform/analytics'
  */
     const analyticsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: analytics.url(options),
@@ -391,7 +391,7 @@ analytics.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             /**
 * @see \App\Http\Controllers\PlatformController::analytics
  * @see app/Http/Controllers/PlatformController.php:18
- * @route '/platform/analytics'
+ * @route '/vendor/platform/analytics'
  */
         analyticsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: analytics.url(options),
@@ -400,7 +400,7 @@ analytics.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             /**
 * @see \App\Http\Controllers\PlatformController::analytics
  * @see app/Http/Controllers/PlatformController.php:18
- * @route '/platform/analytics'
+ * @route '/vendor/platform/analytics'
  */
         analyticsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: analytics.url({
@@ -416,7 +416,7 @@ analytics.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \App\Http\Controllers\PlatformController::shops
  * @see app/Http/Controllers/PlatformController.php:97
- * @route '/platform/shops'
+ * @route '/vendor/platform/shops'
  */
 export const shops = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: shops.url(options),
@@ -425,13 +425,13 @@ export const shops = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 shops.definition = {
     methods: ["get","head"],
-    url: '/platform/shops',
+    url: '/vendor/platform/shops',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\PlatformController::shops
  * @see app/Http/Controllers/PlatformController.php:97
- * @route '/platform/shops'
+ * @route '/vendor/platform/shops'
  */
 shops.url = (options?: RouteQueryOptions) => {
     return shops.definition.url + queryParams(options)
@@ -440,7 +440,7 @@ shops.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\PlatformController::shops
  * @see app/Http/Controllers/PlatformController.php:97
- * @route '/platform/shops'
+ * @route '/vendor/platform/shops'
  */
 shops.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: shops.url(options),
@@ -449,7 +449,7 @@ shops.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 /**
 * @see \App\Http\Controllers\PlatformController::shops
  * @see app/Http/Controllers/PlatformController.php:97
- * @route '/platform/shops'
+ * @route '/vendor/platform/shops'
  */
 shops.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: shops.url(options),
@@ -459,7 +459,7 @@ shops.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     /**
 * @see \App\Http\Controllers\PlatformController::shops
  * @see app/Http/Controllers/PlatformController.php:97
- * @route '/platform/shops'
+ * @route '/vendor/platform/shops'
  */
     const shopsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: shops.url(options),
@@ -469,7 +469,7 @@ shops.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             /**
 * @see \App\Http\Controllers\PlatformController::shops
  * @see app/Http/Controllers/PlatformController.php:97
- * @route '/platform/shops'
+ * @route '/vendor/platform/shops'
  */
         shopsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: shops.url(options),
@@ -478,7 +478,7 @@ shops.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             /**
 * @see \App\Http\Controllers\PlatformController::shops
  * @see app/Http/Controllers/PlatformController.php:97
- * @route '/platform/shops'
+ * @route '/vendor/platform/shops'
  */
         shopsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: shops.url({
@@ -494,7 +494,7 @@ shops.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \App\Http\Controllers\PlatformController::toggleShopStatus
  * @see app/Http/Controllers/PlatformController.php:143
- * @route '/platform/shops/{shop}/toggle-status'
+ * @route '/vendor/platform/shops/{shop}/toggle-status'
  */
 export const toggleShopStatus = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: toggleShopStatus.url(args, options),
@@ -503,13 +503,13 @@ export const toggleShopStatus = (args: { shop: number | { id: number } } | [shop
 
 toggleShopStatus.definition = {
     methods: ["patch"],
-    url: '/platform/shops/{shop}/toggle-status',
+    url: '/vendor/platform/shops/{shop}/toggle-status',
 } satisfies RouteDefinition<["patch"]>
 
 /**
 * @see \App\Http\Controllers\PlatformController::toggleShopStatus
  * @see app/Http/Controllers/PlatformController.php:143
- * @route '/platform/shops/{shop}/toggle-status'
+ * @route '/vendor/platform/shops/{shop}/toggle-status'
  */
 toggleShopStatus.url = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -542,7 +542,7 @@ toggleShopStatus.url = (args: { shop: number | { id: number } } | [shop: number 
 /**
 * @see \App\Http\Controllers\PlatformController::toggleShopStatus
  * @see app/Http/Controllers/PlatformController.php:143
- * @route '/platform/shops/{shop}/toggle-status'
+ * @route '/vendor/platform/shops/{shop}/toggle-status'
  */
 toggleShopStatus.patch = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: toggleShopStatus.url(args, options),
@@ -552,7 +552,7 @@ toggleShopStatus.patch = (args: { shop: number | { id: number } } | [shop: numbe
     /**
 * @see \App\Http\Controllers\PlatformController::toggleShopStatus
  * @see app/Http/Controllers/PlatformController.php:143
- * @route '/platform/shops/{shop}/toggle-status'
+ * @route '/vendor/platform/shops/{shop}/toggle-status'
  */
     const toggleShopStatusForm = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: toggleShopStatus.url(args, {
@@ -567,7 +567,7 @@ toggleShopStatus.patch = (args: { shop: number | { id: number } } | [shop: numbe
             /**
 * @see \App\Http\Controllers\PlatformController::toggleShopStatus
  * @see app/Http/Controllers/PlatformController.php:143
- * @route '/platform/shops/{shop}/toggle-status'
+ * @route '/vendor/platform/shops/{shop}/toggle-status'
  */
         toggleShopStatusForm.patch = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: toggleShopStatus.url(args, {
@@ -583,7 +583,7 @@ toggleShopStatus.patch = (args: { shop: number | { id: number } } | [shop: numbe
 /**
 * @see \App\Http\Controllers\PlatformController::createAdmin
  * @see app/Http/Controllers/PlatformController.php:236
- * @route '/platform/admins'
+ * @route '/vendor/platform/admins'
  */
 export const createAdmin = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: createAdmin.url(options),
@@ -592,13 +592,13 @@ export const createAdmin = (options?: RouteQueryOptions): RouteDefinition<'post'
 
 createAdmin.definition = {
     methods: ["post"],
-    url: '/platform/admins',
+    url: '/vendor/platform/admins',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\PlatformController::createAdmin
  * @see app/Http/Controllers/PlatformController.php:236
- * @route '/platform/admins'
+ * @route '/vendor/platform/admins'
  */
 createAdmin.url = (options?: RouteQueryOptions) => {
     return createAdmin.definition.url + queryParams(options)
@@ -607,7 +607,7 @@ createAdmin.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\PlatformController::createAdmin
  * @see app/Http/Controllers/PlatformController.php:236
- * @route '/platform/admins'
+ * @route '/vendor/platform/admins'
  */
 createAdmin.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: createAdmin.url(options),
@@ -617,7 +617,7 @@ createAdmin.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     /**
 * @see \App\Http\Controllers\PlatformController::createAdmin
  * @see app/Http/Controllers/PlatformController.php:236
- * @route '/platform/admins'
+ * @route '/vendor/platform/admins'
  */
     const createAdminForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: createAdmin.url(options),
@@ -627,7 +627,7 @@ createAdmin.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             /**
 * @see \App\Http\Controllers\PlatformController::createAdmin
  * @see app/Http/Controllers/PlatformController.php:236
- * @route '/platform/admins'
+ * @route '/vendor/platform/admins'
  */
         createAdminForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: createAdmin.url(options),
@@ -638,7 +638,7 @@ createAdmin.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 /**
 * @see \App\Http\Controllers\PlatformController::deleteAdmin
  * @see app/Http/Controllers/PlatformController.php:264
- * @route '/platform/admins/{user}'
+ * @route '/vendor/platform/admins/{user}'
  */
 export const deleteAdmin = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: deleteAdmin.url(args, options),
@@ -647,13 +647,13 @@ export const deleteAdmin = (args: { user: string | number } | [user: string | nu
 
 deleteAdmin.definition = {
     methods: ["delete"],
-    url: '/platform/admins/{user}',
+    url: '/vendor/platform/admins/{user}',
 } satisfies RouteDefinition<["delete"]>
 
 /**
 * @see \App\Http\Controllers\PlatformController::deleteAdmin
  * @see app/Http/Controllers/PlatformController.php:264
- * @route '/platform/admins/{user}'
+ * @route '/vendor/platform/admins/{user}'
  */
 deleteAdmin.url = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -681,7 +681,7 @@ deleteAdmin.url = (args: { user: string | number } | [user: string | number ] | 
 /**
 * @see \App\Http\Controllers\PlatformController::deleteAdmin
  * @see app/Http/Controllers/PlatformController.php:264
- * @route '/platform/admins/{user}'
+ * @route '/vendor/platform/admins/{user}'
  */
 deleteAdmin.delete = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: deleteAdmin.url(args, options),
@@ -691,7 +691,7 @@ deleteAdmin.delete = (args: { user: string | number } | [user: string | number ]
     /**
 * @see \App\Http\Controllers\PlatformController::deleteAdmin
  * @see app/Http/Controllers/PlatformController.php:264
- * @route '/platform/admins/{user}'
+ * @route '/vendor/platform/admins/{user}'
  */
     const deleteAdminForm = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: deleteAdmin.url(args, {
@@ -706,7 +706,7 @@ deleteAdmin.delete = (args: { user: string | number } | [user: string | number ]
             /**
 * @see \App\Http\Controllers\PlatformController::deleteAdmin
  * @see app/Http/Controllers/PlatformController.php:264
- * @route '/platform/admins/{user}'
+ * @route '/vendor/platform/admins/{user}'
  */
         deleteAdminForm.delete = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: deleteAdmin.url(args, {

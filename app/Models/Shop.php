@@ -16,10 +16,17 @@ class Shop extends Model
 
     protected $fillable = [
         'user_id',
+        'general_category_id',
         'name',
         'slug',
         'description',
         'address',
+        'country_code',
+        'state_code',
+        'latitude',
+        'longitude',
+        'place_id',
+        'formatted_address',
         'image',
         'public_id',
         'is_active',
@@ -29,6 +36,8 @@ class Shop extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'is_under_construction' => 'boolean',
+        'latitude' => 'decimal:8',
+        'longitude' => 'decimal:8',
     ];
 
     protected $appends = ['image_url'];
@@ -73,9 +82,19 @@ class Shop extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function generalCategory(): BelongsTo
+    {
+        return $this->belongsTo(GeneralCategory::class, 'general_category_id');
+    }
+
     public function products(): HasMany
     {
         return $this->hasMany(Product::class, 'shop_public_id', 'public_id');
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
     }
 
     /**

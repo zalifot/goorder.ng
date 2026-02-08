@@ -18,11 +18,11 @@ import { type NavGroup } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { ChevronRight } from 'lucide-react';
 
-export function NavGroups({ groups = [] }: { groups: NavGroup[] }) {
+export function NavGroups({ groups = [], label = 'Management' }: { groups: NavGroup[]; label?: string }) {
     const page = usePage();
     return (
         <SidebarGroup className="px-2 py-0">
-            <SidebarGroupLabel>Management</SidebarGroupLabel>
+            <SidebarGroupLabel>{label}</SidebarGroupLabel>
             <SidebarMenu>
                 {groups.map((group) => {
                     const isGroupActive = group.items.some((item) =>

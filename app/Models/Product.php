@@ -84,15 +84,16 @@ class Product extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(ProductCategory::class, 'category_id');
     }
 
     public function getSalePriceAttribute(): float
     {
+        $price = (float) ($this->price ?? 0);
         if ($this->discount_percentage > 0) {
-            return round($this->price * (1 - $this->discount_percentage / 100), 2);
+            return round($price * (1 - $this->discount_percentage / 100), 2);
         }
-        return $this->price;
+        return $price;
     }
 
     public function getImageUrlAttribute(): string

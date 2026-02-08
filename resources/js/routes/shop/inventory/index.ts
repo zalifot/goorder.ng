@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\ProductController::store
  * @see app/Http/Controllers/ProductController.php:110
- * @route '/manage/shop/{publicId}/inventory'
+ * @route '/vendor/manage/shop/{publicId}/inventory'
  */
 export const store = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
@@ -11,13 +11,13 @@ export const store = (args: { publicId: string | number } | [publicId: string | 
 
 store.definition = {
     methods: ["post"],
-    url: '/manage/shop/{publicId}/inventory',
+    url: '/vendor/manage/shop/{publicId}/inventory',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\ProductController::store
  * @see app/Http/Controllers/ProductController.php:110
- * @route '/manage/shop/{publicId}/inventory'
+ * @route '/vendor/manage/shop/{publicId}/inventory'
  */
 store.url = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -45,7 +45,7 @@ store.url = (args: { publicId: string | number } | [publicId: string | number ] 
 /**
 * @see \App\Http\Controllers\ProductController::store
  * @see app/Http/Controllers/ProductController.php:110
- * @route '/manage/shop/{publicId}/inventory'
+ * @route '/vendor/manage/shop/{publicId}/inventory'
  */
 store.post = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
@@ -55,7 +55,7 @@ store.post = (args: { publicId: string | number } | [publicId: string | number ]
     /**
 * @see \App\Http\Controllers\ProductController::store
  * @see app/Http/Controllers/ProductController.php:110
- * @route '/manage/shop/{publicId}/inventory'
+ * @route '/vendor/manage/shop/{publicId}/inventory'
  */
     const storeForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(args, options),
@@ -65,7 +65,7 @@ store.post = (args: { publicId: string | number } | [publicId: string | number ]
             /**
 * @see \App\Http\Controllers\ProductController::store
  * @see app/Http/Controllers/ProductController.php:110
- * @route '/manage/shop/{publicId}/inventory'
+ * @route '/vendor/manage/shop/{publicId}/inventory'
  */
         storeForm.post = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(args, options),
@@ -76,7 +76,7 @@ store.post = (args: { publicId: string | number } | [publicId: string | number ]
 /**
 * @see \App\Http\Controllers\ProductController::importMethod
  * @see app/Http/Controllers/ProductController.php:209
- * @route '/manage/shop/{publicId}/inventory/import'
+ * @route '/vendor/manage/shop/{publicId}/inventory/import'
  */
 export const importMethod = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: importMethod.url(args, options),
@@ -85,13 +85,13 @@ export const importMethod = (args: { publicId: string | number } | [publicId: st
 
 importMethod.definition = {
     methods: ["post"],
-    url: '/manage/shop/{publicId}/inventory/import',
+    url: '/vendor/manage/shop/{publicId}/inventory/import',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\ProductController::importMethod
  * @see app/Http/Controllers/ProductController.php:209
- * @route '/manage/shop/{publicId}/inventory/import'
+ * @route '/vendor/manage/shop/{publicId}/inventory/import'
  */
 importMethod.url = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -119,7 +119,7 @@ importMethod.url = (args: { publicId: string | number } | [publicId: string | nu
 /**
 * @see \App\Http\Controllers\ProductController::importMethod
  * @see app/Http/Controllers/ProductController.php:209
- * @route '/manage/shop/{publicId}/inventory/import'
+ * @route '/vendor/manage/shop/{publicId}/inventory/import'
  */
 importMethod.post = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: importMethod.url(args, options),
@@ -129,7 +129,7 @@ importMethod.post = (args: { publicId: string | number } | [publicId: string | n
     /**
 * @see \App\Http\Controllers\ProductController::importMethod
  * @see app/Http/Controllers/ProductController.php:209
- * @route '/manage/shop/{publicId}/inventory/import'
+ * @route '/vendor/manage/shop/{publicId}/inventory/import'
  */
     const importMethodForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: importMethod.url(args, options),
@@ -139,7 +139,7 @@ importMethod.post = (args: { publicId: string | number } | [publicId: string | n
             /**
 * @see \App\Http\Controllers\ProductController::importMethod
  * @see app/Http/Controllers/ProductController.php:209
- * @route '/manage/shop/{publicId}/inventory/import'
+ * @route '/vendor/manage/shop/{publicId}/inventory/import'
  */
         importMethodForm.post = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: importMethod.url(args, options),
@@ -150,7 +150,7 @@ importMethod.post = (args: { publicId: string | number } | [publicId: string | n
 /**
 * @see \App\Http\Controllers\ProductController::template
  * @see app/Http/Controllers/ProductController.php:222
- * @route '/manage/shop/{publicId}/inventory/template'
+ * @route '/vendor/manage/shop/{publicId}/inventory/template'
  */
 export const template = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: template.url(args, options),
@@ -159,13 +159,13 @@ export const template = (args: { publicId: string | number } | [publicId: string
 
 template.definition = {
     methods: ["get","head"],
-    url: '/manage/shop/{publicId}/inventory/template',
+    url: '/vendor/manage/shop/{publicId}/inventory/template',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\ProductController::template
  * @see app/Http/Controllers/ProductController.php:222
- * @route '/manage/shop/{publicId}/inventory/template'
+ * @route '/vendor/manage/shop/{publicId}/inventory/template'
  */
 template.url = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -193,7 +193,7 @@ template.url = (args: { publicId: string | number } | [publicId: string | number
 /**
 * @see \App\Http\Controllers\ProductController::template
  * @see app/Http/Controllers/ProductController.php:222
- * @route '/manage/shop/{publicId}/inventory/template'
+ * @route '/vendor/manage/shop/{publicId}/inventory/template'
  */
 template.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: template.url(args, options),
@@ -202,7 +202,7 @@ template.get = (args: { publicId: string | number } | [publicId: string | number
 /**
 * @see \App\Http\Controllers\ProductController::template
  * @see app/Http/Controllers/ProductController.php:222
- * @route '/manage/shop/{publicId}/inventory/template'
+ * @route '/vendor/manage/shop/{publicId}/inventory/template'
  */
 template.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: template.url(args, options),
@@ -212,7 +212,7 @@ template.head = (args: { publicId: string | number } | [publicId: string | numbe
     /**
 * @see \App\Http\Controllers\ProductController::template
  * @see app/Http/Controllers/ProductController.php:222
- * @route '/manage/shop/{publicId}/inventory/template'
+ * @route '/vendor/manage/shop/{publicId}/inventory/template'
  */
     const templateForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: template.url(args, options),
@@ -222,7 +222,7 @@ template.head = (args: { publicId: string | number } | [publicId: string | numbe
             /**
 * @see \App\Http\Controllers\ProductController::template
  * @see app/Http/Controllers/ProductController.php:222
- * @route '/manage/shop/{publicId}/inventory/template'
+ * @route '/vendor/manage/shop/{publicId}/inventory/template'
  */
         templateForm.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: template.url(args, options),
@@ -231,7 +231,7 @@ template.head = (args: { publicId: string | number } | [publicId: string | numbe
             /**
 * @see \App\Http\Controllers\ProductController::template
  * @see app/Http/Controllers/ProductController.php:222
- * @route '/manage/shop/{publicId}/inventory/template'
+ * @route '/vendor/manage/shop/{publicId}/inventory/template'
  */
         templateForm.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: template.url(args, {
@@ -247,7 +247,7 @@ template.head = (args: { publicId: string | number } | [publicId: string | numbe
 /**
 * @see \App\Http\Controllers\ProductController::update
  * @see app/Http/Controllers/ProductController.php:154
- * @route '/manage/shop/{publicId}/inventory/{product}'
+ * @route '/vendor/manage/shop/{publicId}/inventory/{product}'
  */
 export const update = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
@@ -256,13 +256,13 @@ export const update = (args: { publicId: string | number, product: number | { id
 
 update.definition = {
     methods: ["put"],
-    url: '/manage/shop/{publicId}/inventory/{product}',
+    url: '/vendor/manage/shop/{publicId}/inventory/{product}',
 } satisfies RouteDefinition<["put"]>
 
 /**
 * @see \App\Http\Controllers\ProductController::update
  * @see app/Http/Controllers/ProductController.php:154
- * @route '/manage/shop/{publicId}/inventory/{product}'
+ * @route '/vendor/manage/shop/{publicId}/inventory/{product}'
  */
 update.url = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
@@ -290,7 +290,7 @@ update.url = (args: { publicId: string | number, product: number | { id: number 
 /**
 * @see \App\Http\Controllers\ProductController::update
  * @see app/Http/Controllers/ProductController.php:154
- * @route '/manage/shop/{publicId}/inventory/{product}'
+ * @route '/vendor/manage/shop/{publicId}/inventory/{product}'
  */
 update.put = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
@@ -300,7 +300,7 @@ update.put = (args: { publicId: string | number, product: number | { id: number 
     /**
 * @see \App\Http\Controllers\ProductController::update
  * @see app/Http/Controllers/ProductController.php:154
- * @route '/manage/shop/{publicId}/inventory/{product}'
+ * @route '/vendor/manage/shop/{publicId}/inventory/{product}'
  */
     const updateForm = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
@@ -315,7 +315,7 @@ update.put = (args: { publicId: string | number, product: number | { id: number 
             /**
 * @see \App\Http\Controllers\ProductController::update
  * @see app/Http/Controllers/ProductController.php:154
- * @route '/manage/shop/{publicId}/inventory/{product}'
+ * @route '/vendor/manage/shop/{publicId}/inventory/{product}'
  */
         updateForm.put = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
@@ -331,7 +331,7 @@ update.put = (args: { publicId: string | number, product: number | { id: number 
 /**
 * @see \App\Http\Controllers\ProductController::destroy
  * @see app/Http/Controllers/ProductController.php:241
- * @route '/manage/shop/{publicId}/inventory/{product}'
+ * @route '/vendor/manage/shop/{publicId}/inventory/{product}'
  */
 export const destroy = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
@@ -340,13 +340,13 @@ export const destroy = (args: { publicId: string | number, product: number | { i
 
 destroy.definition = {
     methods: ["delete"],
-    url: '/manage/shop/{publicId}/inventory/{product}',
+    url: '/vendor/manage/shop/{publicId}/inventory/{product}',
 } satisfies RouteDefinition<["delete"]>
 
 /**
 * @see \App\Http\Controllers\ProductController::destroy
  * @see app/Http/Controllers/ProductController.php:241
- * @route '/manage/shop/{publicId}/inventory/{product}'
+ * @route '/vendor/manage/shop/{publicId}/inventory/{product}'
  */
 destroy.url = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
@@ -374,7 +374,7 @@ destroy.url = (args: { publicId: string | number, product: number | { id: number
 /**
 * @see \App\Http\Controllers\ProductController::destroy
  * @see app/Http/Controllers/ProductController.php:241
- * @route '/manage/shop/{publicId}/inventory/{product}'
+ * @route '/vendor/manage/shop/{publicId}/inventory/{product}'
  */
 destroy.delete = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
@@ -384,7 +384,7 @@ destroy.delete = (args: { publicId: string | number, product: number | { id: num
     /**
 * @see \App\Http\Controllers\ProductController::destroy
  * @see app/Http/Controllers/ProductController.php:241
- * @route '/manage/shop/{publicId}/inventory/{product}'
+ * @route '/vendor/manage/shop/{publicId}/inventory/{product}'
  */
     const destroyForm = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
@@ -399,7 +399,7 @@ destroy.delete = (args: { publicId: string | number, product: number | { id: num
             /**
 * @see \App\Http\Controllers\ProductController::destroy
  * @see app/Http/Controllers/ProductController.php:241
- * @route '/manage/shop/{publicId}/inventory/{product}'
+ * @route '/vendor/manage/shop/{publicId}/inventory/{product}'
  */
         destroyForm.delete = (args: { publicId: string | number, product: number | { id: number } } | [publicId: string | number, product: number | { id: number } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {

@@ -34,7 +34,7 @@ interface Shop {
     created_at: string;
     user?: {
         id: number;
-        name: string;
+        username: string;
         email: string;
     };
 }
@@ -61,8 +61,8 @@ interface Props {
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Platform Shops', href: '/platform/shops' },
+    { title: 'Dashboard', href: '/vendor/dashboard' },
+    { title: 'Platform Shops', href: '/vendor/platform/shops' },
 ];
 
 function formatDate(dateString: string): string {
@@ -209,7 +209,7 @@ export default function PlatformShops({ shops, filters }: Props) {
                                         </TableCell>
                                         <TableCell>
                                             <div>
-                                                <p className="font-medium">{shop.user?.name || 'Unknown'}</p>
+                                                <p className="font-medium">{shop.user?.username || 'Unknown'}</p>
                                                 <p className="text-xs text-muted-foreground">
                                                     {shop.user?.email || '-'}
                                                 </p>
@@ -252,7 +252,7 @@ export default function PlatformShops({ shops, filters }: Props) {
                                                         <Eye className="h-4 w-4" />
                                                     </Button>
                                                 </Link>
-                                                <Link href={`/vendor/${shop.public_id}`} target="_blank">
+                                                <Link href={`/shop/${shop.public_id}`} target="_blank">
                                                     <Button variant="ghost" size="icon" title="View Storefront">
                                                         <ExternalLink className="h-4 w-4" />
                                                     </Button>

@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { ArrowRight, Mail, MapPin, Package, Phone, Search, Store } from 'lucide-react';
+import { ArrowRight, Mail, MapPin, Phone, Search, Store } from 'lucide-react';
 import { useState } from 'react';
 
 interface Shop {
@@ -10,14 +10,10 @@ interface Shop {
     public_id: string;
     name: string;
     slug: string;
-    description: string | null;
-    address: string | null;
+    country_code: string | null;
+    state_code: string | null;
     image: string | null;
     image_url: string | null;
-    products_count: number;
-    user?: {
-        username: string;
-    };
 }
 
 interface Props {
@@ -31,8 +27,8 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
 
     const filteredShops = shops.filter((shop) =>
         shop.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        shop.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        shop.address?.toLowerCase().includes(searchQuery.toLowerCase())
+        shop.state_code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        shop.country_code?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
@@ -64,18 +60,18 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
 
                         <div className="flex items-center gap-4">
                             {auth.user ? (
-                                <Link href={auth.user.role === 'user' ? '/user-dashboard' : '/dashboard'}>
+                                <Link href={auth.user.role === 'user' ? '/customer/dashboard' : '/vendor/dashboard'}>
                                     <Button size="sm" className="rounded-full bg-emerald-600 px-5 hover:bg-emerald-700">
                                         Dashboard
                                     </Button>
                                 </Link>
                             ) : (
                                 <>
-                                    <Link href="/login" className="text-sm font-medium text-gray-600 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                                    <Link href="/customer-login" className="text-sm font-medium text-gray-600 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                                         Sign In
                                     </Link>
                                     {canRegister && (
-                                        <Link href="/register">
+                                        <Link href="/customer-register">
                                             <Button size="sm" className="rounded-full bg-emerald-600 px-5 hover:bg-emerald-700">
                                                 Start Shopping
                                             </Button>
@@ -97,17 +93,15 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
                     <div className="absolute top-0 right-1/4 h-64 w-64 rounded-full bg-emerald-200/30 blur-3xl dark:bg-emerald-900/20" />
 
                     <div className="relative z-10 mx-auto max-w-4xl text-center">
-                        <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                            <Store className="h-4 w-4" />
-                            Explore Local Shops
+                        <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+                            <Store className="h-4 w-4 text-black" />
+                            <span  className=" text-black">Explore Local Shops</span>
                         </div>
 
                         <h1 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
                             Discover Amazing
                             <br />
-                            <span className="bg-gradient-to-r from-blue-600 to-emerald-500 bg-clip-text text-transparent">
-                                Local Products
-                            </span>
+                            Local Products
                         </h1>
 
                         <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
@@ -120,7 +114,7 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
                                 <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
                                 <Input
                                     type="text"
-                                    placeholder="Search shops by name, description, or location..."
+                                    placeholder="Search shops by name, state, or country..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     className="h-14 rounded-full border-gray-200 pl-12 pr-4 text-base shadow-sm focus:border-emerald-500 focus:ring-emerald-500 dark:border-gray-700"
@@ -146,15 +140,15 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
                                 </p>
                             </div>
                         ) : (
-                            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
                                 {filteredShops.map((shop) => (
                                     <Link
                                         key={shop.id}
-                                        href={`/vendor/${shop.public_id}`}
-                                        className="group block overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 dark:border-gray-800 dark:bg-gray-900"
+                                        href={`/shop/${shop.public_id}`}
+                                        className="group flex h-52 sm:h-64 flex-col overflow-hidden rounded-xl sm:rounded-2xl border border-gray-100 bg-white shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 dark:border-gray-800 dark:bg-gray-900"
                                     >
                                         {/* Shop Image */}
-                                        <div className="relative aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-gray-800">
+                                        <div className="relative h-28 sm:h-36 flex-shrink-0 overflow-hidden bg-gray-100 dark:bg-gray-800">
                                             {shop.image_url ? (
                                                 <img
                                                     src={shop.image_url}
@@ -169,32 +163,22 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
                                         </div>
 
                                         {/* Shop Info */}
-                                        <div className="p-5">
-                                            <div className="mb-3 flex items-start justify-between">
-                                                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-emerald-600 dark:text-white dark:group-hover:text-emerald-400">
+                                        <div className="flex flex-1 flex-col justify-between p-3 sm:p-4">
+                                            <div className="flex items-start justify-between gap-1 sm:gap-2">
+                                                <h3 className="line-clamp-2 text-sm sm:text-base font-semibold text-gray-900 group-hover:text-emerald-600 dark:text-white dark:group-hover:text-emerald-400">
                                                     {shop.name}
                                                 </h3>
-                                                <ArrowRight className="h-5 w-5 text-gray-400 transition-transform group-hover:translate-x-1 group-hover:text-emerald-600" />
+                                                <ArrowRight className="hidden sm:block h-5 w-5 flex-shrink-0 text-gray-400 transition-transform group-hover:translate-x-1 group-hover:text-emerald-600" />
                                             </div>
 
-                                            {shop.description && (
-                                                <p className="mb-3 line-clamp-2 text-sm text-gray-600 dark:text-gray-400">
-                                                    {shop.description}
-                                                </p>
-                                            )}
-
-                                            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                                                <span className="flex items-center gap-1.5">
-                                                    <Package className="h-4 w-4" />
-                                                    {shop.products_count} {shop.products_count === 1 ? 'product' : 'products'}
-                                                </span>
-                                                {shop.address && (
-                                                    <span className="flex items-center gap-1.5">
-                                                        <MapPin className="h-4 w-4" />
-                                                        {shop.address}
+                                            {(shop.state_code || shop.country_code) && (
+                                                <div className="mt-1 sm:mt-2 flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                                                    <MapPin className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                                                    <span className="truncate">
+                                                        {[shop.state_code, shop.country_code].filter(Boolean).join(', ')}
                                                     </span>
-                                                )}
-                                            </div>
+                                                </div>
+                                            )}
                                         </div>
                                     </Link>
                                 ))}
@@ -273,7 +257,7 @@ export default function Marketplace({ shops, canRegister = true }: Props) {
                                         <Link href="/vendor-login" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Vendor Login</Link>
                                     </li>
                                     <li>
-                                        <Link href="/login" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Customer Login</Link>
+                                        <Link href="/customer-login" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Customer Login</Link>
                                     </li>
                                     <li>
                                         <a href="mailto:support@goorder.ng" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Help Center</a>

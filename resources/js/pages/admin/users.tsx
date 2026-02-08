@@ -74,8 +74,8 @@ interface Props {
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Users', href: '/users' },
+    { title: 'Dashboard', href: '/vendor/dashboard' },
+    { title: 'Users', href: '/vendor/users' },
 ];
 
 function formatDate(dateString: string): string {

@@ -41,9 +41,9 @@ import {
 import { Plus, MoreHorizontal, Pencil, Trash2, Shield } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'User Management', href: '/manage/staff' },
-    { title: 'Roles', href: '/manage/roles' },
+    { title: 'Dashboard', href: '/vendor/dashboard' },
+    { title: 'User Management', href: '/vendor/manage/staff' },
+    { title: 'Roles', href: '/vendor/manage/roles' },
 ];
 
 interface StaffRole {
@@ -79,7 +79,7 @@ export default function Roles({ roles }: Props) {
 
     const handleAddRole = () => {
         setProcessing(true);
-        router.post('/manage/roles', formData, {
+        router.post('/vendor/manage/roles', formData, {
             onSuccess: () => {
                 setIsAddDialogOpen(false);
                 resetForm();
@@ -91,7 +91,7 @@ export default function Roles({ roles }: Props) {
     const handleEditRole = () => {
         if (!selectedRole) return;
         setProcessing(true);
-        router.put(`/manage/roles/${selectedRole.id}`, formData, {
+        router.put(`/vendor/manage/roles/${selectedRole.id}`, formData, {
             onSuccess: () => {
                 setIsEditDialogOpen(false);
                 setSelectedRole(null);
@@ -104,7 +104,7 @@ export default function Roles({ roles }: Props) {
     const handleDeleteRole = () => {
         if (!selectedRole) return;
         setProcessing(true);
-        router.delete(`/manage/roles/${selectedRole.id}`, {
+        router.delete(`/vendor/manage/roles/${selectedRole.id}`, {
             onSuccess: () => {
                 setIsDeleteDialogOpen(false);
                 setSelectedRole(null);

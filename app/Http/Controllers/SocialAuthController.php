@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialAuthController extends Controller
@@ -26,15 +28,19 @@ class SocialAuthController extends Controller
      */
     public function handleGoogleCallback()
     {
+        // Get the intended role from session before any potential redirect
+        $intendedRole = session('oauth_role', 'user');
+        session()->forget('oauth_role');
+
+        $loginRoute = in_array($intendedRole, ['admin', 'super_admin', 'shop_owner'])
+            ? '/vendor-login'
+            : '/customer-login';
+
         try {
             $googleUser = Socialite::driver('google')->user();
         } catch (\Exception $e) {
-            return redirect('/login')->withErrors(['error' => 'Failed to authenticate with Google. Please try again.']);
+            return redirect($loginRoute)->withErrors(['error' => 'Failed to authenticate with Google. Please try again.']);
         }
-
-        // Get the intended role from session
-        $intendedRole = session('oauth_role', 'user');
-        session()->forget('oauth_role');
 
         // Check if user exists by google_id or email
         $user = User::where('google_id', $googleUser->getId())
@@ -50,29 +56,38 @@ class SocialAuthController extends Controller
                 ]);
             }
         } else {
+            // Generate a unique username from their Google name or email
+            $baseName = Str::slug(explode('@', $googleUser->getEmail())[0], '_');
+            $username = $baseName;
+            $counter = 1;
+            while (User::where('username', $username)->exists()) {
+                $username = $baseName . '_' . $counter++;
+            }
+
             // Create new user
             $user = User::create([
-                'name' => $googleUser->getName(),
-                'email' => $googleUser->getEmail(),
-                'google_id' => $googleUser->getId(),
-                'avatar' => $googleUser->getAvatar(),
-                'role' => $intendedRole,
+                'username'         => $username,
+                'email'            => $googleUser->getEmail(),
+                'google_id'        => $googleUser->getId(),
+                'avatar'           => $googleUser->getAvatar(),
+                'role'             => $intendedRole,
+                'password'         => Hash::make(Str::random(32)),
                 'email_verified_at' => now(),
             ]);
         }
 
         // Check if user is banned
         if ($user->is_banned) {
-            return redirect('/login')->withErrors(['error' => 'Your account has been suspended. Please contact support.']);
+            return redirect($loginRoute)->withErrors(['error' => 'Your account has been suspended. Please contact support.']);
         }
 
         Auth::login($user, true);
 
         // Redirect based on role
         if (in_array($user->role, ['admin', 'super_admin', 'shop_owner'])) {
-            return redirect('/dashboard');
+            return redirect('/vendor/dashboard');
         }
 
-        return redirect('/user-dashboard');
+        return redirect('/customer/dashboard');
     }
 }

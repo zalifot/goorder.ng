@@ -1,0 +1,331 @@
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+/**
+* @see \App\Http\Controllers\ProductCategoryController::store
+ * @see app/Http/Controllers/ProductCategoryController.php:29
+ * @route '/vendor/product-categories'
+ */
+export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: store.url(options),
+    method: 'post',
+})
+
+store.definition = {
+    methods: ["post"],
+    url: '/vendor/product-categories',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\ProductCategoryController::store
+ * @see app/Http/Controllers/ProductCategoryController.php:29
+ * @route '/vendor/product-categories'
+ */
+store.url = (options?: RouteQueryOptions) => {
+    return store.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\ProductCategoryController::store
+ * @see app/Http/Controllers/ProductCategoryController.php:29
+ * @route '/vendor/product-categories'
+ */
+store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: store.url(options),
+    method: 'post',
+})
+
+    /**
+* @see \App\Http\Controllers\ProductCategoryController::store
+ * @see app/Http/Controllers/ProductCategoryController.php:29
+ * @route '/vendor/product-categories'
+ */
+    const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: store.url(options),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\ProductCategoryController::store
+ * @see app/Http/Controllers/ProductCategoryController.php:29
+ * @route '/vendor/product-categories'
+ */
+        storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: store.url(options),
+            method: 'post',
+        })
+    
+    store.form = storeForm
+/**
+* @see \App\Http\Controllers\ProductCategoryController::update
+ * @see app/Http/Controllers/ProductCategoryController.php:52
+ * @route '/vendor/product-categories/{productCategory}'
+ */
+export const update = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+    url: update.url(args, options),
+    method: 'put',
+})
+
+update.definition = {
+    methods: ["put"],
+    url: '/vendor/product-categories/{productCategory}',
+} satisfies RouteDefinition<["put"]>
+
+/**
+* @see \App\Http\Controllers\ProductCategoryController::update
+ * @see app/Http/Controllers/ProductCategoryController.php:52
+ * @route '/vendor/product-categories/{productCategory}'
+ */
+update.url = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { productCategory: args }
+    }
+
+            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+            args = { productCategory: args.id }
+        }
+    
+    if (Array.isArray(args)) {
+        args = {
+                    productCategory: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+                        productCategory: typeof args.productCategory === 'object'
+                ? args.productCategory.id
+                : args.productCategory,
+                }
+
+    return update.definition.url
+            .replace('{productCategory}', parsedArgs.productCategory.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\ProductCategoryController::update
+ * @see app/Http/Controllers/ProductCategoryController.php:52
+ * @route '/vendor/product-categories/{productCategory}'
+ */
+update.put = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+    url: update.url(args, options),
+    method: 'put',
+})
+
+    /**
+* @see \App\Http\Controllers\ProductCategoryController::update
+ * @see app/Http/Controllers/ProductCategoryController.php:52
+ * @route '/vendor/product-categories/{productCategory}'
+ */
+    const updateForm = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: update.url(args, {
+                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                        _method: 'PUT',
+                        ...(options?.query ?? options?.mergeQuery ?? {}),
+                    }
+                }),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\ProductCategoryController::update
+ * @see app/Http/Controllers/ProductCategoryController.php:52
+ * @route '/vendor/product-categories/{productCategory}'
+ */
+        updateForm.put = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: update.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'PUT',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'post',
+        })
+    
+    update.form = updateForm
+/**
+* @see \App\Http\Controllers\ProductCategoryController::toggleStatus
+ * @see app/Http/Controllers/ProductCategoryController.php:110
+ * @route '/vendor/product-categories/{productCategory}/toggle-status'
+ */
+export const toggleStatus = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: toggleStatus.url(args, options),
+    method: 'patch',
+})
+
+toggleStatus.definition = {
+    methods: ["patch"],
+    url: '/vendor/product-categories/{productCategory}/toggle-status',
+} satisfies RouteDefinition<["patch"]>
+
+/**
+* @see \App\Http\Controllers\ProductCategoryController::toggleStatus
+ * @see app/Http/Controllers/ProductCategoryController.php:110
+ * @route '/vendor/product-categories/{productCategory}/toggle-status'
+ */
+toggleStatus.url = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { productCategory: args }
+    }
+
+            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+            args = { productCategory: args.id }
+        }
+    
+    if (Array.isArray(args)) {
+        args = {
+                    productCategory: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+                        productCategory: typeof args.productCategory === 'object'
+                ? args.productCategory.id
+                : args.productCategory,
+                }
+
+    return toggleStatus.definition.url
+            .replace('{productCategory}', parsedArgs.productCategory.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\ProductCategoryController::toggleStatus
+ * @see app/Http/Controllers/ProductCategoryController.php:110
+ * @route '/vendor/product-categories/{productCategory}/toggle-status'
+ */
+toggleStatus.patch = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: toggleStatus.url(args, options),
+    method: 'patch',
+})
+
+    /**
+* @see \App\Http\Controllers\ProductCategoryController::toggleStatus
+ * @see app/Http/Controllers/ProductCategoryController.php:110
+ * @route '/vendor/product-categories/{productCategory}/toggle-status'
+ */
+    const toggleStatusForm = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: toggleStatus.url(args, {
+                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                        _method: 'PATCH',
+                        ...(options?.query ?? options?.mergeQuery ?? {}),
+                    }
+                }),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\ProductCategoryController::toggleStatus
+ * @see app/Http/Controllers/ProductCategoryController.php:110
+ * @route '/vendor/product-categories/{productCategory}/toggle-status'
+ */
+        toggleStatusForm.patch = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: toggleStatus.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'PATCH',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'post',
+        })
+    
+    toggleStatus.form = toggleStatusForm
+/**
+* @see \App\Http\Controllers\ProductCategoryController::destroy
+ * @see app/Http/Controllers/ProductCategoryController.php:98
+ * @route '/vendor/product-categories/{productCategory}'
+ */
+export const destroy = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+    url: destroy.url(args, options),
+    method: 'delete',
+})
+
+destroy.definition = {
+    methods: ["delete"],
+    url: '/vendor/product-categories/{productCategory}',
+} satisfies RouteDefinition<["delete"]>
+
+/**
+* @see \App\Http\Controllers\ProductCategoryController::destroy
+ * @see app/Http/Controllers/ProductCategoryController.php:98
+ * @route '/vendor/product-categories/{productCategory}'
+ */
+destroy.url = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { productCategory: args }
+    }
+
+            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+            args = { productCategory: args.id }
+        }
+    
+    if (Array.isArray(args)) {
+        args = {
+                    productCategory: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+                        productCategory: typeof args.productCategory === 'object'
+                ? args.productCategory.id
+                : args.productCategory,
+                }
+
+    return destroy.definition.url
+            .replace('{productCategory}', parsedArgs.productCategory.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\ProductCategoryController::destroy
+ * @see app/Http/Controllers/ProductCategoryController.php:98
+ * @route '/vendor/product-categories/{productCategory}'
+ */
+destroy.delete = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+    url: destroy.url(args, options),
+    method: 'delete',
+})
+
+    /**
+* @see \App\Http\Controllers\ProductCategoryController::destroy
+ * @see app/Http/Controllers/ProductCategoryController.php:98
+ * @route '/vendor/product-categories/{productCategory}'
+ */
+    const destroyForm = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: destroy.url(args, {
+                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                        _method: 'DELETE',
+                        ...(options?.query ?? options?.mergeQuery ?? {}),
+                    }
+                }),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\ProductCategoryController::destroy
+ * @see app/Http/Controllers/ProductCategoryController.php:98
+ * @route '/vendor/product-categories/{productCategory}'
+ */
+        destroyForm.delete = (args: { productCategory: number | { id: number } } | [productCategory: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: destroy.url(args, {
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'DELETE',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'post',
+        })
+    
+    destroy.form = destroyForm
+const productCategories = {
+    store: Object.assign(store, store),
+update: Object.assign(update, update),
+toggleStatus: Object.assign(toggleStatus, toggleStatus),
+destroy: Object.assign(destroy, destroy),
+}
+
+export default productCategories

@@ -1,57 +1,49 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { dashboard } from '@/routes';
+import { dashboard } from '@/routes/vendor';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import {
-    DollarSign,
-    Package,
-    ShoppingCart,
-    Store,
-    TrendingDown,
-    TrendingUp,
-    Users,
-    Layers,
-    AlertTriangle,
-    Clock,
-    CheckCircle,
-    UserPlus,
-} from 'lucide-react';
+    Area,
+    AreaChart,
+    Bar,
+    BarChart,
+    Cell,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from 'recharts';
 
 interface Stats {
-    // Revenue & Sales
     total_revenue: number;
     today_revenue: number;
     monthly_revenue: number;
-    
-    // Orders
     total_orders: number;
     pending_orders: number;
     completed_orders: number;
     today_orders: number;
-    
-    // Products
     total_products: number;
     active_products: number;
     out_of_stock: number;
     low_stock: number;
-    
-    // Users
     total_users: number;
     new_users_today: number;
     new_users_month: number;
-    
-    // Shops
     total_shops: number;
     active_shops: number;
-    
-    // Categories
     total_categories: number;
     active_categories: number;
+    total_general_categories: number;
+    active_general_categories: number;
 }
 
 interface Props {
     stats: Stats;
+    weeklyRevenue: { name: string; value: number }[];
+    weeklyOrders: { name: string; orders: number }[];
     recentOrders: unknown[];
     recentProducts: unknown[];
 }
@@ -71,218 +63,299 @@ function formatCurrency(amount: number): string {
     }).format(amount);
 }
 
-export default function Dashboard({ stats }: Props) {
+export default function Dashboard({ stats, weeklyRevenue, weeklyOrders }: Props) {
+    const stockData = [
+        { name: 'In Stock', value: Math.max(0, stats.active_products - stats.low_stock - stats.out_of_stock), color: '#22c55e' },
+        { name: 'Low Stock', value: stats.low_stock, color: '#eab308' },
+        { name: 'Out of Stock', value: stats.out_of_stock, color: '#ef4444' },
+    ].filter(item => item.value > 0);
+
+    const shopStatusData = [
+        { name: 'Active', value: stats.active_shops, color: '#22c55e' },
+        { name: 'Inactive', value: Math.max(0, stats.total_shops - stats.active_shops), color: '#94a3b8' },
+    ].filter(item => item.value > 0);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl p-4">
-                <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold">Analytics Dashboard</h1>
+            <div className="flex h-full flex-1 flex-col gap-3 p-4">
+                {/* Header */}
+                <div>
+                    <h1 className="text-lg font-semibold">Dashboard</h1>
+                    <p className="text-xs text-muted-foreground">
+                        Quick snapshot of your business performance across all shops — revenue, orders, inventory, and shop activity at a glance.
+                    </p>
                 </div>
 
-                {/* Revenue Section */}
-                <div>
-                    <h2 className="mb-4 text-lg font-semibold text-muted-foreground">Revenue Overview</h2>
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-                                <DollarSign className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{formatCurrency(stats.total_revenue)}</div>
-                                <p className="text-xs text-muted-foreground">All time earnings</p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Today's Revenue</CardTitle>
-                                <TrendingUp className="h-4 w-4 text-green-600" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{formatCurrency(stats.today_revenue)}</div>
-                                <p className="text-xs text-muted-foreground">Revenue for today</p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
-                                <TrendingUp className="h-4 w-4 text-blue-600" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{formatCurrency(stats.monthly_revenue)}</div>
-                                <p className="text-xs text-muted-foreground">This month's earnings</p>
-                            </CardContent>
-                        </Card>
-                    </div>
+                {/* Key Metrics */}
+                <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
+                    <Card className="border border-border/40 shadow-none">
+                        <CardHeader className="pb-1 pt-3 px-4">
+                            <CardTitle className="text-xs font-normal text-muted-foreground">Revenue</CardTitle>
+                        </CardHeader>
+                        <CardContent className="px-4 pb-3">
+                            <p className="text-xl font-semibold">{formatCurrency(stats.total_revenue)}</p>
+                            <p className="text-xs text-muted-foreground">Today: {formatCurrency(stats.today_revenue)}</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="border border-border/40 shadow-none">
+                        <CardHeader className="pb-1 pt-3 px-4">
+                            <CardTitle className="text-xs font-normal text-muted-foreground">Orders</CardTitle>
+                        </CardHeader>
+                        <CardContent className="px-4 pb-3">
+                            <p className="text-xl font-semibold">{stats.total_orders}</p>
+                            <p className="text-xs text-muted-foreground">{stats.pending_orders} pending</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="border border-border/40 shadow-none">
+                        <CardHeader className="pb-1 pt-3 px-4">
+                            <CardTitle className="text-xs font-normal text-muted-foreground">Products</CardTitle>
+                        </CardHeader>
+                        <CardContent className="px-4 pb-3">
+                            <p className="text-xl font-semibold">{stats.total_products}</p>
+                            <p className="text-xs text-muted-foreground">{stats.active_products} active</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="border border-border/40 shadow-none">
+                        <CardHeader className="pb-1 pt-3 px-4">
+                            <CardTitle className="text-xs font-normal text-muted-foreground">Shops</CardTitle>
+                        </CardHeader>
+                        <CardContent className="px-4 pb-3">
+                            <p className="text-xl font-semibold">{stats.total_shops}</p>
+                            <p className="text-xs text-muted-foreground">{stats.active_shops} active</p>
+                        </CardContent>
+                    </Card>
                 </div>
 
-                {/* Orders Section */}
-                <div>
-                    <h2 className="mb-4 text-lg font-semibold text-muted-foreground">Orders Overview</h2>
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
-                                <ShoppingCart className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.total_orders}</div>
-                                <p className="text-xs text-muted-foreground">All time orders</p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Today's Orders</CardTitle>
-                                <Clock className="h-4 w-4 text-blue-600" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.today_orders}</div>
-                                <p className="text-xs text-muted-foreground">Orders placed today</p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Pending Orders</CardTitle>
-                                <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.pending_orders}</div>
-                                <p className="text-xs text-muted-foreground">Awaiting processing</p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Completed Orders</CardTitle>
-                                <CheckCircle className="h-4 w-4 text-green-600" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.completed_orders}</div>
-                                <p className="text-xs text-muted-foreground">Successfully delivered</p>
-                            </CardContent>
-                        </Card>
-                    </div>
+                {/* Charts Row */}
+                <div className="grid gap-3 lg:grid-cols-2">
+                    <Card className="border border-border/40 shadow-none">
+                        <CardHeader className="pb-2 pt-3 px-4">
+                            <CardTitle className="text-xs font-normal text-muted-foreground">Revenue This Week</CardTitle>
+                        </CardHeader>
+                        <CardContent className="px-4 pb-3">
+                            <div className="h-[180px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <AreaChart data={weeklyRevenue}>
+                                        <defs>
+                                            <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2} />
+                                                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                                            </linearGradient>
+                                        </defs>
+                                        <XAxis
+                                            dataKey="name"
+                                            axisLine={false}
+                                            tickLine={false}
+                                            tick={{ fontSize: 11, fill: '#94a3b8' }}
+                                        />
+                                        <YAxis hide />
+                                        <Tooltip
+                                            contentStyle={{
+                                                backgroundColor: 'hsl(var(--background))',
+                                                border: '1px solid hsl(var(--border))',
+                                                borderRadius: '4px',
+                                                fontSize: '12px',
+                                                padding: '6px 10px'
+                                            }}
+                                            formatter={(value) => [formatCurrency(Number(value)), 'Revenue']}
+                                        />
+                                        <Area
+                                            type="monotone"
+                                            dataKey="value"
+                                            stroke="#3b82f6"
+                                            strokeWidth={1.5}
+                                            fill="url(#colorRevenue)"
+                                        />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="border border-border/40 shadow-none">
+                        <CardHeader className="pb-2 pt-3 px-4">
+                            <CardTitle className="text-xs font-normal text-muted-foreground">Orders This Week</CardTitle>
+                        </CardHeader>
+                        <CardContent className="px-4 pb-3">
+                            <div className="h-[180px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart data={weeklyOrders}>
+                                        <XAxis
+                                            dataKey="name"
+                                            axisLine={false}
+                                            tickLine={false}
+                                            tick={{ fontSize: 11, fill: '#94a3b8' }}
+                                        />
+                                        <YAxis hide />
+                                        <Tooltip
+                                            contentStyle={{
+                                                backgroundColor: 'hsl(var(--background))',
+                                                border: '1px solid hsl(var(--border))',
+                                                borderRadius: '4px',
+                                                fontSize: '12px',
+                                                padding: '6px 10px'
+                                            }}
+                                        />
+                                        <Bar
+                                            dataKey="orders"
+                                            fill="#8b5cf6"
+                                            radius={[3, 3, 0, 0]}
+                                        />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
 
-                {/* Products Section */}
-                <div>
-                    <h2 className="mb-4 text-lg font-semibold text-muted-foreground">Products Overview</h2>
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total Products</CardTitle>
-                                <Package className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.total_products}</div>
-                                <p className="text-xs text-muted-foreground">Products in catalog</p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Active Products</CardTitle>
-                                <CheckCircle className="h-4 w-4 text-green-600" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.active_products}</div>
-                                <p className="text-xs text-muted-foreground">Currently active</p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Low Stock</CardTitle>
-                                <TrendingDown className="h-4 w-4 text-yellow-600" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.low_stock}</div>
-                                <p className="text-xs text-muted-foreground">Need restocking</p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Out of Stock</CardTitle>
-                                <AlertTriangle className="h-4 w-4 text-red-600" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.out_of_stock}</div>
-                                <p className="text-xs text-muted-foreground">Requires attention</p>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
+                {/* Bottom Row */}
+                <div className="grid gap-3 lg:grid-cols-3">
+                    <Card className="border border-border/40 shadow-none">
+                        <CardHeader className="pb-2 pt-3 px-4">
+                            <CardTitle className="text-xs font-normal text-muted-foreground">Inventory Status</CardTitle>
+                        </CardHeader>
+                        <CardContent className="px-4 pb-3">
+                            <div className="flex items-center gap-4">
+                                <div className="h-[110px] w-[110px]">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <PieChart>
+                                            <Pie
+                                                data={stockData.length > 0 ? stockData : [{ name: 'No Data', value: 1, color: '#e2e8f0' }]}
+                                                cx="50%"
+                                                cy="50%"
+                                                innerRadius={32}
+                                                outerRadius={48}
+                                                paddingAngle={2}
+                                                dataKey="value"
+                                            >
+                                                {(stockData.length > 0 ? stockData : [{ name: 'No Data', value: 1, color: '#e2e8f0' }]).map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                                ))}
+                                            </Pie>
+                                            <Tooltip
+                                                contentStyle={{
+                                                    backgroundColor: 'hsl(var(--background))',
+                                                    border: '1px solid hsl(var(--border))',
+                                                    borderRadius: '4px',
+                                                    fontSize: '12px',
+                                                    padding: '6px 10px'
+                                                }}
+                                            />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                </div>
+                                <div className="flex-1 space-y-1.5">
+                                    {stockData.length > 0 ? stockData.map((item, i) => (
+                                        <div key={i} className="flex items-center justify-between text-xs">
+                                            <div className="flex items-center gap-2">
+                                                <div className="h-2 w-2 rounded-full" style={{ backgroundColor: item.color }} />
+                                                <span className="text-muted-foreground">{item.name}</span>
+                                            </div>
+                                            <span className="font-medium">{item.value}</span>
+                                        </div>
+                                    )) : (
+                                        <p className="text-xs text-muted-foreground">No products yet</p>
+                                    )}
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
 
-                {/* Users & Shops Section */}
-                <div>
-                    <h2 className="mb-4 text-lg font-semibold text-muted-foreground">Users & Shops</h2>
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-                                <Users className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.total_users}</div>
-                                <p className="text-xs text-muted-foreground">Registered users</p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">New Users (Today)</CardTitle>
-                                <UserPlus className="h-4 w-4 text-green-600" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.new_users_today}</div>
-                                <p className="text-xs text-muted-foreground">Joined today</p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total Shops</CardTitle>
-                                <Store className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.total_shops}</div>
-                                <p className="text-xs text-muted-foreground">Registered shops</p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Active Shops</CardTitle>
-                                <Store className="h-4 w-4 text-green-600" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.active_shops}</div>
-                                <p className="text-xs text-muted-foreground">Currently active</p>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
+                    <Card className="border border-border/40 shadow-none">
+                        <CardHeader className="pb-2 pt-3 px-4">
+                            <CardTitle className="text-xs font-normal text-muted-foreground">Shop Status</CardTitle>
+                        </CardHeader>
+                        <CardContent className="px-4 pb-3">
+                            <div className="flex items-center gap-4">
+                                <div className="h-[110px] w-[110px]">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <PieChart>
+                                            <Pie
+                                                data={shopStatusData.length > 0 ? shopStatusData : [{ name: 'No Data', value: 1, color: '#e2e8f0' }]}
+                                                cx="50%"
+                                                cy="50%"
+                                                innerRadius={32}
+                                                outerRadius={48}
+                                                paddingAngle={2}
+                                                dataKey="value"
+                                            >
+                                                {(shopStatusData.length > 0 ? shopStatusData : [{ name: 'No Data', value: 1, color: '#e2e8f0' }]).map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                                ))}
+                                            </Pie>
+                                            <Tooltip
+                                                contentStyle={{
+                                                    backgroundColor: 'hsl(var(--background))',
+                                                    border: '1px solid hsl(var(--border))',
+                                                    borderRadius: '4px',
+                                                    fontSize: '12px',
+                                                    padding: '6px 10px'
+                                                }}
+                                            />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                </div>
+                                <div className="flex-1 space-y-1.5">
+                                    {shopStatusData.length > 0 ? shopStatusData.map((item, i) => (
+                                        <div key={i} className="flex items-center justify-between text-xs">
+                                            <div className="flex items-center gap-2">
+                                                <div className="h-2 w-2 rounded-full" style={{ backgroundColor: item.color }} />
+                                                <span className="text-muted-foreground">{item.name}</span>
+                                            </div>
+                                            <span className="font-medium">{item.value}</span>
+                                        </div>
+                                    )) : (
+                                        <p className="text-xs text-muted-foreground">No shops yet</p>
+                                    )}
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
 
-                {/* Categories Section */}
-                <div>
-                    <h2 className="mb-4 text-lg font-semibold text-muted-foreground">Categories</h2>
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total Categories</CardTitle>
-                                <Layers className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.total_categories}</div>
-                                <p className="text-xs text-muted-foreground">Product categories</p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Active Categories</CardTitle>
-                                <CheckCircle className="h-4 w-4 text-green-600" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{stats.active_categories}</div>
-                                <p className="text-xs text-muted-foreground">Visible categories</p>
-                            </CardContent>
-                        </Card>
-                    </div>
+                    <Card className="border border-border/40 shadow-none">
+                        <CardHeader className="pb-2 pt-3 px-4">
+                            <CardTitle className="text-xs font-normal text-muted-foreground">Overview</CardTitle>
+                        </CardHeader>
+                        <CardContent className="px-4 pb-3">
+                            <div className="space-y-2">
+                                <div className="flex items-center justify-between text-xs">
+                                    <span className="text-muted-foreground">Product Categories</span>
+                                    <span className="font-medium">{stats.total_categories}</span>
+                                </div>
+                                <div className="flex items-center justify-between text-xs">
+                                    <span className="text-muted-foreground">Active Categories</span>
+                                    <span className="font-medium">{stats.active_categories}</span>
+                                </div>
+                                {stats.total_users > 0 && (
+                                    <>
+                                        <div className="my-2 border-t border-border/30" />
+                                        <div className="flex items-center justify-between text-xs">
+                                            <span className="text-muted-foreground">Total Users</span>
+                                            <span className="font-medium">{stats.total_users}</span>
+                                        </div>
+                                        <div className="flex items-center justify-between text-xs">
+                                            <span className="text-muted-foreground">New This Month</span>
+                                            <span className="font-medium">{stats.new_users_month}</span>
+                                        </div>
+                                    </>
+                                )}
+                                {stats.total_general_categories > 0 && (
+                                    <>
+                                        <div className="my-2 border-t border-border/30" />
+                                        <div className="flex items-center justify-between text-xs">
+                                            <span className="text-muted-foreground">Business Categories</span>
+                                            <span className="font-medium">{stats.total_general_categories}</span>
+                                        </div>
+                                        <div className="flex items-center justify-between text-xs">
+                                            <span className="text-muted-foreground">Active</span>
+                                            <span className="font-medium">{stats.active_general_categories}</span>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
         </AppLayout>

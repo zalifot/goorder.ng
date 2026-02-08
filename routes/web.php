@@ -1,7 +1,12 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WhatsAppController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\GeneralCategoryController;
+use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\DeliveryOptionController;
 use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\ProductController;
@@ -58,14 +63,24 @@ Route::get('/marketplace', function () {
 Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
-// Public vendor page
-Route::get('/vendor/{publicId}', function (string $publicId) {
+// Forgot Password Page (GET - show form)
+Route::get('/forgot-password', function () {
+    return Inertia::render('auth/forgot-password');
+})->middleware('guest')->name('password.request');
+
+// Email Verification Notice Route
+Route::get('/email/verify', function () {
+    return Inertia::render('auth/verify-email');
+})->middleware('auth')->name('verification.notice');
+
+// Public shop page
+Route::get('/shop/{publicId}', function (string $publicId) {
     $shop = Shop::where('public_id', $publicId)->firstOrFail();
     $products = \App\Models\Product::where('shop_public_id', $publicId)
         ->with('category')
         ->where('is_active', true)
         ->get();
-    $categories = \App\Models\Category::whereIn('id', $products->pluck('category_id')->unique())
+    $categories = \App\Models\ProductCategory::whereIn('id', $products->pluck('category_id')->unique())
         ->where('is_active', true)
         ->get();
     
@@ -118,15 +133,15 @@ Route::get('/vendor/{publicId}', function (string $publicId) {
         'deliverySlots' => $deliverySlots,
         'deliveryStates' => $deliveryStates,
     ]);
-})->name('vendor.show');
+})->name('shop.show');
 
-// Admin Auth Routes
+// Vendor Auth Routes
 Route::middleware('guest')->group(function () {
     Route::get('vendor-login', function () {
-        return Inertia::render('admin/auth/login', [
+        return Inertia::render('auth/vendor-login', [
             'canResetPassword' => Features::enabled(Features::resetPasswords()),
         ]);
-    })->name('admin.login');
+    })->name('vendor.login');
 
     Route::post('vendor-login', function (Request $request) {
         $credentials = $request->validate([
@@ -136,13 +151,21 @@ Route::middleware('guest')->group(function () {
 
         $user = User::where('email', $credentials['email'])->first();
 
-        if ($user && in_array($user->role, ['admin', 'super_admin']) && Auth::attempt($credentials, $request->boolean('remember'))) {
+        // Allow admin, super_admin, and shop_owner to login through vendor area
+        if ($user && in_array($user->role, ['admin', 'super_admin', 'shop_owner']) && Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/vendor/dashboard');
+        }
+
+        // If user exists but has customer role, show appropriate message
+        if ($user && $user->role === 'user') {
+            return back()->withErrors([
+                'email' => 'Please use the customer login page to access your account.',
+            ]);
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records or you do not have admin access.',
+            'email' => 'The provided credentials do not match our records.',
         ]);
     });
 
@@ -167,31 +190,40 @@ Route::middleware('guest')->group(function () {
 
         Auth::login($user);
 
-        return redirect('/dashboard');
+        return redirect('/vendor/dashboard');
     });
 
-    // User Auth Routes
-    Route::get('login', function () {
-        return Inertia::render('auth/user-login', [
+    // Customer Auth Routes
+    Route::get('customer-login', function () {
+        return Inertia::render('auth/customer-login', [
             'canResetPassword' => Features::enabled(Features::resetPasswords()),
         ]);
+    })->name('customer.login');
+
+    // Keep /login as alias for customer-login (for Laravel's default auth)
+    Route::get('login', function () {
+        return redirect('/customer-login');
     })->name('login');
 
-    Route::post('login', function (Request $request) {
+    Route::post('customer-login', function (Request $request) {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        $user = User::where('email', $credentials['email'])->first();
+
+        // Only allow users with 'user' role to login through customer area
+        if ($user && $user->role === 'user' && Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            $user = Auth::user();
-            
-            if (in_array($user->role, ['admin', 'super_admin'])) {
-                return redirect()->intended('/dashboard');
-            }
-            
-            return redirect()->intended('/user-dashboard');
+            return redirect()->intended('/customer/dashboard');
+        }
+
+        // If user exists but has vendor role, show appropriate message
+        if ($user && in_array($user->role, ['admin', 'super_admin', 'shop_owner'])) {
+            return back()->withErrors([
+                'email' => 'Please use the vendor login page to access your account.',
+            ]);
         }
 
         return back()->withErrors([
@@ -199,11 +231,16 @@ Route::middleware('guest')->group(function () {
         ]);
     });
 
+    Route::get('customer-register', function () {
+        return Inertia::render('auth/customer-register');
+    })->name('customer.register');
+
+    // Keep /register as alias for customer-register
     Route::get('register', function () {
-        return Inertia::render('auth/user-register');
+        return redirect('/customer-register');
     })->name('register');
 
-    Route::post('register', function (Request $request) {
+    Route::post('customer-register', function (Request $request) {
         $validated = $request->validate([
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -219,7 +256,7 @@ Route::middleware('guest')->group(function () {
 
         Auth::login($user);
 
-        return redirect('/user-dashboard');
+        return redirect('/customer/dashboard');
     });
 });
 
@@ -230,37 +267,55 @@ Route::post('logout', function (Request $request) {
     return redirect('/');
 })->name('logout');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('user-dashboard', function () {
-        return Inertia::render('user-dashboard');
-    })->name('user.dashboard');
-    
-    Route::get('user/orders', function () {
-        return Inertia::render('user/orders');
-    })->name('user.orders');
+// Customer Routes
+Route::middleware(['auth'])->prefix('customer')->group(function () {
+    Route::get('dashboard', [CustomerController::class, 'dashboard'])->name('customer.dashboard');
 
-    Route::get('user/cart', function () {
-        return Inertia::render('user/cart');
-    })->name('user.cart');
+    // Orders
+    Route::get('orders', [OrderController::class, 'index'])->name('customer.orders');
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('customer.orders.show');
 
-    Route::get('user/favorites', function () {
-        return Inertia::render('user/favorites');
-    })->name('user.favorites');
+    // Transactions
+    Route::get('transactions', [OrderController::class, 'transactions'])->name('customer.transactions');
+
+    // Cart
+    Route::get('cart', [CartController::class, 'index'])->name('customer.cart');
+    Route::post('cart/add', [CartController::class, 'addItem'])->name('customer.cart.add');
+    Route::patch('cart/items/{cartItem}', [CartController::class, 'updateItem'])->name('customer.cart.update');
+    Route::delete('cart/items/{cartItem}', [CartController::class, 'removeItem'])->name('customer.cart.remove');
+    Route::delete('cart/{cart}', [CartController::class, 'clearCart'])->name('customer.cart.clear');
+
+    // Checkout
+    Route::get('checkout', [OrderController::class, 'checkout'])->name('customer.checkout');
+    Route::post('checkout', [OrderController::class, 'store'])->name('customer.checkout.store');
 });
 
-Route::middleware(['auth', 'verified', 'role:admin,super_admin,shop_owner'])->group(function () {
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// API for cart (vendor/show.tsx)
+Route::middleware(['auth'])->prefix('api')->group(function () {
+    Route::get('cart/shop/{shop}', [CartController::class, 'getShopCart'])->name('api.cart.shop');
+});
 
-    // Admin Categories routes
-    Route::get('categories', [CategoryController::class, 'index'])->name('categories');
-    Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
-    Route::put('categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::patch('categories/{category}/toggle-status', [CategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
-    Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+// Vendor Routes
+Route::middleware(['auth', 'role:admin,super_admin,shop_owner'])->prefix('vendor')->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('vendor.dashboard');
 
-    Route::get('orders', function () {
-        return Inertia::render('orders');
-    })->name('orders');
+    // Product Categories routes
+    Route::get('product-categories', [ProductCategoryController::class, 'index'])->name('product-categories');
+    Route::post('product-categories', [ProductCategoryController::class, 'store'])->name('product-categories.store');
+    Route::put('product-categories/{productCategory}', [ProductCategoryController::class, 'update'])->name('product-categories.update');
+    Route::patch('product-categories/{productCategory}/toggle-status', [ProductCategoryController::class, 'toggleStatus'])->name('product-categories.toggle-status');
+    Route::delete('product-categories/{productCategory}', [ProductCategoryController::class, 'destroy'])->name('product-categories.destroy');
+
+    // General Categories routes (Admin Only)
+    Route::middleware('role:admin,super_admin')->group(function () {
+        Route::get('general-categories', [GeneralCategoryController::class, 'index'])->name('general-categories');
+        Route::post('general-categories', [GeneralCategoryController::class, 'store'])->name('general-categories.store');
+        Route::put('general-categories/{generalCategory}', [GeneralCategoryController::class, 'update'])->name('general-categories.update');
+        Route::patch('general-categories/{generalCategory}/toggle-status', [GeneralCategoryController::class, 'toggleStatus'])->name('general-categories.toggle-status');
+        Route::delete('general-categories/{generalCategory}', [GeneralCategoryController::class, 'destroy'])->name('general-categories.destroy');
+    });
+
+    Route::get('orders', [ShopController::class, 'allOrders'])->name('orders');
 
     // Delivery Options routes
     Route::get('delivery-options', [DeliveryOptionController::class, 'index'])->name('delivery-options');
@@ -275,12 +330,31 @@ Route::middleware(['auth', 'verified', 'role:admin,super_admin,shop_owner'])->gr
     Route::delete('delivery-options/slots/{slot}', [DeliveryOptionController::class, 'destroySlot'])->name('delivery-options.slots.destroy');
 
     Route::get('integrations', function () {
-        return Inertia::render('integrations');
+        $whatsapp = \App\Models\WhatsappIntegration::where('user_id', auth()->id())->first();
+        $shops = \App\Models\Shop::where('user_id', auth()->id())
+            ->withCount(['products' => fn ($q) => $q->where('is_active', true)])
+            ->get(['id', 'name', 'public_id', 'image']);
+        return Inertia::render('integrations', [
+            'whatsapp' => $whatsapp ? [
+                'connected'            => true,
+                'display_phone_number' => $whatsapp->display_phone_number,
+                'verified_name'        => $whatsapp->verified_name,
+                'waba_name'            => $whatsapp->waba_name,
+                'quality_rating'       => $whatsapp->quality_rating,
+                'catalog_id'           => $whatsapp->catalog_id,
+                'catalog_name'         => $whatsapp->catalog_name,
+                'commerce_enabled'     => $whatsapp->commerce_enabled,
+                'last_synced_at'       => $whatsapp->last_synced_at?->diffForHumans(),
+            ] : ['connected' => false],
+            'shops' => $shops,
+        ]);
     })->name('integrations');
+    Route::post('integrations/whatsapp/connect', [WhatsAppController::class, 'connect'])->name('integrations.whatsapp.connect');
+    Route::delete('integrations/whatsapp/disconnect', [WhatsAppController::class, 'disconnect'])->name('integrations.whatsapp.disconnect');
+    Route::post('integrations/whatsapp/catalog/setup', [WhatsAppController::class, 'setupCatalog'])->name('integrations.whatsapp.catalog.setup');
+    Route::post('integrations/whatsapp/catalog/sync', [WhatsAppController::class, 'syncProducts'])->name('integrations.whatsapp.catalog.sync');
 
-    Route::get('transactions', function () {
-        return Inertia::render('transactions');
-    })->name('transactions');
+    Route::get('transactions', [ShopController::class, 'allTransactions'])->name('transactions');
 
     Route::get('wallet', function () {
         return Inertia::render('wallet');
@@ -311,6 +385,9 @@ Route::middleware(['auth', 'verified', 'role:admin,super_admin,shop_owner'])->gr
     // Shop routes
     Route::get('/shops', [ShopController::class, 'index'])->name('shops.index');
     Route::get('/manage/shop/{publicId}', [ShopController::class, 'show'])->name('shops.show');
+    Route::get('/manage/shop/{publicId}/analytics', [ShopController::class, 'analytics'])->name('shops.analytics');
+    Route::get('/manage/shop/{publicId}/orders', [ShopController::class, 'shopOrders'])->name('shops.orders');
+    Route::get('/manage/shop/{publicId}/transactions', [ShopController::class, 'shopTransactions'])->name('shops.transactions');
     Route::post('/shops', [ShopController::class, 'store'])->name('shops.store');
     Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shops.update');
     Route::patch('/shops/{shop}/toggle-active', [ShopController::class, 'toggleActive'])->name('shops.toggle-active');

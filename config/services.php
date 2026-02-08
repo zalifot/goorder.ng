@@ -41,4 +41,13 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI', '/auth/google/callback'),
     ],
 
+    'meta' => [
+        'app_id'               => env('META_APP_ID'),
+        'app_secret'           => env('META_APP_SECRET'),
+        'graph_version'        => env('META_GRAPH_API_VERSION', 'v21.0'),
+        'webhook_verify_token' => env('WHATSAPP_WEBHOOK_VERIFY_TOKEN'),
+        'platform_token'       => env('WHATSAPP_PLATFORM_TOKEN'),
+        'config_id'            => env('META_CONFIG_ID'),
+    ],
+
 ];

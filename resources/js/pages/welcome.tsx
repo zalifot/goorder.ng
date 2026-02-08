@@ -35,7 +35,7 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
 
                         <div className="flex items-center gap-4">
                             {auth.user ? (
-                                <Link href="/dashboard">
+                                <Link href={auth.user.role === 'user' ? '/customer/dashboard' : '/vendor/dashboard'}>
                                     <Button size="sm" className="rounded-full bg-emerald-600 px-5 hover:bg-emerald-700">
                                         Dashboard
                                     </Button>
@@ -168,8 +168,6 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                     </div>
                 </section>
 
-                // ...existing code...
-
                 {/* Features Section */}
                 <section id="features" className="bg-gray-900 py-28 dark:bg-black">
                     <div className="mx-auto max-w-6xl px-6">
@@ -286,7 +284,7 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                                         <Link href="/vendor-login" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Vendor Login</Link>
                                     </li>
                                     <li>
-                                        <Link href="/login" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Customer Login</Link>
+                                        <Link href="/customer-login" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Customer Login</Link>
                                     </li>
                                     <li>
                                         <a href="mailto:support@goorder.ng" className="text-gray-600 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400">Help Center</a>

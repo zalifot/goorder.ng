@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\PlatformController::store
  * @see app/Http/Controllers/PlatformController.php:236
- * @route '/platform/admins'
+ * @route '/vendor/platform/admins'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -11,13 +11,13 @@ export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => (
 
 store.definition = {
     methods: ["post"],
-    url: '/platform/admins',
+    url: '/vendor/platform/admins',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\PlatformController::store
  * @see app/Http/Controllers/PlatformController.php:236
- * @route '/platform/admins'
+ * @route '/vendor/platform/admins'
  */
 store.url = (options?: RouteQueryOptions) => {
     return store.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ store.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\PlatformController::store
  * @see app/Http/Controllers/PlatformController.php:236
- * @route '/platform/admins'
+ * @route '/vendor/platform/admins'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -36,7 +36,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     /**
 * @see \App\Http\Controllers\PlatformController::store
  * @see app/Http/Controllers/PlatformController.php:236
- * @route '/platform/admins'
+ * @route '/vendor/platform/admins'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(options),
@@ -46,7 +46,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             /**
 * @see \App\Http\Controllers\PlatformController::store
  * @see app/Http/Controllers/PlatformController.php:236
- * @route '/platform/admins'
+ * @route '/vendor/platform/admins'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(options),
@@ -57,7 +57,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 /**
 * @see \App\Http\Controllers\PlatformController::destroy
  * @see app/Http/Controllers/PlatformController.php:264
- * @route '/platform/admins/{user}'
+ * @route '/vendor/platform/admins/{user}'
  */
 export const destroy = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
@@ -66,13 +66,13 @@ export const destroy = (args: { user: string | number } | [user: string | number
 
 destroy.definition = {
     methods: ["delete"],
-    url: '/platform/admins/{user}',
+    url: '/vendor/platform/admins/{user}',
 } satisfies RouteDefinition<["delete"]>
 
 /**
 * @see \App\Http\Controllers\PlatformController::destroy
  * @see app/Http/Controllers/PlatformController.php:264
- * @route '/platform/admins/{user}'
+ * @route '/vendor/platform/admins/{user}'
  */
 destroy.url = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -100,7 +100,7 @@ destroy.url = (args: { user: string | number } | [user: string | number ] | stri
 /**
 * @see \App\Http\Controllers\PlatformController::destroy
  * @see app/Http/Controllers/PlatformController.php:264
- * @route '/platform/admins/{user}'
+ * @route '/vendor/platform/admins/{user}'
  */
 destroy.delete = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
@@ -110,7 +110,7 @@ destroy.delete = (args: { user: string | number } | [user: string | number ] | s
     /**
 * @see \App\Http\Controllers\PlatformController::destroy
  * @see app/Http/Controllers/PlatformController.php:264
- * @route '/platform/admins/{user}'
+ * @route '/vendor/platform/admins/{user}'
  */
     const destroyForm = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
@@ -125,7 +125,7 @@ destroy.delete = (args: { user: string | number } | [user: string | number ] | s
             /**
 * @see \App\Http\Controllers\PlatformController::destroy
  * @see app/Http/Controllers/PlatformController.php:264
- * @route '/platform/admins/{user}'
+ * @route '/vendor/platform/admins/{user}'
  */
         destroyForm.delete = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {

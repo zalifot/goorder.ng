@@ -66,7 +66,7 @@ interface Props {
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Delivery Options',
-        href: '/delivery-options',
+        href: '/vendor/delivery-options',
     },
 ];
 
@@ -85,7 +85,7 @@ export default function DeliveryOptions({ states = [], slots = [], shops = [], s
     
     // Shop selection handler
     const handleShopChange = (shopId: string) => {
-        router.get('/delivery-options', { shop_id: shopId }, { preserveState: true });
+        router.get('/vendor/delivery-options', { shop_id: shopId }, { preserveState: true });
     };
     
     // State Dialog
@@ -144,14 +144,14 @@ export default function DeliveryOptions({ states = [], slots = [], shops = [], s
     const submitState = (e: React.FormEvent) => {
         e.preventDefault();
         if (editingState) {
-            stateForm.put(`/delivery-options/states/${editingState.id}`, {
+            stateForm.put(`/vendor/delivery-options/states/${editingState.id}`, {
                 onSuccess: () => {
                     setStateDialogOpen(false);
                     stateForm.reset();
                 },
             });
         } else {
-            stateForm.post('/delivery-options/states', {
+            stateForm.post('/vendor/delivery-options/states', {
                 onSuccess: () => {
                     setStateDialogOpen(false);
                     stateForm.reset();
@@ -162,7 +162,7 @@ export default function DeliveryOptions({ states = [], slots = [], shops = [], s
 
     const deleteState = (state: DeliveryState) => {
         if (confirm(`Delete "${state.name}" and all its locations?`)) {
-            router.delete(`/delivery-options/states/${state.id}`);
+            router.delete(`/vendor/delivery-options/states/${state.id}`);
         }
     };
 
@@ -191,14 +191,14 @@ export default function DeliveryOptions({ states = [], slots = [], shops = [], s
     const submitLocation = (e: React.FormEvent) => {
         e.preventDefault();
         if (editingLocation) {
-            locationForm.put(`/delivery-options/locations/${editingLocation.id}`, {
+            locationForm.put(`/vendor/delivery-options/locations/${editingLocation.id}`, {
                 onSuccess: () => {
                     setLocationDialogOpen(false);
                     locationForm.reset();
                 },
             });
         } else {
-            locationForm.post('/delivery-options/locations', {
+            locationForm.post('/vendor/delivery-options/locations', {
                 onSuccess: () => {
                     setLocationDialogOpen(false);
                     locationForm.reset();
@@ -209,7 +209,7 @@ export default function DeliveryOptions({ states = [], slots = [], shops = [], s
 
     const deleteLocation = (location: DeliveryLocation) => {
         if (confirm(`Delete location "${location.name}"?`)) {
-            router.delete(`/delivery-options/locations/${location.id}`);
+            router.delete(`/vendor/delivery-options/locations/${location.id}`);
         }
     };
 
@@ -240,14 +240,14 @@ export default function DeliveryOptions({ states = [], slots = [], shops = [], s
     const submitSlot = (e: React.FormEvent) => {
         e.preventDefault();
         if (editingSlot) {
-            slotForm.put(`/delivery-options/slots/${editingSlot.id}`, {
+            slotForm.put(`/vendor/delivery-options/slots/${editingSlot.id}`, {
                 onSuccess: () => {
                     setSlotDialogOpen(false);
                     slotForm.reset();
                 },
             });
         } else {
-            slotForm.post('/delivery-options/slots', {
+            slotForm.post('/vendor/delivery-options/slots', {
                 onSuccess: () => {
                     setSlotDialogOpen(false);
                     slotForm.reset();
@@ -258,7 +258,7 @@ export default function DeliveryOptions({ states = [], slots = [], shops = [], s
 
     const deleteSlot = (slot: DeliverySlot) => {
         if (confirm(`Delete this delivery slot?`)) {
-            router.delete(`/delivery-options/slots/${slot.id}`);
+            router.delete(`/vendor/delivery-options/slots/${slot.id}`);
         }
     };
 

@@ -1,85 +1,66 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
 /**
- * @see routes/web.php:62
- * @route '/vendor/{publicId}'
+ * @see routes/web.php:140
+ * @route '/vendor-login'
  */
-export const show = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: show.url(args, options),
+export const login = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: login.url(options),
     method: 'get',
 })
 
-show.definition = {
+login.definition = {
     methods: ["get","head"],
-    url: '/vendor/{publicId}',
+    url: '/vendor-login',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:62
- * @route '/vendor/{publicId}'
+ * @see routes/web.php:140
+ * @route '/vendor-login'
  */
-show.url = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions) => {
-    if (typeof args === 'string' || typeof args === 'number') {
-        args = { publicId: args }
-    }
-
-    
-    if (Array.isArray(args)) {
-        args = {
-                    publicId: args[0],
-                }
-    }
-
-    args = applyUrlDefaults(args)
-
-    const parsedArgs = {
-                        publicId: args.publicId,
-                }
-
-    return show.definition.url
-            .replace('{publicId}', parsedArgs.publicId.toString())
-            .replace(/\/+$/, '') + queryParams(options)
+login.url = (options?: RouteQueryOptions) => {
+    return login.definition.url + queryParams(options)
 }
 
 /**
- * @see routes/web.php:62
- * @route '/vendor/{publicId}'
+ * @see routes/web.php:140
+ * @route '/vendor-login'
  */
-show.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: show.url(args, options),
+login.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: login.url(options),
     method: 'get',
 })
 /**
- * @see routes/web.php:62
- * @route '/vendor/{publicId}'
+ * @see routes/web.php:140
+ * @route '/vendor-login'
  */
-show.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: show.url(args, options),
+login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: login.url(options),
     method: 'head',
 })
 
     /**
- * @see routes/web.php:62
- * @route '/vendor/{publicId}'
+ * @see routes/web.php:140
+ * @route '/vendor-login'
  */
-    const showForm = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: show.url(args, options),
+    const loginForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: login.url(options),
         method: 'get',
     })
 
             /**
- * @see routes/web.php:62
- * @route '/vendor/{publicId}'
+ * @see routes/web.php:140
+ * @route '/vendor-login'
  */
-        showForm.get = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: show.url(args, options),
+        loginForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: login.url(options),
             method: 'get',
         })
             /**
- * @see routes/web.php:62
- * @route '/vendor/{publicId}'
+ * @see routes/web.php:140
+ * @route '/vendor-login'
  */
-        showForm.head = (args: { publicId: string | number } | [publicId: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: show.url(args, {
+        loginForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: login.url({
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -88,9 +69,9 @@ show.head = (args: { publicId: string | number } | [publicId: string | number ] 
             method: 'get',
         })
     
-    show.form = showForm
+    login.form = loginForm
 /**
- * @see routes/web.php:150
+ * @see routes/web.php:173
  * @route '/vendor-register'
  */
 export const register = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -104,7 +85,7 @@ register.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:150
+ * @see routes/web.php:173
  * @route '/vendor-register'
  */
 register.url = (options?: RouteQueryOptions) => {
@@ -112,7 +93,7 @@ register.url = (options?: RouteQueryOptions) => {
 }
 
 /**
- * @see routes/web.php:150
+ * @see routes/web.php:173
  * @route '/vendor-register'
  */
 register.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -120,7 +101,7 @@ register.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
- * @see routes/web.php:150
+ * @see routes/web.php:173
  * @route '/vendor-register'
  */
 register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -129,7 +110,7 @@ register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
- * @see routes/web.php:150
+ * @see routes/web.php:173
  * @route '/vendor-register'
  */
     const registerForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -138,7 +119,7 @@ register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
- * @see routes/web.php:150
+ * @see routes/web.php:173
  * @route '/vendor-register'
  */
         registerForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -146,7 +127,7 @@ register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
- * @see routes/web.php:150
+ * @see routes/web.php:173
  * @route '/vendor-register'
  */
         registerForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -160,9 +141,88 @@ register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
     
     register.form = registerForm
+/**
+* @see \App\Http\Controllers\DashboardController::dashboard
+ * @see app/Http/Controllers/DashboardController.php:17
+ * @route '/vendor/dashboard'
+ */
+export const dashboard = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: dashboard.url(options),
+    method: 'get',
+})
+
+dashboard.definition = {
+    methods: ["get","head"],
+    url: '/vendor/dashboard',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\DashboardController::dashboard
+ * @see app/Http/Controllers/DashboardController.php:17
+ * @route '/vendor/dashboard'
+ */
+dashboard.url = (options?: RouteQueryOptions) => {
+    return dashboard.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\DashboardController::dashboard
+ * @see app/Http/Controllers/DashboardController.php:17
+ * @route '/vendor/dashboard'
+ */
+dashboard.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: dashboard.url(options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\DashboardController::dashboard
+ * @see app/Http/Controllers/DashboardController.php:17
+ * @route '/vendor/dashboard'
+ */
+dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: dashboard.url(options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\DashboardController::dashboard
+ * @see app/Http/Controllers/DashboardController.php:17
+ * @route '/vendor/dashboard'
+ */
+    const dashboardForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: dashboard.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\DashboardController::dashboard
+ * @see app/Http/Controllers/DashboardController.php:17
+ * @route '/vendor/dashboard'
+ */
+        dashboardForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: dashboard.url(options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\DashboardController::dashboard
+ * @see app/Http/Controllers/DashboardController.php:17
+ * @route '/vendor/dashboard'
+ */
+        dashboardForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: dashboard.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    dashboard.form = dashboardForm
 const vendor = {
-    show: Object.assign(show, show),
+    login: Object.assign(login, login),
 register: Object.assign(register, register),
+dashboard: Object.assign(dashboard, dashboard),
 }
 
 export default vendor

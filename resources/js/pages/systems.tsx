@@ -308,7 +308,7 @@ export default function Systems() {
                                     </ul>
                                     <h4 className="font-medium mt-4 mb-2">Public URL</h4>
                                     <p className="text-sm text-muted-foreground">
-                                        <code className="bg-muted px-1 rounded">/vendor/{'{public_id}'}</code>
+                                        <code className="bg-muted px-1 rounded">/shop/{'{public_id}'}</code>
                                     </p>
                                 </div>
                             </div>
@@ -357,8 +357,8 @@ export default function Systems() {
                                 <ol className="space-y-2 list-decimal list-inside">
                                     <li>User enters email and password</li>
                                     <li>System authenticates user</li>
-                                    <li>If role is user, redirects to <code className="bg-muted px-1 rounded">/user-dashboard</code></li>
-                                    <li>If admin/super_admin, redirects to <code className="bg-muted px-1 rounded">/dashboard</code></li>
+                                    <li>If role is user, redirects to <code className="bg-muted px-1 rounded">/customer/dashboard</code></li>
+                                    <li>If admin/super_admin, redirects to <code className="bg-muted px-1 rounded">/vendor/dashboard</code></li>
                                 </ol>
                             </CardContent>
                         </Card>

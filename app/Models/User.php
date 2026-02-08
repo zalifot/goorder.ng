@@ -84,6 +84,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Shopping carts for this user (one per shop).
+     */
+    public function carts(): HasMany
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    /**
+     * Orders placed by this user.
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
      * Check if user is staff of a specific shop.
      */
     public function isStaffOf(Shop $shop): bool
@@ -100,11 +116,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if user is a shop owner.
+     * Check if user is a shop owner (by role or has shops).
      */
     public function isShopOwner(): bool
     {
-        return $this->shops()->exists();
+        return $this->role === 'shop_owner' || $this->shops()->exists();
     }
 
     /**
@@ -129,8 +145,13 @@ class User extends Authenticatable
     public function getLoginRedirectPath(): string
     {
         if ($this->hasDashboardAccess()) {
-            return '/dashboard';
+            return '/vendor/dashboard';
         }
+
+        if ($this->role === 'user') {
+            return '/customer/dashboard';
+        }
+
         return '/';
     }
 }

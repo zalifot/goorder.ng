@@ -1,5 +1,4 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
-import confirm from './confirm'
 /**
 * @see \Laravel\Fortify\Http\Controllers\PasswordResetLinkController::email
  * @see vendor/laravel/fortify/src/Http/Controllers/PasswordResetLinkController.php:30
@@ -188,11 +187,154 @@ confirmation.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
     
     confirmation.form = confirmationForm
+/**
+ * @see routes/web.php:67
+ * @route '/forgot-password'
+ */
+export const request = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: request.url(options),
+    method: 'get',
+})
+
+request.definition = {
+    methods: ["get","head"],
+    url: '/forgot-password',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+ * @see routes/web.php:67
+ * @route '/forgot-password'
+ */
+request.url = (options?: RouteQueryOptions) => {
+    return request.definition.url + queryParams(options)
+}
+
+/**
+ * @see routes/web.php:67
+ * @route '/forgot-password'
+ */
+request.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: request.url(options),
+    method: 'get',
+})
+/**
+ * @see routes/web.php:67
+ * @route '/forgot-password'
+ */
+request.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: request.url(options),
+    method: 'head',
+})
+
+    /**
+ * @see routes/web.php:67
+ * @route '/forgot-password'
+ */
+    const requestForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: request.url(options),
+        method: 'get',
+    })
+
+            /**
+ * @see routes/web.php:67
+ * @route '/forgot-password'
+ */
+        requestForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: request.url(options),
+            method: 'get',
+        })
+            /**
+ * @see routes/web.php:67
+ * @route '/forgot-password'
+ */
+        requestForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: request.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    request.form = requestForm
+/**
+ * @see routes/settings.php:13
+ * @route '/user/confirm-password'
+ */
+export const confirm = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: confirm.url(options),
+    method: 'get',
+})
+
+confirm.definition = {
+    methods: ["get","head"],
+    url: '/user/confirm-password',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+ * @see routes/settings.php:13
+ * @route '/user/confirm-password'
+ */
+confirm.url = (options?: RouteQueryOptions) => {
+    return confirm.definition.url + queryParams(options)
+}
+
+/**
+ * @see routes/settings.php:13
+ * @route '/user/confirm-password'
+ */
+confirm.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: confirm.url(options),
+    method: 'get',
+})
+/**
+ * @see routes/settings.php:13
+ * @route '/user/confirm-password'
+ */
+confirm.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: confirm.url(options),
+    method: 'head',
+})
+
+    /**
+ * @see routes/settings.php:13
+ * @route '/user/confirm-password'
+ */
+    const confirmForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: confirm.url(options),
+        method: 'get',
+    })
+
+            /**
+ * @see routes/settings.php:13
+ * @route '/user/confirm-password'
+ */
+        confirmForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: confirm.url(options),
+            method: 'get',
+        })
+            /**
+ * @see routes/settings.php:13
+ * @route '/user/confirm-password'
+ */
+        confirmForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: confirm.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    confirm.form = confirmForm
 const password = {
     email: Object.assign(email, email),
 update: Object.assign(update, update),
 confirmation: Object.assign(confirmation, confirmation),
 confirm: Object.assign(confirm, confirm),
+request: Object.assign(request, request),
 }
 
 export default password

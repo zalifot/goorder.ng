@@ -4,6 +4,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import {
     Dialog,
     DialogContent,
     DialogDescription,
@@ -27,10 +34,18 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Spinner } from '@/components/ui/spinner';
 import InputError from '@/components/input-error';
+import { CountryStateSelect } from '@/components/country-state-select';
+import { GooglePlacesAutocomplete } from '@/components/google-places-autocomplete';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { ExternalLink, MoreHorizontal, Plus } from 'lucide-react';
+import { BarChart3, ExternalLink, MoreHorizontal, Plus } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
+
+interface GeneralCategory {
+    id: number;
+    name: string;
+    icon: string | null;
+}
 
 interface Shop {
     id: number;
@@ -39,6 +54,14 @@ interface Shop {
     slug: string;
     description: string | null;
     address: string | null;
+    general_category_id: number | null;
+    general_category?: GeneralCategory;
+    country_code: string | null;
+    state_code: string | null;
+    latitude: number | null;
+    longitude: number | null;
+    place_id: string | null;
+    formatted_address: string | null;
     image: string | null;
     image_url: string | null;
     is_active: boolean;
@@ -47,16 +70,17 @@ interface Shop {
 
 interface Props {
     shops: Shop[];
+    generalCategories: GeneralCategory[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Shops',
-        href: '/shops',
+        href: '/vendor/shops',
     },
 ];
 
-export default function Shops({ shops }: Props) {
+export default function Shops({ shops, generalCategories }: Props) {
     const [open, setOpen] = useState(false);
     const [editOpen, setEditOpen] = useState(false);
     const [editingShop, setEditingShop] = useState<Shop | null>(null);
@@ -67,16 +91,30 @@ export default function Shops({ shops }: Props) {
 
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
+        general_category_id: '',
         description: '',
         address: '',
+        country_code: '',
+        state_code: '',
+        latitude: null as number | null,
+        longitude: null as number | null,
+        place_id: '',
+        formatted_address: '',
         image: null as File | null,
         image_url: '',
     });
 
     const editForm = useForm({
         name: '',
+        general_category_id: '',
         description: '',
         address: '',
+        country_code: '',
+        state_code: '',
+        latitude: null as number | null,
+        longitude: null as number | null,
+        place_id: '',
+        formatted_address: '',
         image: null as File | null,
         image_url: '',
         remove_image: false,
@@ -110,7 +148,7 @@ export default function Shops({ shops }: Props) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post('/shops', {
+        post('/vendor/shops', {
             forceFormData: true,
             onSuccess: () => {
                 reset();
@@ -127,8 +165,15 @@ export default function Shops({ shops }: Props) {
         setEditImageInputType(isExternalUrl ? 'url' : 'file');
         editForm.setData({
             name: shop.name,
+            general_category_id: shop.general_category_id?.toString() || '',
             description: shop.description || '',
             address: shop.address || '',
+            country_code: shop.country_code || '',
+            state_code: shop.state_code || '',
+            latitude: shop.latitude,
+            longitude: shop.longitude,
+            place_id: shop.place_id || '',
+            formatted_address: shop.formatted_address || '',
             image: null,
             image_url: isExternalUrl && shop.image ? shop.image : '',
             remove_image: false,
@@ -140,11 +185,18 @@ export default function Shops({ shops }: Props) {
     const submitEdit: FormEventHandler = (e) => {
         e.preventDefault();
         if (!editingShop) return;
-        router.post(`/shops/${editingShop.id}`, {
+        router.post(`/vendor/shops/${editingShop.id}`, {
             _method: 'PUT',
             name: editForm.data.name,
+            general_category_id: editForm.data.general_category_id,
             description: editForm.data.description,
             address: editForm.data.address,
+            country_code: editForm.data.country_code,
+            state_code: editForm.data.state_code,
+            latitude: editForm.data.latitude,
+            longitude: editForm.data.longitude,
+            place_id: editForm.data.place_id,
+            formatted_address: editForm.data.formatted_address,
             image: editForm.data.image,
             image_url: editForm.data.image_url,
             remove_image: editForm.data.remove_image,
@@ -162,7 +214,7 @@ export default function Shops({ shops }: Props) {
 
     const deleteShop = (id: number) => {
         if (confirm('Are you sure you want to delete this shop? All products assigned to this shop will be unassigned.')) {
-            router.delete(`/shops/${id}`);
+            router.delete(`/vendor/shops/${id}`);
         }
     };
 
@@ -199,6 +251,60 @@ export default function Shops({ shops }: Props) {
                                         />
                                         <InputError message={errors.name} />
                                     </div>
+
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="general_category_id">Business Category *</Label>
+                                        <Select
+                                            value={data.general_category_id}
+                                            onValueChange={(value) => setData('general_category_id', value)}
+                                        >
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select a category" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {generalCategories.map((category) => (
+                                                    <SelectItem key={category.id} value={category.id.toString()}>
+                                                        <div className="flex items-center gap-2">
+                                                            {category.icon && (
+                                                                <span className="material-symbols-outlined text-base">
+                                                                    {category.icon}
+                                                                </span>
+                                                            )}
+                                                            {category.name}
+                                                        </div>
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <InputError message={errors.general_category_id} />
+                                    </div>
+
+                                    <CountryStateSelect
+                                        countryCode={data.country_code}
+                                        stateCode={data.state_code}
+                                        onCountryChange={(code) => {
+                                            setData('country_code', code);
+                                            setData('state_code', '');
+                                        }}
+                                        onStateChange={(code) => setData('state_code', code)}
+                                        countryError={errors.country_code}
+                                        stateError={errors.state_code}
+                                        required
+                                    />
+
+                                    <GooglePlacesAutocomplete
+                                        value={data.formatted_address}
+                                        onChange={(value) => setData('formatted_address', value)}
+                                        onPlaceSelect={(place) => {
+                                            setData('formatted_address', place.formatted_address);
+                                            setData('place_id', place.place_id || '');
+                                            setData('latitude', place.latitude);
+                                            setData('longitude', place.longitude);
+                                        }}
+                                        label="Location (Google Places)"
+                                        placeholder="Search for your shop location"
+                                        error={errors.formatted_address}
+                                    />
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="description">Description</Label>
@@ -330,6 +436,7 @@ export default function Shops({ shops }: Props) {
                                 <TableHead>Public ID</TableHead>
                                 <TableHead>Image</TableHead>
                                 <TableHead>Shop Name</TableHead>
+                                <TableHead>Category</TableHead>
                                 <TableHead className="text-center">Active</TableHead>
                                 <TableHead className="text-center">Under Construction</TableHead>
                                 <TableHead>Actions</TableHead>
@@ -338,7 +445,7 @@ export default function Shops({ shops }: Props) {
                         <TableBody>
                             {shops.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={6} className="text-center text-muted-foreground">
+                                    <TableCell colSpan={7} className="text-center text-muted-foreground">
                                         No shops yet. Create your first shop!
                                     </TableCell>
                                 </TableRow>
@@ -364,11 +471,25 @@ export default function Shops({ shops }: Props) {
                                             )}
                                         </TableCell>
                                         <TableCell className="font-medium">{shop.name}</TableCell>
+                                        <TableCell>
+                                            {shop.general_category ? (
+                                                <div className="flex items-center gap-1.5">
+                                                    {shop.general_category.icon && (
+                                                        <span className="material-symbols-outlined text-base text-muted-foreground">
+                                                            {shop.general_category.icon}
+                                                        </span>
+                                                    )}
+                                                    <span className="text-sm">{shop.general_category.name}</span>
+                                                </div>
+                                            ) : (
+                                                <span className="text-muted-foreground">—</span>
+                                            )}
+                                        </TableCell>
                                         <TableCell className="text-center">
                                             <Switch
                                                 checked={shop.is_active}
                                                 onCheckedChange={(checked) => {
-                                                    router.patch(`/shops/${shop.id}/toggle-active`, { is_active: checked }, { preserveScroll: true });
+                                                    router.patch(`/vendor/shops/${shop.id}/toggle-active`, { is_active: checked }, { preserveScroll: true });
                                                 }}
                                             />
                                         </TableCell>
@@ -376,7 +497,7 @@ export default function Shops({ shops }: Props) {
                                             <Switch
                                                 checked={shop.is_under_construction}
                                                 onCheckedChange={(checked) => {
-                                                    router.patch(`/shops/${shop.id}/toggle-construction`, { is_under_construction: checked }, { preserveScroll: true });
+                                                    router.patch(`/vendor/shops/${shop.id}/toggle-construction`, { is_under_construction: checked }, { preserveScroll: true });
                                                 }}
                                             />
                                         </TableCell>
@@ -392,13 +513,17 @@ export default function Shops({ shops }: Props) {
                                                         <span className="material-symbols-outlined mr-2 text-base">edit</span>
                                                         Edit
                                                     </DropdownMenuItem>
-                                                    <DropdownMenuItem onClick={() => router.visit(`/manage/shop/${shop.public_id}`)}>
+                                                    <DropdownMenuItem onClick={() => router.visit(`/vendor/manage/shop/${shop.public_id}`)}>
                                                         <span className="material-symbols-outlined mr-2 text-base">settings</span>
                                                         Manage Store
                                                     </DropdownMenuItem>
+                                                    <DropdownMenuItem onClick={() => router.visit(`/vendor/manage/shop/${shop.public_id}/analytics`)}>
+                                                        <BarChart3 className="mr-2 h-4 w-4" />
+                                                        Analytics
+                                                    </DropdownMenuItem>
                                                     <DropdownMenuItem asChild>
                                                         <a
-                                                            href={`/vendor/${shop.public_id}`}
+                                                            href={`/shop/${shop.public_id}`}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                         >
@@ -445,6 +570,60 @@ export default function Shops({ shops }: Props) {
                                     />
                                     <InputError message={editForm.errors.name} />
                                 </div>
+
+                                <div className="grid gap-2">
+                                    <Label htmlFor="edit-general_category_id">Business Category *</Label>
+                                    <Select
+                                        value={editForm.data.general_category_id}
+                                        onValueChange={(value) => editForm.setData('general_category_id', value)}
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a category" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {generalCategories.map((category) => (
+                                                <SelectItem key={category.id} value={category.id.toString()}>
+                                                    <div className="flex items-center gap-2">
+                                                        {category.icon && (
+                                                            <span className="material-symbols-outlined text-base">
+                                                                {category.icon}
+                                                            </span>
+                                                        )}
+                                                        {category.name}
+                                                    </div>
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError message={editForm.errors.general_category_id} />
+                                </div>
+
+                                <CountryStateSelect
+                                    countryCode={editForm.data.country_code}
+                                    stateCode={editForm.data.state_code}
+                                    onCountryChange={(code) => {
+                                        editForm.setData('country_code', code);
+                                        editForm.setData('state_code', '');
+                                    }}
+                                    onStateChange={(code) => editForm.setData('state_code', code)}
+                                    countryError={editForm.errors.country_code}
+                                    stateError={editForm.errors.state_code}
+                                    required
+                                />
+
+                                <GooglePlacesAutocomplete
+                                    value={editForm.data.formatted_address}
+                                    onChange={(value) => editForm.setData('formatted_address', value)}
+                                    onPlaceSelect={(place) => {
+                                        editForm.setData('formatted_address', place.formatted_address);
+                                        editForm.setData('place_id', place.place_id || '');
+                                        editForm.setData('latitude', place.latitude);
+                                        editForm.setData('longitude', place.longitude);
+                                    }}
+                                    label="Location (Google Places)"
+                                    placeholder="Search for your shop location"
+                                    error={editForm.errors.formatted_address}
+                                />
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="edit-description">Description</Label>

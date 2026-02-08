@@ -39,7 +39,7 @@ import { Head, Link, router, useForm } from '@inertiajs/react';
 import { MoreHorizontal, Plus, Search, Store, Upload } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 
-interface Category {
+interface ProductCategory {
     id: number;
     name: string;
 }
@@ -57,7 +57,7 @@ interface Product {
     slug: string;
     category_id: number;
     shop_public_id: string | null;
-    category: Category;
+    category: ProductCategory;
     shop: Shop | null;
     image: string;
     image_url: string;
@@ -87,7 +87,7 @@ interface PaginatedData<T> {
 interface Props {
     shop: Shop;
     products: PaginatedData<Product>;
-    categories: Category[];
+    categories: ProductCategory[];
     filters: {
         search: string | null;
         category_id: string | null;
@@ -98,15 +98,15 @@ export default function Inventory({ shop, products, categories = [], filters }: 
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Shops',
-            href: '/shops',
+            href: '/vendor/shops',
         },
         {
             title: shop.name,
-            href: `/manage/shop/${shop.public_id}`,
+            href: `/vendor/manage/shop/${shop.public_id}`,
         },
         {
             title: 'Inventory',
-            href: `/manage/shop/${shop.public_id}/inventory`,
+            href: `/vendor/manage/shop/${shop.public_id}/inventory`,
         },
     ];
 
@@ -132,7 +132,7 @@ export default function Inventory({ shop, products, categories = [], filters }: 
         if (search) params.search = search;
         if (categoryId) params.category_id = categoryId;
 
-        router.get(`/manage/shop/${shop.public_id}/inventory`, params, {
+        router.get(`/vendor/manage/shop/${shop.public_id}/inventory`, params, {
             preserveState: true,
             preserveScroll: true,
         });
@@ -250,7 +250,7 @@ export default function Inventory({ shop, products, categories = [], filters }: 
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(`/manage/shop/${shop.public_id}/inventory`, {
+        post(`/vendor/manage/shop/${shop.public_id}/inventory`, {
             forceFormData: true,
             onSuccess: () => {
                 reset();
@@ -264,7 +264,7 @@ export default function Inventory({ shop, products, categories = [], filters }: 
     const submitEdit: FormEventHandler = (e) => {
         e.preventDefault();
         if (!editingProduct) return;
-        router.post(`/manage/shop/${shop.public_id}/inventory/${editingProduct.id}`, {
+        router.post(`/vendor/manage/shop/${shop.public_id}/inventory/${editingProduct.id}`, {
             _method: 'PUT',
             name: editForm.data.name,
             slug: editForm.data.slug,
@@ -293,7 +293,7 @@ export default function Inventory({ shop, products, categories = [], filters }: 
 
     const deleteProduct = (id: number) => {
         if (confirm('Are you sure you want to delete this product?')) {
-            router.delete(`/manage/shop/${shop.public_id}/inventory/${id}`);
+            router.delete(`/vendor/manage/shop/${shop.public_id}/inventory/${id}`);
         }
     };
 
@@ -323,11 +323,11 @@ export default function Inventory({ shop, products, categories = [], filters }: 
                         </form>
                         {/* Category Filter */}
                         <Select value={categoryFilter || 'all'} onValueChange={handleCategoryFilter}>
-                            <SelectTrigger className="w-[160px]">
-                                <SelectValue placeholder="Filter by Category" />
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Filter by Product Category" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="all">All Categories</SelectItem>
+                                <SelectItem value="all">All Product Categories</SelectItem>
                                 {categories.map((category) => (
                                     <SelectItem key={category.id} value={String(category.id)}>
                                         {category.name}
@@ -355,7 +355,7 @@ export default function Inventory({ shop, products, categories = [], filters }: 
                                 <form
                                     onSubmit={(e) => {
                                         e.preventDefault();
-                                        importForm.post(`/manage/shop/${shop.public_id}/inventory/import`, {
+                                        importForm.post(`/vendor/manage/shop/${shop.public_id}/inventory/import`, {
                                             onSuccess: () => {
                                                 setImportOpen(false);
                                                 importForm.reset();
@@ -396,7 +396,7 @@ export default function Inventory({ shop, products, categories = [], filters }: 
                                     </div>
                                     <div className="flex justify-between">
                                         <a
-                                            href={`/manage/shop/${shop.public_id}/inventory/template`}
+                                            href={`/vendor/manage/shop/${shop.public_id}/inventory/template`}
                                             className="text-sm text-primary hover:underline"
                                         >
                                             Download Template
@@ -466,7 +466,7 @@ export default function Inventory({ shop, products, categories = [], filters }: 
                                         </div>
 
                                         <div className="grid gap-2">
-                                            <Label htmlFor="category">Category *</Label>
+                                            <Label htmlFor="category">Product Category *</Label>
                                             <Select
                                                 value={data.category_id}
                                                 onValueChange={(value) => setData('category_id', value)}
@@ -484,16 +484,16 @@ export default function Inventory({ shop, products, categories = [], filters }: 
                                             </Select>
                                             {categories.length === 0 ? (
                                                 <p className="text-xs text-muted-foreground">
-                                                    No categories available.{' '}
-                                                    <Link href="/categories" className="text-primary hover:underline">
-                                                        Create a category first
+                                                    No product categories available.{' '}
+                                                    <Link href="/vendor/product-categories" className="text-primary hover:underline">
+                                                        Create a product category first
                                                     </Link>
                                                 </p>
                                             ) : (
                                                 <p className="text-xs text-muted-foreground">
                                                     Don't see your category?{' '}
-                                                    <Link href="/categories" className="text-primary hover:underline">
-                                                        Add a new category
+                                                    <Link href="/vendor/product-categories" className="text-primary hover:underline">
+                                                        Add a new product category
                                                     </Link>
                                                 </p>
                                             )}
@@ -712,7 +712,7 @@ export default function Inventory({ shop, products, categories = [], filters }: 
                             <TableRow>
                                 <TableHead>Image</TableHead>
                                 <TableHead>Product Name</TableHead>
-                                <TableHead>Category</TableHead>
+                                <TableHead>Product Category</TableHead>
                                 <TableHead>Price</TableHead>
                                 <TableHead>Sale Price</TableHead>
                                 <TableHead>Stock</TableHead>
@@ -855,7 +855,7 @@ export default function Inventory({ shop, products, categories = [], filters }: 
                                     <div className="flex-1 space-y-2">
                                         <h3 className="text-xl font-semibold">{selectedProduct.name}</h3>
                                         <p className="text-sm text-muted-foreground">
-                                            Category: {selectedProduct.category?.name}
+                                            Product Category: {selectedProduct.category?.name}
                                         </p>
                                         <p className="text-sm text-muted-foreground">
                                             Slug: {selectedProduct.slug}
@@ -1004,7 +1004,7 @@ export default function Inventory({ shop, products, categories = [], filters }: 
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="edit-category">Category *</Label>
+                                        <Label htmlFor="edit-category">Product Category *</Label>
                                         <Select
                                             value={editForm.data.category_id}
                                             onValueChange={(value) => editForm.setData('category_id', value)}

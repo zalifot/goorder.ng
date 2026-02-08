@@ -51,8 +51,8 @@ import { Badge } from '@/components/ui/badge';
 import { Plus, MoreHorizontal, Pencil, Trash2, Users, User } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Staff', href: '/manage/staff' },
+    { title: 'Dashboard', href: '/vendor/dashboard' },
+    { title: 'Staff', href: '/vendor/manage/staff' },
 ];
 
 interface Shop {
@@ -115,7 +115,7 @@ export default function Staff({ staff, shops, roles }: Props) {
 
     const handleAddStaff = () => {
         setProcessing(true);
-        router.post('/manage/staff', formData, {
+        router.post('/vendor/manage/staff', formData, {
             onSuccess: () => {
                 setIsAddDialogOpen(false);
                 resetForm();
@@ -127,7 +127,7 @@ export default function Staff({ staff, shops, roles }: Props) {
     const handleEditStaff = () => {
         if (!selectedStaff) return;
         setProcessing(true);
-        router.put(`/manage/staff/${selectedStaff.id}`, formData, {
+        router.put(`/vendor/manage/staff/${selectedStaff.id}`, formData, {
             onSuccess: () => {
                 setIsEditDialogOpen(false);
                 setSelectedStaff(null);
@@ -140,7 +140,7 @@ export default function Staff({ staff, shops, roles }: Props) {
     const handleDeleteStaff = () => {
         if (!selectedStaff) return;
         setProcessing(true);
-        router.delete(`/manage/staff/${selectedStaff.id}`, {
+        router.delete(`/vendor/manage/staff/${selectedStaff.id}`, {
             onSuccess: () => {
                 setIsDeleteDialogOpen(false);
                 setSelectedStaff(null);

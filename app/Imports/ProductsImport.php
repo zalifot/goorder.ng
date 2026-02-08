@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\Category;
+use App\Models\ProductCategory;
 use App\Models\Product;
 use App\Models\Shop;
 use Illuminate\Support\Collection;
@@ -29,7 +29,7 @@ class ProductsImport implements ToCollection, WithHeadingRow
 
             // Find or create category
             $categoryName = $row['category'] ?? 'Uncategorized';
-            $category = Category::firstOrCreate(
+            $category = ProductCategory::firstOrCreate(
                 ['name' => $categoryName],
                 ['slug' => Str::slug($categoryName), 'is_active' => true]
             );

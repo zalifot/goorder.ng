@@ -18,7 +18,7 @@ import {
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { ExternalLink, Package, Search, Store } from 'lucide-react';
+import { BarChart3, ExternalLink, Package, Receipt, Search, ShoppingCart, Store } from 'lucide-react';
 import { useState } from 'react';
 
 interface Category {
@@ -88,11 +88,11 @@ export default function ManageShop({ shop, products, categories = [], filters }:
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Shops',
-            href: '/shops',
+            href: '/vendor/shops',
         },
         {
             title: shop.name,
-            href: `/manage/shop/${shop.public_id}`,
+            href: `/vendor/manage/shop/${shop.public_id}`,
         },
     ];
 
@@ -106,7 +106,7 @@ export default function ManageShop({ shop, products, categories = [], filters }:
         if (categoryId) params.category_id = categoryId;
         if (stockStatus) params.stock_status = stockStatus;
 
-        router.get(`/manage/shop/${shop.public_id}`, params, {
+        router.get(`/vendor/manage/shop/${shop.public_id}`, params, {
             preserveState: true,
             preserveScroll: true,
         });
@@ -155,13 +155,13 @@ export default function ManageShop({ shop, products, categories = [], filters }:
                                 </code>
                             </p>
                             <a
-                                href={`/vendor/${shop.public_id}`}
+                                href={`/shop/${shop.public_id}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="mt-2 inline-flex items-center gap-1 text-sm text-primary hover:underline"
                             >
                                 <ExternalLink className="h-3.5 w-3.5" />
-                                {window.location.origin}/vendor/{shop.public_id}
+                                {window.location.origin}/shop/{shop.public_id}
                             </a>
                             {shop.description && (
                                 <p className="mt-2 text-sm text-muted-foreground">{shop.description}</p>
@@ -171,11 +171,29 @@ export default function ManageShop({ shop, products, categories = [], filters }:
                                     <span className="font-semibold text-foreground">{products.total}</span> Products
                                 </span>
                             </div>
-                            <div className="mt-4">
+                            <div className="mt-4 flex flex-wrap gap-2">
                                 <Button asChild>
-                                    <Link href={`/manage/shop/${shop.public_id}/inventory`}>
+                                    <Link href={`/vendor/manage/shop/${shop.public_id}/analytics`}>
+                                        <BarChart3 className="mr-2 h-4 w-4" />
+                                        Analytics
+                                    </Link>
+                                </Button>
+                                <Button asChild variant="outline">
+                                    <Link href={`/vendor/manage/shop/${shop.public_id}/inventory`}>
                                         <Package className="mr-2 h-4 w-4" />
-                                        Manage Inventory
+                                        Inventory
+                                    </Link>
+                                </Button>
+                                <Button asChild variant="outline">
+                                    <Link href={`/vendor/manage/shop/${shop.public_id}/orders`}>
+                                        <ShoppingCart className="mr-2 h-4 w-4" />
+                                        Orders
+                                    </Link>
+                                </Button>
+                                <Button asChild variant="outline">
+                                    <Link href={`/vendor/manage/shop/${shop.public_id}/transactions`}>
+                                        <Receipt className="mr-2 h-4 w-4" />
+                                        Transactions
                                     </Link>
                                 </Button>
                             </div>

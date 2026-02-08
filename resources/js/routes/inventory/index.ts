@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\ProductController::dashboard
  * @see app/Http/Controllers/ProductController.php:27
- * @route '/inventory'
+ * @route '/vendor/inventory'
  */
 export const dashboard = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: dashboard.url(options),
@@ -11,13 +11,13 @@ export const dashboard = (options?: RouteQueryOptions): RouteDefinition<'get'> =
 
 dashboard.definition = {
     methods: ["get","head"],
-    url: '/inventory',
+    url: '/vendor/inventory',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\ProductController::dashboard
  * @see app/Http/Controllers/ProductController.php:27
- * @route '/inventory'
+ * @route '/vendor/inventory'
  */
 dashboard.url = (options?: RouteQueryOptions) => {
     return dashboard.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ dashboard.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\ProductController::dashboard
  * @see app/Http/Controllers/ProductController.php:27
- * @route '/inventory'
+ * @route '/vendor/inventory'
  */
 dashboard.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: dashboard.url(options),
@@ -35,7 +35,7 @@ dashboard.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 /**
 * @see \App\Http\Controllers\ProductController::dashboard
  * @see app/Http/Controllers/ProductController.php:27
- * @route '/inventory'
+ * @route '/vendor/inventory'
  */
 dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: dashboard.url(options),
@@ -45,7 +45,7 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     /**
 * @see \App\Http\Controllers\ProductController::dashboard
  * @see app/Http/Controllers/ProductController.php:27
- * @route '/inventory'
+ * @route '/vendor/inventory'
  */
     const dashboardForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: dashboard.url(options),
@@ -55,7 +55,7 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             /**
 * @see \App\Http\Controllers\ProductController::dashboard
  * @see app/Http/Controllers/ProductController.php:27
- * @route '/inventory'
+ * @route '/vendor/inventory'
  */
         dashboardForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: dashboard.url(options),
@@ -64,7 +64,7 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             /**
 * @see \App\Http\Controllers\ProductController::dashboard
  * @see app/Http/Controllers/ProductController.php:27
- * @route '/inventory'
+ * @route '/vendor/inventory'
  */
         dashboardForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: dashboard.url({

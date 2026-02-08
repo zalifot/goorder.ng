@@ -10,7 +10,7 @@ import { logout } from '@/routes';
 import { edit } from '@/routes/profile';
 import { type User } from '@/types';
 import { Link, router } from '@inertiajs/react';
-import { LogOut, Settings } from 'lucide-react';
+import { LayoutDashboard, LogOut, Settings } from 'lucide-react';
 
 interface UserMenuContentProps {
     user: User;
@@ -24,6 +24,9 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
         router.flushAll();
     };
 
+    // Determine dashboard URL based on user role
+    const dashboardUrl = user.role === 'user' ? '/customer/dashboard' : '/vendor/dashboard';
+
     return (
         <>
             <DropdownMenuLabel className="p-0 font-normal">
@@ -36,7 +39,19 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                 <DropdownMenuItem asChild>
                     <Link
                         className="block w-full"
-                        href={edit()}
+                        href={dashboardUrl}
+                        as="button"
+                        prefetch
+                        onClick={cleanup}
+                    >
+                        <LayoutDashboard className="mr-2" />
+                        Dashboard
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link
+                        className="block w-full"
+                        href={edit().url}
                         as="button"
                         prefetch
                         onClick={cleanup}
@@ -50,7 +65,8 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
             <DropdownMenuItem asChild>
                 <Link
                     className="block w-full"
-                    href={logout()}
+                    href={logout().url}
+                    method="post"
                     as="button"
                     onClick={handleLogout}
                     data-test="logout-button"

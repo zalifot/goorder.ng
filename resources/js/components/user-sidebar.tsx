@@ -10,46 +10,49 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { Heart, LayoutGrid, ShoppingBag, ShoppingCart, Store } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import { LayoutGrid, Receipt, ShoppingBag, ShoppingCart, Store } from 'lucide-react';
 import AppLogo from './app-logo';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/user-dashboard',
-        icon: LayoutGrid,
-    },
-    {
-        title: 'Marketplace',
-        href: '/marketplace',
-        icon: Store,
-    },
-    {
-        title: 'Orders',
-        href: '/user/orders',
-        icon: ShoppingBag,
-    },
-    {
-        title: 'Cart',
-        href: '/user/cart',
-        icon: ShoppingCart,
-    },
-    {
-        title: 'Favorites',
-        href: '/user/favorites',
-        icon: Heart,
-    },
-];
-
 export function UserSidebar() {
+    const { cartItemCount } = usePage<{ cartItemCount: number }>().props;
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: 'Dashboard',
+            href: '/customer/dashboard',
+            icon: LayoutGrid,
+        },
+        {
+            title: 'Marketplace',
+            href: '/marketplace',
+            icon: Store,
+        },
+        {
+            title: 'Orders',
+            href: '/customer/orders',
+            icon: ShoppingBag,
+        },
+        {
+            title: 'Transactions',
+            href: '/customer/transactions',
+            icon: Receipt,
+        },
+        {
+            title: 'Cart',
+            href: '/customer/cart',
+            icon: ShoppingCart,
+            badge: cartItemCount || undefined,
+        },
+    ];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/user-dashboard" prefetch>
+                            <Link href="/customer/dashboard" prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>

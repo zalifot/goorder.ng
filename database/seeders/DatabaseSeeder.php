@@ -23,5 +23,11 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+
+        // Seed categories
+        $this->call([
+            GeneralCategorySeeder::class,
+            ProductCategorySeeder::class,
+        ]);
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\ProductsImport;
-use App\Models\Category;
+use App\Models\ProductCategory;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Services\CloudinaryService;
@@ -94,7 +94,7 @@ class ProductController extends Controller
         }
 
         $products = $query->paginate(20)->withQueryString();
-        $categories = Category::where('is_active', true)->get();
+        $categories = ProductCategory::where('is_active', true)->get();
 
         return Inertia::render('products', [
             'shop' => $shop,
@@ -114,7 +114,7 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required|exists:product_categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'image_url' => 'nullable|url|max:500',
             'price' => 'required|numeric|min:0',
@@ -156,7 +156,7 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:products,slug,' . $product->id,
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required|exists:product_categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'image_url' => 'nullable|url|max:500',
             'price' => 'required|numeric|min:0',

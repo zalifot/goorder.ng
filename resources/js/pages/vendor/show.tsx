@@ -15,9 +15,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import { SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
-import { AlertCircle, ChevronDown, ChevronRight, Clock, Construction, Eye, Filter, LogOut, MapPin, Minus, Pencil, Plus, Search, Settings, ShoppingCart, Store, Truck, User } from 'lucide-react';
-import { useState } from 'react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
+import { AlertCircle, ArrowLeft, ChevronDown, ChevronRight, Clock, Construction, Eye, Filter, LayoutDashboard, LogOut, MapPin, Minus, Pencil, Plus, Search, Settings, ShoppingCart, Store, Truck, User } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface Category {
     id: number;
@@ -164,11 +164,57 @@ export default function VendorShow({ shop, products, categories, isOwner = false
 
     const { auth } = usePage<SharedData>().props;
     const isLoggedIn = !!auth?.user;
+    const [serverCartId, setServerCartId] = useState<number | null>(null);
 
-    const handleCheckout = () => {
+    // Load cart from server for logged-in users
+    useEffect(() => {
+        if (isLoggedIn && shop.id) {
+            fetch(`/api/cart/shop/${shop.id}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.id) {
+                        setServerCartId(data.id);
+                        // Sync server cart to local state
+                        const serverItems = data.items.map((item: { product_id: number; quantity: number }) => ({
+                            productId: item.product_id,
+                            quantity: item.quantity,
+                        }));
+                        setCart(serverItems);
+                    }
+                })
+                .catch(() => {
+                    // Silently fail - user may not be authenticated
+                });
+        }
+    }, [isLoggedIn, shop.id]);
+
+    const handleCheckout = async () => {
         if (isLoggedIn) {
-            // Process checkout for logged-in users
-            toast.loading('Processing checkout...', 'Please wait while we process your order');
+            let cartId = serverCartId;
+
+            // If serverCartId not set, try to fetch it
+            if (!cartId) {
+                try {
+                    const res = await fetch(`/api/cart/shop/${shop.id}`);
+                    const data = await res.json();
+                    if (data.id) {
+                        cartId = data.id;
+                        setServerCartId(data.id);
+                    }
+                } catch {
+                    // Silently fail
+                }
+            }
+
+            if (cartId) {
+                // Navigate to checkout page for logged-in users
+                router.visit(`/customer/checkout?cart_id=${cartId}`);
+            } else if (cart.length > 0) {
+                // Cart has items locally but not synced to server yet
+                toast.error('Please wait', 'Syncing your cart...');
+            } else {
+                toast.error('Cart is empty', 'Please add items to your cart first');
+            }
         } else {
             // Show checkout dialog for guests
             setCheckoutDialogOpen(true);
@@ -206,6 +252,18 @@ export default function VendorShow({ shop, products, categories, isOwner = false
     });
 
     const addToCart = (productId: number) => {
+        const product = products.find((p) => p.id === productId);
+        if (!product) return;
+
+        const currentQuantity = getCartItemQuantity(productId);
+
+        // Check if adding one more would exceed stock
+        if (currentQuantity >= product.stock_quantity) {
+            toast.error('Stock limit reached', `Only ${product.stock_quantity} unit${product.stock_quantity !== 1 ? 's' : ''} available`);
+            return;
+        }
+
+        // Update local state immediately for responsive UI
         setCart((prev) => {
             const existing = prev.find((item) => item.productId === productId);
             if (existing) {
@@ -217,20 +275,72 @@ export default function VendorShow({ shop, products, categories, isOwner = false
             }
             return [...prev, { productId, quantity: 1 }];
         });
+
+        // Sync to server for logged-in users
+        if (isLoggedIn) {
+            router.post(
+                '/customer/cart/add',
+                { product_id: productId, quantity: 1 },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    onSuccess: () => {
+                        // Get the cart ID from flash data or fetch it
+                        fetch(`/api/cart/shop/${shop.id}`)
+                            .then((res) => res.json())
+                            .then((data) => {
+                                if (data.id) {
+                                    setServerCartId(data.id);
+                                }
+                            });
+                    },
+                },
+            );
+        }
     };
 
     const removeFromCart = (productId: number) => {
+        const existing = cart.find((item) => item.productId === productId);
+        const newQuantity = existing ? existing.quantity - 1 : 0;
+
+        // Update local state immediately for responsive UI
         setCart((prev) => {
-            const existing = prev.find((item) => item.productId === productId);
-            if (existing && existing.quantity > 1) {
-                return prev.map((item) =>
-                    item.productId === productId
-                        ? { ...item, quantity: item.quantity - 1 }
-                        : item
+            const item = prev.find((i) => i.productId === productId);
+            if (item && item.quantity > 1) {
+                return prev.map((i) =>
+                    i.productId === productId
+                        ? { ...i, quantity: i.quantity - 1 }
+                        : i
                 );
             }
-            return prev.filter((item) => item.productId !== productId);
+            return prev.filter((i) => i.productId !== productId);
         });
+
+        // Sync to server for logged-in users
+        if (isLoggedIn && serverCartId) {
+            // We need to find the cart item ID - fetch cart to get it
+            fetch(`/api/cart/shop/${shop.id}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    const cartItem = data.items?.find((item: { product_id: number }) => item.product_id === productId);
+                    if (cartItem) {
+                        if (newQuantity > 0) {
+                            // Update quantity
+                            router.patch(
+                                `/customer/cart/items/${cartItem.id}`,
+                                { quantity: newQuantity },
+                                { preserveScroll: true, preserveState: true },
+                            );
+                        } else {
+                            // Remove item
+                            router.delete(`/customer/cart/items/${cartItem.id}`, {
+                                preserveScroll: true,
+                                preserveState: true,
+                            });
+                        }
+                    }
+                });
+        }
     };
 
     const getCartItemQuantity = (productId: number) => {
@@ -239,7 +349,23 @@ export default function VendorShow({ shop, products, categories, isOwner = false
     };
 
     const deleteFromCart = (productId: number) => {
+        // Update local state immediately
         setCart((prev) => prev.filter((item) => item.productId !== productId));
+
+        // Sync to server for logged-in users
+        if (isLoggedIn && serverCartId) {
+            fetch(`/api/cart/shop/${shop.id}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    const cartItem = data.items?.find((item: { product_id: number }) => item.product_id === productId);
+                    if (cartItem) {
+                        router.delete(`/customer/cart/items/${cartItem.id}`, {
+                            preserveScroll: true,
+                            preserveState: true,
+                        });
+                    }
+                });
+        }
     };
 
     const getCartProducts = () => {
@@ -312,7 +438,15 @@ export default function VendorShow({ shop, products, categories, isOwner = false
                 <header className="sticky top-0 z-50 border-b bg-white">
                     <div className="mx-auto max-w-4xl px-4">
                         <div className="flex h-14 items-center justify-between">
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-3">
+                                <Link
+                                    href="/marketplace"
+                                    className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900"
+                                >
+                                    <ArrowLeft className="h-4 w-4" />
+                                    <span className="hidden sm:inline">Marketplace</span>
+                                </Link>
+                                <div className="h-5 w-px bg-gray-200" />
                                 {shop.image_url ? (
                                     <img
                                         src={shop.image_url}
@@ -342,11 +476,17 @@ export default function VendorShow({ shop, products, categories, isOwner = false
                                         <DropdownMenuTrigger className="flex items-center gap-2 rounded-lg px-2 py-1 hover:bg-gray-100">
                                             <User className="h-4 w-4 text-gray-600" />
                                             <span className="text-sm font-medium text-gray-700">
-                                                {auth.user.username || auth.user.name}
+                                                {auth.user.username}
                                             </span>
                                             <ChevronDown className="h-4 w-4 text-gray-400" />
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end" className="w-48">
+                                            <DropdownMenuItem asChild>
+                                                <Link href="/customer/dashboard" className="cursor-pointer">
+                                                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                                                    Dashboard
+                                                </Link>
+                                            </DropdownMenuItem>
                                             <DropdownMenuItem asChild>
                                                 <Link href="/settings/profile" className="cursor-pointer">
                                                     <User className="mr-2 h-4 w-4" />
@@ -648,9 +788,9 @@ export default function VendorShow({ shop, products, categories, isOwner = false
                                             variant="outline"
                                             size="sm"
                                             onClick={() => addToCart(product.id)}
-                                            disabled={product.stock_status !== 'in_stock'}
+                                            disabled={product.stock_quantity <= 0}
                                         >
-                                            {product.stock_status === 'in_stock' ? 'Add' : 'Out of Stock'}
+                                            {product.stock_quantity > 0 ? 'Add' : 'Out of Stock'}
                                         </Button>
                                     )}
                                 </div>

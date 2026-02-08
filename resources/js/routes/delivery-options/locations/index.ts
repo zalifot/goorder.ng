@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::store
  * @see app/Http/Controllers/DeliveryOptionController.php:89
- * @route '/delivery-options/locations'
+ * @route '/vendor/delivery-options/locations'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -11,13 +11,13 @@ export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => (
 
 store.definition = {
     methods: ["post"],
-    url: '/delivery-options/locations',
+    url: '/vendor/delivery-options/locations',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::store
  * @see app/Http/Controllers/DeliveryOptionController.php:89
- * @route '/delivery-options/locations'
+ * @route '/vendor/delivery-options/locations'
  */
 store.url = (options?: RouteQueryOptions) => {
     return store.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ store.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::store
  * @see app/Http/Controllers/DeliveryOptionController.php:89
- * @route '/delivery-options/locations'
+ * @route '/vendor/delivery-options/locations'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -36,7 +36,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     /**
 * @see \App\Http\Controllers\DeliveryOptionController::store
  * @see app/Http/Controllers/DeliveryOptionController.php:89
- * @route '/delivery-options/locations'
+ * @route '/vendor/delivery-options/locations'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(options),
@@ -46,7 +46,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             /**
 * @see \App\Http\Controllers\DeliveryOptionController::store
  * @see app/Http/Controllers/DeliveryOptionController.php:89
- * @route '/delivery-options/locations'
+ * @route '/vendor/delivery-options/locations'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(options),
@@ -57,7 +57,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::update
  * @see app/Http/Controllers/DeliveryOptionController.php:103
- * @route '/delivery-options/locations/{location}'
+ * @route '/vendor/delivery-options/locations/{location}'
  */
 export const update = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
@@ -66,13 +66,13 @@ export const update = (args: { location: number | { id: number } } | [location: 
 
 update.definition = {
     methods: ["put"],
-    url: '/delivery-options/locations/{location}',
+    url: '/vendor/delivery-options/locations/{location}',
 } satisfies RouteDefinition<["put"]>
 
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::update
  * @see app/Http/Controllers/DeliveryOptionController.php:103
- * @route '/delivery-options/locations/{location}'
+ * @route '/vendor/delivery-options/locations/{location}'
  */
 update.url = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -105,7 +105,7 @@ update.url = (args: { location: number | { id: number } } | [location: number | 
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::update
  * @see app/Http/Controllers/DeliveryOptionController.php:103
- * @route '/delivery-options/locations/{location}'
+ * @route '/vendor/delivery-options/locations/{location}'
  */
 update.put = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
@@ -115,7 +115,7 @@ update.put = (args: { location: number | { id: number } } | [location: number | 
     /**
 * @see \App\Http\Controllers\DeliveryOptionController::update
  * @see app/Http/Controllers/DeliveryOptionController.php:103
- * @route '/delivery-options/locations/{location}'
+ * @route '/vendor/delivery-options/locations/{location}'
  */
     const updateForm = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
@@ -130,7 +130,7 @@ update.put = (args: { location: number | { id: number } } | [location: number | 
             /**
 * @see \App\Http\Controllers\DeliveryOptionController::update
  * @see app/Http/Controllers/DeliveryOptionController.php:103
- * @route '/delivery-options/locations/{location}'
+ * @route '/vendor/delivery-options/locations/{location}'
  */
         updateForm.put = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
@@ -146,7 +146,7 @@ update.put = (args: { location: number | { id: number } } | [location: number | 
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::destroy
  * @see app/Http/Controllers/DeliveryOptionController.php:116
- * @route '/delivery-options/locations/{location}'
+ * @route '/vendor/delivery-options/locations/{location}'
  */
 export const destroy = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
@@ -155,13 +155,13 @@ export const destroy = (args: { location: number | { id: number } } | [location:
 
 destroy.definition = {
     methods: ["delete"],
-    url: '/delivery-options/locations/{location}',
+    url: '/vendor/delivery-options/locations/{location}',
 } satisfies RouteDefinition<["delete"]>
 
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::destroy
  * @see app/Http/Controllers/DeliveryOptionController.php:116
- * @route '/delivery-options/locations/{location}'
+ * @route '/vendor/delivery-options/locations/{location}'
  */
 destroy.url = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -194,7 +194,7 @@ destroy.url = (args: { location: number | { id: number } } | [location: number |
 /**
 * @see \App\Http\Controllers\DeliveryOptionController::destroy
  * @see app/Http/Controllers/DeliveryOptionController.php:116
- * @route '/delivery-options/locations/{location}'
+ * @route '/vendor/delivery-options/locations/{location}'
  */
 destroy.delete = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
@@ -204,7 +204,7 @@ destroy.delete = (args: { location: number | { id: number } } | [location: numbe
     /**
 * @see \App\Http\Controllers\DeliveryOptionController::destroy
  * @see app/Http/Controllers/DeliveryOptionController.php:116
- * @route '/delivery-options/locations/{location}'
+ * @route '/vendor/delivery-options/locations/{location}'
  */
     const destroyForm = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
@@ -219,7 +219,7 @@ destroy.delete = (args: { location: number | { id: number } } | [location: numbe
             /**
 * @see \App\Http\Controllers\DeliveryOptionController::destroy
  * @see app/Http/Controllers/DeliveryOptionController.php:116
- * @route '/delivery-options/locations/{location}'
+ * @route '/vendor/delivery-options/locations/{location}'
  */
         destroyForm.delete = (args: { location: number | { id: number } } | [location: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {
