@@ -101,6 +101,7 @@ class StaffController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'phone' => ['nullable', 'string', 'max:20'],
+            'password' => ['required', 'string', 'min:8'],
             'role_id' => ['required', 'integer', Rule::in($roleIds)],
             'shop_ids' => ['required', 'array', 'min:1'],
             'shop_ids.*' => ['required', 'integer', Rule::in($shopIds)],
@@ -115,7 +116,7 @@ class StaffController extends Controller
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
             'username' => Str::slug($validated['name']) . '-' . Str::random(4),
-            'password' => Hash::make(Str::random(16)), // Temporary password - user should reset
+            'password' => Hash::make($validated['password']),
             'role' => 'staff',
         ]);
 
@@ -124,7 +125,7 @@ class StaffController extends Controller
             $staff->staffShops()->attach($shopId, ['role' => $role->slug]);
         }
 
-        return back()->with('success', 'Staff member added successfully. They will receive login credentials via email.');
+        return back()->with('success', 'Staff member added successfully. Share their login credentials: ' . $validated['email']);
     }
 
     /**
@@ -184,6 +185,31 @@ class StaffController extends Controller
         // For now, we just remove the assignments
         
         return back()->with('success', 'Staff member removed successfully.');
+    }
+
+    /**
+     * Reset a staff member's password.
+     */
+    public function resetPassword(Request $request, User $staff)
+    {
+        $user = $request->user();
+        $shopIds = $user->shops()->pluck('id');
+
+        // Verify this staff is assigned to one of user's shops
+        $staffShopIds = $staff->staffShops()->pluck('shop_id');
+        if (!$staffShopIds->intersect($shopIds)->count()) {
+            abort(403, 'You do not have permission to reset this staff member\'s password.');
+        }
+
+        $validated = $request->validate([
+            'password' => ['required', 'string', 'min:8'],
+        ]);
+
+        $staff->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return back()->with('success', 'Password reset successfully for ' . $staff->name . '.');
     }
 
     /**

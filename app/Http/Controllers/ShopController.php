@@ -21,12 +21,48 @@ class ShopController extends Controller
     {
         $this->cloudinary = $cloudinary;
     }
+
+    /**
+     * Get shop IDs accessible by the current user (owner or staff).
+     */
+    private function getAccessibleShopIds(): array
+    {
+        $user = auth()->user();
+        if ($user->role === 'staff') {
+            return $user->staffShops()->pluck('shops.id')->toArray();
+        }
+        return Shop::where('user_id', $user->id)->pluck('id')->toArray();
+    }
+
+    /**
+     * Get a shop by public_id, scoped to the current user's access.
+     */
+    private function getAccessibleShop(string $publicId): Shop
+    {
+        $user = auth()->user();
+        if ($user->role === 'staff') {
+            $staffShopIds = $user->staffShops()->pluck('shops.id');
+            return Shop::where('public_id', $publicId)->whereIn('id', $staffShopIds)->firstOrFail();
+        }
+        return Shop::where('public_id', $publicId)->where('user_id', $user->id)->firstOrFail();
+    }
     public function index()
     {
-        $shops = Shop::where('user_id', auth()->id())
-            ->with('generalCategory:id,name,icon')
-            ->latest()
-            ->get();
+        $user = auth()->user();
+
+        if ($user->role === 'staff') {
+            // Staff only see shops they're assigned to
+            $shopIds = $user->staffShops()->pluck('shops.id');
+            $shops = Shop::whereIn('id', $shopIds)
+                ->with('generalCategory:id,name,icon')
+                ->latest()
+                ->get();
+        } else {
+            $shops = Shop::where('user_id', $user->id)
+                ->with('generalCategory:id,name,icon')
+                ->latest()
+                ->get();
+        }
 
         $generalCategories = GeneralCategory::where('is_active', true)
             ->orderBy('sort_order')
@@ -40,9 +76,7 @@ class ShopController extends Controller
 
     public function show(Request $request, string $publicId)
     {
-        $shop = Shop::where('public_id', $publicId)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+        $shop = $this->getAccessibleShop($publicId);
 
         $query = Product::where('shop_public_id', $publicId)
             ->with(['category']);
@@ -212,9 +246,7 @@ class ShopController extends Controller
 
     public function analytics(string $publicId)
     {
-        $shop = Shop::where('public_id', $publicId)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+        $shop = $this->getAccessibleShop($publicId);
 
         $today = Carbon::today();
         $startOfMonth = Carbon::now()->startOfMonth();
@@ -303,9 +335,7 @@ class ShopController extends Controller
 
     public function shopOrders(string $publicId)
     {
-        $shop = Shop::where('public_id', $publicId)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+        $shop = $this->getAccessibleShop($publicId);
 
         $orders = Order::with(['user:id,username,email'])
             ->where('shop_id', $shop->id)
@@ -342,9 +372,7 @@ class ShopController extends Controller
 
     public function shopTransactions(string $publicId)
     {
-        $shop = Shop::where('public_id', $publicId)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+        $shop = $this->getAccessibleShop($publicId);
 
         $transactions = Order::where('shop_id', $shop->id)
             ->orderBy('created_at', 'desc')
@@ -377,7 +405,7 @@ class ShopController extends Controller
 
     public function allOrders()
     {
-        $shopIds = Shop::where('user_id', auth()->id())->pluck('id');
+        $shopIds = collect($this->getAccessibleShopIds());
 
         $orders = Order::with(['user:id,username,email', 'shop:id,name,public_id'])
             ->whereIn('shop_id', $shopIds)
@@ -413,7 +441,7 @@ class ShopController extends Controller
 
     public function allTransactions()
     {
-        $shopIds = Shop::where('user_id', auth()->id())->pluck('id');
+        $shopIds = collect($this->getAccessibleShopIds());
 
         $transactions = Order::with(['shop:id,name,public_id'])
             ->whereIn('shop_id', $shopIds)

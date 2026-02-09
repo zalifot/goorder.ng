@@ -74,7 +74,7 @@ const staffNavItems: NavItem[] = [
     },
     {
         title: 'My Shops',
-        href: '/vendor/staff/shops',
+        href: '/vendor/shops',
         icon: Store,
     },
     {

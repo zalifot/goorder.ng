@@ -22,10 +22,20 @@ class DashboardController extends Controller
 
         // Check if user is admin (can see all data)
         $isAdmin = $user->isAdmin();
+        $isStaff = $user->role === 'staff';
 
         // Get the user's shop IDs for scoping queries
-        $userShopIds = $isAdmin ? null : $user->shops()->pluck('id')->toArray();
-        $userShopPublicIds = $isAdmin ? null : $user->shops()->pluck('public_id')->toArray();
+        if ($isAdmin) {
+            $userShopIds = null;
+            $userShopPublicIds = null;
+        } elseif ($isStaff) {
+            // Staff can only see shops they're assigned to
+            $userShopIds = $user->staffShops()->pluck('shops.id')->toArray();
+            $userShopPublicIds = $user->staffShops()->pluck('shops.public_id')->toArray();
+        } else {
+            $userShopIds = $user->shops()->pluck('id')->toArray();
+            $userShopPublicIds = $user->shops()->pluck('public_id')->toArray();
+        }
 
         // Build scoped queries
         $ordersQuery = Order::query();
@@ -35,7 +45,11 @@ class DashboardController extends Controller
         if (!$isAdmin) {
             $ordersQuery->whereIn('shop_id', $userShopIds ?? []);
             $productsQuery->whereIn('shop_public_id', $userShopPublicIds ?? []);
-            $shopsQuery->where('user_id', $user->id);
+            if ($isStaff) {
+                $shopsQuery->whereIn('id', $userShopIds ?? []);
+            } else {
+                $shopsQuery->where('user_id', $user->id);
+            }
         }
 
         $stats = [

@@ -48,7 +48,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
-import { Plus, MoreHorizontal, Pencil, Trash2, Users, User } from 'lucide-react';
+import { Plus, MoreHorizontal, Pencil, Trash2, Users, User, KeyRound } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/vendor/dashboard' },
@@ -91,14 +91,17 @@ export default function Staff({ staff, shops, roles }: Props) {
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [isResetPasswordDialogOpen, setIsResetPasswordDialogOpen] = useState(false);
     const [selectedStaff, setSelectedStaff] = useState<StaffMember | null>(null);
     const [processing, setProcessing] = useState(false);
+    const [newPassword, setNewPassword] = useState('');
 
     // Form state
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         phone: '',
+        password: '',
         role_id: 0,
         shop_ids: [] as number[],
     });
@@ -108,6 +111,7 @@ export default function Staff({ staff, shops, roles }: Props) {
             name: '',
             email: '',
             phone: '',
+            password: '',
             role_id: roles[0]?.id || 0,
             shop_ids: [],
         });
@@ -157,6 +161,7 @@ export default function Staff({ staff, shops, roles }: Props) {
             name: staffMember.name,
             email: staffMember.email,
             phone: staffMember.phone || '',
+            password: '',
             role_id: matchingRole?.id || roles[0]?.id || 0,
             shop_ids: staffMember.assigned_shops.map((s) => s.id),
         });
@@ -166,6 +171,25 @@ export default function Staff({ staff, shops, roles }: Props) {
     const openDeleteDialog = (staffMember: StaffMember) => {
         setSelectedStaff(staffMember);
         setIsDeleteDialogOpen(true);
+    };
+
+    const openResetPasswordDialog = (staffMember: StaffMember) => {
+        setSelectedStaff(staffMember);
+        setNewPassword('');
+        setIsResetPasswordDialogOpen(true);
+    };
+
+    const handleResetPassword = () => {
+        if (!selectedStaff) return;
+        setProcessing(true);
+        router.post(`/vendor/manage/staff/${selectedStaff.id}/reset-password`, { password: newPassword }, {
+            onSuccess: () => {
+                setIsResetPasswordDialogOpen(false);
+                setSelectedStaff(null);
+                setNewPassword('');
+            },
+            onFinish: () => setProcessing(false),
+        });
     };
 
     const toggleShopSelection = (shopId: number) => {
@@ -262,6 +286,22 @@ export default function Staff({ staff, shops, roles }: Props) {
                                     <InputError message={(errors as Record<string, string>)?.phone} />
                                 </div>
                                 <div className="grid gap-2">
+                                    <Label htmlFor="password">Login Password</Label>
+                                    <Input
+                                        id="password"
+                                        type="password"
+                                        value={formData.password}
+                                        onChange={(e) =>
+                                            setFormData({ ...formData, password: e.target.value })
+                                        }
+                                        placeholder="Minimum 8 characters"
+                                    />
+                                    <InputError message={(errors as Record<string, string>)?.password} />
+                                    <p className="text-xs text-muted-foreground">
+                                        Share this password with the staff member so they can login.
+                                    </p>
+                                </div>
+                                <div className="grid gap-2">
                                     <Label>Role</Label>
                                     <Select
                                         value={formData.role_id.toString()}
@@ -345,6 +385,8 @@ export default function Staff({ staff, shops, roles }: Props) {
                                         processing ||
                                         !formData.name ||
                                         !formData.email ||
+                                        !formData.password ||
+                                        formData.password.length < 8 ||
                                         !formData.role_id ||
                                         formData.shop_ids.length === 0
                                     }
@@ -443,6 +485,12 @@ export default function Staff({ staff, shops, roles }: Props) {
                                                     >
                                                         <Pencil className="mr-2 h-4 w-4" />
                                                         Edit
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem
+                                                        onClick={() => openResetPasswordDialog(member)}
+                                                    >
+                                                        <KeyRound className="mr-2 h-4 w-4" />
+                                                        Reset Password
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
                                                         className="text-destructive"
@@ -601,6 +649,42 @@ export default function Staff({ staff, shops, roles }: Props) {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
+
+            {/* Reset Password Dialog */}
+            <Dialog open={isResetPasswordDialogOpen} onOpenChange={setIsResetPasswordDialogOpen}>
+                <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                        <DialogTitle>Reset Password</DialogTitle>
+                        <DialogDescription>
+                            Set a new password for <strong>{selectedStaff?.name}</strong>. Share the new password with them.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <div className="grid gap-2">
+                            <Label htmlFor="reset-password">New Password</Label>
+                            <Input
+                                id="reset-password"
+                                type="password"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                placeholder="Minimum 8 characters"
+                            />
+                            <InputError message={(errors as Record<string, string>)?.password} />
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsResetPasswordDialogOpen(false)}>
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={handleResetPassword}
+                            disabled={processing || newPassword.length < 8}
+                        >
+                            {processing ? 'Resetting...' : 'Reset Password'}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </AppLayout>
     );
 }

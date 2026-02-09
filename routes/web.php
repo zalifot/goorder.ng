@@ -151,8 +151,8 @@ Route::middleware('guest')->group(function () {
 
         $user = User::where('email', $credentials['email'])->first();
 
-        // Allow admin, super_admin, and shop_owner to login through vendor area
-        if ($user && in_array($user->role, ['admin', 'super_admin', 'shop_owner']) && Auth::attempt($credentials, $request->boolean('remember'))) {
+        // Allow admin, super_admin, shop_owner, and staff to login through vendor area
+        if ($user && in_array($user->role, ['admin', 'super_admin', 'shop_owner', 'staff']) && Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
             return redirect()->intended('/vendor/dashboard');
         }
@@ -296,7 +296,7 @@ Route::middleware(['auth'])->prefix('api')->group(function () {
 });
 
 // Vendor Routes
-Route::middleware(['auth', 'role:admin,super_admin,shop_owner'])->prefix('vendor')->group(function () {
+Route::middleware(['auth', 'role:admin,super_admin,shop_owner,staff'])->prefix('vendor')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('vendor.dashboard');
 
     // Product Categories routes
@@ -329,55 +329,59 @@ Route::middleware(['auth', 'role:admin,super_admin,shop_owner'])->prefix('vendor
     Route::put('delivery-options/slots/{slot}', [DeliveryOptionController::class, 'updateSlot'])->name('delivery-options.slots.update');
     Route::delete('delivery-options/slots/{slot}', [DeliveryOptionController::class, 'destroySlot'])->name('delivery-options.slots.destroy');
 
-    Route::get('integrations', function () {
-        $whatsapp = \App\Models\WhatsappIntegration::where('user_id', auth()->id())->first();
-        $shops = \App\Models\Shop::where('user_id', auth()->id())
-            ->withCount(['products' => fn ($q) => $q->where('is_active', true)])
-            ->get(['id', 'name', 'public_id', 'image']);
-        return Inertia::render('integrations', [
-            'whatsapp' => $whatsapp ? [
-                'connected'            => true,
-                'display_phone_number' => $whatsapp->display_phone_number,
-                'verified_name'        => $whatsapp->verified_name,
-                'waba_name'            => $whatsapp->waba_name,
-                'quality_rating'       => $whatsapp->quality_rating,
-                'catalog_id'           => $whatsapp->catalog_id,
-                'catalog_name'         => $whatsapp->catalog_name,
-                'commerce_enabled'     => $whatsapp->commerce_enabled,
-                'last_synced_at'       => $whatsapp->last_synced_at?->diffForHumans(),
-            ] : ['connected' => false],
-            'shops' => $shops,
-        ]);
-    })->name('integrations');
-    Route::post('integrations/whatsapp/connect', [WhatsAppController::class, 'connect'])->name('integrations.whatsapp.connect');
-    Route::delete('integrations/whatsapp/disconnect', [WhatsAppController::class, 'disconnect'])->name('integrations.whatsapp.disconnect');
-    Route::post('integrations/whatsapp/catalog/setup', [WhatsAppController::class, 'setupCatalog'])->name('integrations.whatsapp.catalog.setup');
-    Route::post('integrations/whatsapp/catalog/sync', [WhatsAppController::class, 'syncProducts'])->name('integrations.whatsapp.catalog.sync');
+    // Owner/Admin-only routes (staff cannot access these)
+    Route::middleware('role:admin,super_admin,shop_owner')->group(function () {
+        Route::get('integrations', function () {
+            $whatsapp = \App\Models\WhatsappIntegration::where('user_id', auth()->id())->first();
+            $shops = \App\Models\Shop::where('user_id', auth()->id())
+                ->withCount(['products' => fn ($q) => $q->where('is_active', true)])
+                ->get(['id', 'name', 'public_id', 'image']);
+            return Inertia::render('integrations', [
+                'whatsapp' => $whatsapp ? [
+                    'connected'            => true,
+                    'display_phone_number' => $whatsapp->display_phone_number,
+                    'verified_name'        => $whatsapp->verified_name,
+                    'waba_name'            => $whatsapp->waba_name,
+                    'quality_rating'       => $whatsapp->quality_rating,
+                    'catalog_id'           => $whatsapp->catalog_id,
+                    'catalog_name'         => $whatsapp->catalog_name,
+                    'commerce_enabled'     => $whatsapp->commerce_enabled,
+                    'last_synced_at'       => $whatsapp->last_synced_at?->diffForHumans(),
+                ] : ['connected' => false],
+                'shops' => $shops,
+            ]);
+        })->name('integrations');
+        Route::post('integrations/whatsapp/connect', [WhatsAppController::class, 'connect'])->name('integrations.whatsapp.connect');
+        Route::delete('integrations/whatsapp/disconnect', [WhatsAppController::class, 'disconnect'])->name('integrations.whatsapp.disconnect');
+        Route::post('integrations/whatsapp/catalog/setup', [WhatsAppController::class, 'setupCatalog'])->name('integrations.whatsapp.catalog.setup');
+        Route::post('integrations/whatsapp/catalog/sync', [WhatsAppController::class, 'syncProducts'])->name('integrations.whatsapp.catalog.sync');
 
-    Route::get('transactions', [ShopController::class, 'allTransactions'])->name('transactions');
+        Route::get('transactions', [ShopController::class, 'allTransactions'])->name('transactions');
 
-    Route::get('wallet', function () {
-        return Inertia::render('wallet');
-    })->name('wallet');
+        Route::get('wallet', function () {
+            return Inertia::render('wallet');
+        })->name('wallet');
 
-    Route::get('users', [PlatformController::class, 'users'])->name('users');
-    Route::patch('users/{user}/toggle-status', [PlatformController::class, 'toggleUserStatus'])->name('users.toggle-status');
+        Route::get('users', [PlatformController::class, 'users'])->name('users');
+        Route::patch('users/{user}/toggle-status', [PlatformController::class, 'toggleUserStatus'])->name('users.toggle-status');
 
-    Route::get('systems', function () {
-        return Inertia::render('systems');
-    })->name('systems');
+        Route::get('systems', function () {
+            return Inertia::render('systems');
+        })->name('systems');
 
-    // Staff Management routes
-    Route::get('manage/staff', [StaffController::class, 'index'])->name('staff.index');
-    Route::post('manage/staff', [StaffController::class, 'store'])->name('staff.store');
-    Route::put('manage/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
-    Route::delete('manage/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
+        // Staff Management routes
+        Route::get('manage/staff', [StaffController::class, 'index'])->name('staff.index');
+        Route::post('manage/staff', [StaffController::class, 'store'])->name('staff.store');
+        Route::put('manage/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
+        Route::delete('manage/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
+        Route::post('manage/staff/{staff}/reset-password', [StaffController::class, 'resetPassword'])->name('staff.reset-password');
 
-    // Staff Role Management routes
-    Route::get('manage/roles', [StaffController::class, 'rolesIndex'])->name('roles.index');
-    Route::post('manage/roles', [StaffController::class, 'storeRole'])->name('roles.store');
-    Route::put('manage/roles/{role}', [StaffController::class, 'updateRole'])->name('roles.update');
-    Route::delete('manage/roles/{role}', [StaffController::class, 'destroyRole'])->name('roles.destroy');
+        // Staff Role Management routes
+        Route::get('manage/roles', [StaffController::class, 'rolesIndex'])->name('roles.index');
+        Route::post('manage/roles', [StaffController::class, 'storeRole'])->name('roles.store');
+        Route::put('manage/roles/{role}', [StaffController::class, 'updateRole'])->name('roles.update');
+        Route::delete('manage/roles/{role}', [StaffController::class, 'destroyRole'])->name('roles.destroy');
+    });
 
     // Global Inventory Dashboard
     Route::get('inventory', [ProductController::class, 'dashboard'])->name('inventory.dashboard');
