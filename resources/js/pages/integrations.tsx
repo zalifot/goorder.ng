@@ -70,7 +70,11 @@ export default function Integrations({ whatsapp, shops }: Props) {
     // Load Facebook JS SDK
     useEffect(() => {
         if (document.getElementById('facebook-jssdk')) {
-            setSdkReady(true);
+            // SDK already loaded, check if initialized
+            if (window.FB) {
+                // Give it a moment to fully initialize
+                setTimeout(() => setSdkReady(true), 100);
+            }
             return;
         }
 
@@ -81,7 +85,10 @@ export default function Integrations({ whatsapp, shops }: Props) {
                 xfbml: true,
                 version: import.meta.env.VITE_META_GRAPH_VERSION || 'v21.0',
             });
-            setSdkReady(true);
+            // Add a small delay to ensure FB.init completes fully
+            setTimeout(() => {
+                setSdkReady(true);
+            }, 100);
         };
 
         const script = document.createElement('script');
@@ -123,8 +130,15 @@ export default function Integrations({ whatsapp, shops }: Props) {
         }
 
         // Double-check SDK is ready
-        if (!window.FB || !sdkReady) {
+        if (!sdkReady) {
             alert('Facebook SDK is still loading. Please wait a moment and try again.');
+            return;
+        }
+
+        // Triple-check that FB object exists and has login method
+        if (!window.FB || typeof window.FB.login !== 'function') {
+            console.error('FB SDK not properly initialized');
+            alert('Facebook SDK failed to initialize. Please refresh the page and try again.');
             return;
         }
 
