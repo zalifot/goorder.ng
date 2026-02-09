@@ -10,6 +10,7 @@ use App\Models\Shop;
 use App\Services\CloudinaryService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -254,68 +255,87 @@ class ShopController extends Controller
         $endOfLastMonth = Carbon::now()->subMonth()->endOfMonth();
         $startOfWeek = Carbon::now()->startOfWeek();
 
-        // Shop-specific order query builder
-        $ordersQuery = Order::where('shop_id', $shop->id);
-        $productsQuery = Product::where('shop_public_id', $shop->public_id);
+        // Single query for all order stats
+        $orderStats = Order::where('shop_id', $shop->id)
+            ->select([
+                DB::raw('COUNT(*) as total_orders'),
+                DB::raw("SUM(CASE WHEN DATE(created_at) = ? THEN 1 ELSE 0 END) as today_orders"),
+                DB::raw("SUM(CASE WHEN created_at >= ? THEN 1 ELSE 0 END) as monthly_orders"),
+                DB::raw("SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders"),
+                DB::raw("SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed_orders"),
+                DB::raw("SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) as cancelled_orders"),
+                DB::raw('SUM(total) as total_revenue'),
+                DB::raw("SUM(CASE WHEN DATE(created_at) = ? THEN total ELSE 0 END) as today_revenue"),
+                DB::raw("SUM(CASE WHEN created_at >= ? THEN total ELSE 0 END) as monthly_revenue"),
+                DB::raw("SUM(CASE WHEN created_at BETWEEN ? AND ? THEN total ELSE 0 END) as last_month_revenue"),
+            ])
+            ->addBinding([$today, $startOfMonth, $today, $startOfMonth, $startOfLastMonth, $endOfLastMonth], 'select')
+            ->first();
 
-        // Stats for this shop
+        // Single query for all product stats
+        $productStats = Product::where('shop_public_id', $shop->public_id)
+            ->select([
+                DB::raw('COUNT(*) as total_products'),
+                DB::raw("SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active_products"),
+                DB::raw("SUM(CASE WHEN stock_status = 'out_of_stock' THEN 1 ELSE 0 END) as out_of_stock"),
+                DB::raw("SUM(CASE WHEN stock_status = 'low_stock' THEN 1 ELSE 0 END) as low_stock"),
+                DB::raw('SUM(views) as total_views'),
+            ])
+            ->first();
+
         $stats = [
-            // Revenue
-            'total_revenue' => (clone $ordersQuery)->sum('total') ?? 0,
-            'today_revenue' => (clone $ordersQuery)->whereDate('created_at', $today)->sum('total') ?? 0,
-            'monthly_revenue' => (clone $ordersQuery)->where('created_at', '>=', $startOfMonth)->sum('total') ?? 0,
-            'last_month_revenue' => (clone $ordersQuery)->whereBetween('created_at', [$startOfLastMonth, $endOfLastMonth])->sum('total') ?? 0,
-
-            // Orders
-            'total_orders' => (clone $ordersQuery)->count(),
-            'today_orders' => (clone $ordersQuery)->whereDate('created_at', $today)->count(),
-            'monthly_orders' => (clone $ordersQuery)->where('created_at', '>=', $startOfMonth)->count(),
-            'pending_orders' => (clone $ordersQuery)->where('status', 'pending')->count(),
-            'completed_orders' => (clone $ordersQuery)->where('status', 'completed')->count(),
-            'cancelled_orders' => (clone $ordersQuery)->where('status', 'cancelled')->count(),
-
-            // Products
-            'total_products' => (clone $productsQuery)->count(),
-            'active_products' => (clone $productsQuery)->where('is_active', true)->count(),
-            'out_of_stock' => (clone $productsQuery)->where('stock_status', 'out_of_stock')->count(),
-            'low_stock' => (clone $productsQuery)->where('stock_status', 'low_stock')->count(),
-
-            // Views
-            'total_views' => (clone $productsQuery)->sum('views') ?? 0,
+            'total_revenue' => (float) ($orderStats->total_revenue ?? 0),
+            'today_revenue' => (float) ($orderStats->today_revenue ?? 0),
+            'monthly_revenue' => (float) ($orderStats->monthly_revenue ?? 0),
+            'last_month_revenue' => (float) ($orderStats->last_month_revenue ?? 0),
+            'total_orders' => (int) ($orderStats->total_orders ?? 0),
+            'today_orders' => (int) ($orderStats->today_orders ?? 0),
+            'monthly_orders' => (int) ($orderStats->monthly_orders ?? 0),
+            'pending_orders' => (int) ($orderStats->pending_orders ?? 0),
+            'completed_orders' => (int) ($orderStats->completed_orders ?? 0),
+            'cancelled_orders' => (int) ($orderStats->cancelled_orders ?? 0),
+            'total_products' => (int) ($productStats->total_products ?? 0),
+            'active_products' => (int) ($productStats->active_products ?? 0),
+            'out_of_stock' => (int) ($productStats->out_of_stock ?? 0),
+            'low_stock' => (int) ($productStats->low_stock ?? 0),
+            'total_views' => (int) ($productStats->total_views ?? 0),
         ];
 
-        // Weekly revenue data for chart
-        $weeklyRevenue = [];
-        for ($i = 0; $i < 7; $i++) {
-            $date = $startOfWeek->copy()->addDays($i);
-            $dayName = $date->format('D');
-            $revenue = (clone $ordersQuery)->whereDate('created_at', $date)->sum('total') ?? 0;
-            $weeklyRevenue[] = ['name' => $dayName, 'value' => (float) $revenue];
-        }
+        // Single query for weekly charts
+        $weeklyData = Order::where('shop_id', $shop->id)
+            ->where('created_at', '>=', $startOfWeek)
+            ->where('created_at', '<', $startOfWeek->copy()->addDays(7))
+            ->select([
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('COUNT(*) as orders'),
+                DB::raw('SUM(total) as revenue'),
+            ])
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->get()
+            ->keyBy('date');
 
-        // Weekly orders data for chart
+        $weeklyRevenue = [];
         $weeklyOrders = [];
         for ($i = 0; $i < 7; $i++) {
             $date = $startOfWeek->copy()->addDays($i);
-            $dayName = $date->format('D');
-            $orders = (clone $ordersQuery)->whereDate('created_at', $date)->count();
-            $weeklyOrders[] = ['name' => $dayName, 'orders' => $orders];
+            $dateKey = $date->format('Y-m-d');
+            $dayData = $weeklyData->get($dateKey);
+            $weeklyRevenue[] = ['name' => $date->format('D'), 'value' => (float) ($dayData->revenue ?? 0)];
+            $weeklyOrders[] = ['name' => $date->format('D'), 'orders' => (int) ($dayData->orders ?? 0)];
         }
 
-        // Top products by views
+        // Top products, recent orders, low stock — 3 simple queries
         $topProducts = Product::where('shop_public_id', $shop->public_id)
             ->where('is_active', true)
             ->orderByDesc('views')
             ->take(5)
             ->get(['id', 'name', 'views', 'price', 'discount_percentage', 'stock_status']);
 
-        // Recent orders
         $recentOrders = Order::where('shop_id', $shop->id)
             ->latest()
             ->take(5)
             ->get(['id', 'order_number', 'customer_name', 'total', 'status', 'created_at']);
 
-        // Low stock products
         $lowStockProducts = Product::where('shop_public_id', $shop->public_id)
             ->whereIn('stock_status', ['low_stock', 'out_of_stock'])
             ->orderByRaw("CASE WHEN stock_status = 'out_of_stock' THEN 0 ELSE 1 END")

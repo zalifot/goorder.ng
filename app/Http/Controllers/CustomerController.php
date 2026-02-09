@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Order;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class CustomerController extends Controller
@@ -12,27 +13,30 @@ class CustomerController extends Controller
     public function dashboard()
     {
         $user = auth()->user();
-        $today = Carbon::today();
         $startOfMonth = Carbon::now()->startOfMonth();
 
-        // Customer's order stats
-        $ordersQuery = Order::where('user_id', $user->id);
+        // Single query for all order stats
+        $orderStats = Order::where('user_id', $user->id)
+            ->select([
+                DB::raw('COUNT(*) as total_orders'),
+                DB::raw("SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders"),
+                DB::raw("SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed_orders"),
+                DB::raw("SUM(CASE WHEN status = 'completed' THEN total ELSE 0 END) as total_spent"),
+                DB::raw("SUM(CASE WHEN status = 'completed' AND created_at >= ? THEN total ELSE 0 END) as this_month_spent"),
+            ])
+            ->addBinding([$startOfMonth], 'select')
+            ->first();
 
-        $cartItemCount = Cart::where('user_id', $user->id)
-            ->withSum('items', 'quantity')
-            ->get()
-            ->sum('items_sum_quantity');
+        // Single query for cart count
+        $cartItemCount = (int) CartItem::whereHas('cart', fn ($q) => $q->where('user_id', $user->id))->sum('quantity');
 
         $stats = [
-            'total_orders' => (clone $ordersQuery)->count(),
-            'pending_orders' => (clone $ordersQuery)->where('status', 'pending')->count(),
-            'completed_orders' => (clone $ordersQuery)->where('status', 'completed')->count(),
-            'total_spent' => (clone $ordersQuery)->where('status', 'completed')->sum('total') ?? 0,
-            'this_month_spent' => (clone $ordersQuery)
-                ->where('status', 'completed')
-                ->where('created_at', '>=', $startOfMonth)
-                ->sum('total') ?? 0,
-            'cart_item_count' => (int) $cartItemCount,
+            'total_orders' => (int) ($orderStats->total_orders ?? 0),
+            'pending_orders' => (int) ($orderStats->pending_orders ?? 0),
+            'completed_orders' => (int) ($orderStats->completed_orders ?? 0),
+            'total_spent' => (float) ($orderStats->total_spent ?? 0),
+            'this_month_spent' => (float) ($orderStats->this_month_spent ?? 0),
+            'cart_item_count' => $cartItemCount,
         ];
 
         // Recent orders

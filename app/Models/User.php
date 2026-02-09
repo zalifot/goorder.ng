@@ -116,19 +116,19 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if user is a shop owner (by role or has shops).
+     * Check if user is a shop owner.
      */
     public function isShopOwner(): bool
     {
-        return $this->role === 'shop_owner' || $this->shops()->exists();
+        return $this->role === 'shop_owner';
     }
 
     /**
-     * Check if user is staff (assigned to any shop).
+     * Check if user is staff.
      */
     public function isStaff(): bool
     {
-        return $this->staffShops()->exists();
+        return $this->role === 'staff';
     }
 
     /**
@@ -136,7 +136,7 @@ class User extends Authenticatable
      */
     public function hasDashboardAccess(): bool
     {
-        return $this->isAdmin() || $this->isShopOwner() || $this->isStaff();
+        return in_array($this->role, ['super_admin', 'admin', 'shop_owner', 'staff']);
     }
 
     /**

@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\PlatformController::toggleStatus
- * @see app/Http/Controllers/PlatformController.php:143
+ * @see app/Http/Controllers/PlatformController.php:173
  * @route '/vendor/platform/shops/{shop}/toggle-status'
  */
 export const toggleStatus = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -16,7 +16,7 @@ toggleStatus.definition = {
 
 /**
 * @see \App\Http\Controllers\PlatformController::toggleStatus
- * @see app/Http/Controllers/PlatformController.php:143
+ * @see app/Http/Controllers/PlatformController.php:173
  * @route '/vendor/platform/shops/{shop}/toggle-status'
  */
 toggleStatus.url = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ toggleStatus.url = (args: { shop: number | { id: number } } | [shop: number | { 
 
 /**
 * @see \App\Http\Controllers\PlatformController::toggleStatus
- * @see app/Http/Controllers/PlatformController.php:143
+ * @see app/Http/Controllers/PlatformController.php:173
  * @route '/vendor/platform/shops/{shop}/toggle-status'
  */
 toggleStatus.patch = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -59,7 +59,7 @@ toggleStatus.patch = (args: { shop: number | { id: number } } | [shop: number | 
 
     /**
 * @see \App\Http\Controllers\PlatformController::toggleStatus
- * @see app/Http/Controllers/PlatformController.php:143
+ * @see app/Http/Controllers/PlatformController.php:173
  * @route '/vendor/platform/shops/{shop}/toggle-status'
  */
     const toggleStatusForm = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -74,7 +74,7 @@ toggleStatus.patch = (args: { shop: number | { id: number } } | [shop: number | 
 
             /**
 * @see \App\Http\Controllers\PlatformController::toggleStatus
- * @see app/Http/Controllers/PlatformController.php:143
+ * @see app/Http/Controllers/PlatformController.php:173
  * @route '/vendor/platform/shops/{shop}/toggle-status'
  */
         toggleStatusForm.patch = (args: { shop: number | { id: number } } | [shop: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

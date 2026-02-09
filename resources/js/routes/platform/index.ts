@@ -4,7 +4,7 @@ import users48860f from './users'
 import admins from './admins'
 /**
 * @see \App\Http\Controllers\PlatformController::analytics
- * @see app/Http/Controllers/PlatformController.php:18
+ * @see app/Http/Controllers/PlatformController.php:19
  * @route '/vendor/platform/analytics'
  */
 export const analytics = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -19,7 +19,7 @@ analytics.definition = {
 
 /**
 * @see \App\Http\Controllers\PlatformController::analytics
- * @see app/Http/Controllers/PlatformController.php:18
+ * @see app/Http/Controllers/PlatformController.php:19
  * @route '/vendor/platform/analytics'
  */
 analytics.url = (options?: RouteQueryOptions) => {
@@ -28,7 +28,7 @@ analytics.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PlatformController::analytics
- * @see app/Http/Controllers/PlatformController.php:18
+ * @see app/Http/Controllers/PlatformController.php:19
  * @route '/vendor/platform/analytics'
  */
 analytics.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -37,7 +37,7 @@ analytics.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\PlatformController::analytics
- * @see app/Http/Controllers/PlatformController.php:18
+ * @see app/Http/Controllers/PlatformController.php:19
  * @route '/vendor/platform/analytics'
  */
 analytics.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -47,7 +47,7 @@ analytics.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\PlatformController::analytics
- * @see app/Http/Controllers/PlatformController.php:18
+ * @see app/Http/Controllers/PlatformController.php:19
  * @route '/vendor/platform/analytics'
  */
     const analyticsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -57,7 +57,7 @@ analytics.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\PlatformController::analytics
- * @see app/Http/Controllers/PlatformController.php:18
+ * @see app/Http/Controllers/PlatformController.php:19
  * @route '/vendor/platform/analytics'
  */
         analyticsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -66,7 +66,7 @@ analytics.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\PlatformController::analytics
- * @see app/Http/Controllers/PlatformController.php:18
+ * @see app/Http/Controllers/PlatformController.php:19
  * @route '/vendor/platform/analytics'
  */
         analyticsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -82,7 +82,7 @@ analytics.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     analytics.form = analyticsForm
 /**
 * @see \App\Http\Controllers\PlatformController::shops
- * @see app/Http/Controllers/PlatformController.php:97
+ * @see app/Http/Controllers/PlatformController.php:127
  * @route '/vendor/platform/shops'
  */
 export const shops = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -97,7 +97,7 @@ shops.definition = {
 
 /**
 * @see \App\Http\Controllers\PlatformController::shops
- * @see app/Http/Controllers/PlatformController.php:97
+ * @see app/Http/Controllers/PlatformController.php:127
  * @route '/vendor/platform/shops'
  */
 shops.url = (options?: RouteQueryOptions) => {
@@ -106,7 +106,7 @@ shops.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PlatformController::shops
- * @see app/Http/Controllers/PlatformController.php:97
+ * @see app/Http/Controllers/PlatformController.php:127
  * @route '/vendor/platform/shops'
  */
 shops.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -115,7 +115,7 @@ shops.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\PlatformController::shops
- * @see app/Http/Controllers/PlatformController.php:97
+ * @see app/Http/Controllers/PlatformController.php:127
  * @route '/vendor/platform/shops'
  */
 shops.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -125,7 +125,7 @@ shops.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\PlatformController::shops
- * @see app/Http/Controllers/PlatformController.php:97
+ * @see app/Http/Controllers/PlatformController.php:127
  * @route '/vendor/platform/shops'
  */
     const shopsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -135,7 +135,7 @@ shops.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\PlatformController::shops
- * @see app/Http/Controllers/PlatformController.php:97
+ * @see app/Http/Controllers/PlatformController.php:127
  * @route '/vendor/platform/shops'
  */
         shopsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -144,7 +144,7 @@ shops.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\PlatformController::shops
- * @see app/Http/Controllers/PlatformController.php:97
+ * @see app/Http/Controllers/PlatformController.php:127
  * @route '/vendor/platform/shops'
  */
         shopsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -160,7 +160,7 @@ shops.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     shops.form = shopsForm
 /**
 * @see \App\Http\Controllers\PlatformController::users
- * @see app/Http/Controllers/PlatformController.php:159
+ * @see app/Http/Controllers/PlatformController.php:189
  * @route '/vendor/platform/users'
  */
 export const users = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -175,7 +175,7 @@ users.definition = {
 
 /**
 * @see \App\Http\Controllers\PlatformController::users
- * @see app/Http/Controllers/PlatformController.php:159
+ * @see app/Http/Controllers/PlatformController.php:189
  * @route '/vendor/platform/users'
  */
 users.url = (options?: RouteQueryOptions) => {
@@ -184,7 +184,7 @@ users.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PlatformController::users
- * @see app/Http/Controllers/PlatformController.php:159
+ * @see app/Http/Controllers/PlatformController.php:189
  * @route '/vendor/platform/users'
  */
 users.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -193,7 +193,7 @@ users.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\PlatformController::users
- * @see app/Http/Controllers/PlatformController.php:159
+ * @see app/Http/Controllers/PlatformController.php:189
  * @route '/vendor/platform/users'
  */
 users.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -203,7 +203,7 @@ users.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\PlatformController::users
- * @see app/Http/Controllers/PlatformController.php:159
+ * @see app/Http/Controllers/PlatformController.php:189
  * @route '/vendor/platform/users'
  */
     const usersForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -213,7 +213,7 @@ users.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\PlatformController::users
- * @see app/Http/Controllers/PlatformController.php:159
+ * @see app/Http/Controllers/PlatformController.php:189
  * @route '/vendor/platform/users'
  */
         usersForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -222,7 +222,7 @@ users.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\PlatformController::users
- * @see app/Http/Controllers/PlatformController.php:159
+ * @see app/Http/Controllers/PlatformController.php:189
  * @route '/vendor/platform/users'
  */
         usersForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

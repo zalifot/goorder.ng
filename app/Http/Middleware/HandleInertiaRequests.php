@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Cart;
+use App\Models\CartItem;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -63,7 +63,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'cartItemCount' => fn () => $user && $user->role === 'user'
-                ? (int) Cart::where('user_id', $user->id)->withSum('items', 'quantity')->get()->sum('items_sum_quantity')
+                ? (int) CartItem::whereHas('cart', fn ($q) => $q->where('user_id', $user->id))->sum('quantity')
                 : 0,
         ];
     }

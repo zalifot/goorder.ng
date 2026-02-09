@@ -8,6 +8,7 @@ use App\Models\Shop;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class PlatformController extends Controller
@@ -29,40 +30,69 @@ class PlatformController extends Controller
         $startOfLastMonth = Carbon::now()->subMonth()->startOfMonth();
         $endOfLastMonth = Carbon::now()->subMonth()->endOfMonth();
 
-        // Platform-wide statistics
+        // Single query for all order stats
+        $orderStats = Order::select([
+            DB::raw('COUNT(*) as total_orders'),
+            DB::raw("SUM(CASE WHEN DATE(created_at) = ? THEN 1 ELSE 0 END) as today_orders"),
+            DB::raw("SUM(CASE WHEN created_at >= ? THEN 1 ELSE 0 END) as monthly_orders"),
+            DB::raw("SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders"),
+            DB::raw('SUM(total) as total_revenue'),
+            DB::raw("SUM(CASE WHEN DATE(created_at) = ? THEN total ELSE 0 END) as today_revenue"),
+            DB::raw("SUM(CASE WHEN created_at >= ? THEN total ELSE 0 END) as monthly_revenue"),
+            DB::raw("SUM(CASE WHEN created_at BETWEEN ? AND ? THEN total ELSE 0 END) as last_month_revenue"),
+        ])->addBinding([$today, $startOfMonth, $today, $startOfMonth, $startOfLastMonth, $endOfLastMonth], 'select')->first();
+
+        // Single query for all user stats
+        $userStats = User::select([
+            DB::raw('COUNT(*) as total_users'),
+            DB::raw("SUM(CASE WHEN role = 'user' THEN 1 ELSE 0 END) as total_customers"),
+            DB::raw("SUM(CASE WHEN role = 'shop_owner' THEN 1 ELSE 0 END) as total_shop_owners"),
+            DB::raw("SUM(CASE WHEN role IN ('admin', 'super_admin') THEN 1 ELSE 0 END) as total_admins"),
+            DB::raw("SUM(CASE WHEN DATE(created_at) = ? THEN 1 ELSE 0 END) as new_users_today"),
+            DB::raw("SUM(CASE WHEN created_at >= ? THEN 1 ELSE 0 END) as new_users_month"),
+        ])->addBinding([$today, $startOfMonth], 'select')->first();
+
+        // Single query for all shop stats
+        $shopStats = Shop::select([
+            DB::raw('COUNT(*) as total_shops'),
+            DB::raw("SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active_shops"),
+            DB::raw("SUM(CASE WHEN is_active = 0 THEN 1 ELSE 0 END) as inactive_shops"),
+            DB::raw("SUM(CASE WHEN is_under_construction = 1 THEN 1 ELSE 0 END) as shops_under_construction"),
+            DB::raw("SUM(CASE WHEN created_at >= ? THEN 1 ELSE 0 END) as new_shops_month"),
+        ])->addBinding([$startOfMonth], 'select')->first();
+
+        // Single query for all product stats
+        $productStats = Product::select([
+            DB::raw('COUNT(*) as total_products'),
+            DB::raw("SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active_products"),
+            DB::raw("SUM(CASE WHEN stock_status = 'out_of_stock' THEN 1 ELSE 0 END) as out_of_stock"),
+            DB::raw("SUM(CASE WHEN stock_status = 'low_stock' THEN 1 ELSE 0 END) as low_stock"),
+        ])->first();
+
         $stats = [
-            // Revenue (all shops combined)
-            'total_revenue' => Order::sum('total') ?? 0,
-            'today_revenue' => Order::whereDate('created_at', $today)->sum('total') ?? 0,
-            'monthly_revenue' => Order::where('created_at', '>=', $startOfMonth)->sum('total') ?? 0,
-            'last_month_revenue' => Order::whereBetween('created_at', [$startOfLastMonth, $endOfLastMonth])->sum('total') ?? 0,
-            
-            // Orders
-            'total_orders' => Order::count(),
-            'today_orders' => Order::whereDate('created_at', $today)->count(),
-            'monthly_orders' => Order::where('created_at', '>=', $startOfMonth)->count(),
-            'pending_orders' => Order::where('status', 'pending')->count(),
-            
-            // Users breakdown
-            'total_users' => User::count(),
-            'total_customers' => User::where('role', 'user')->count(),
-            'total_shop_owners' => User::whereHas('shops')->count(),
-            'total_admins' => User::whereIn('role', ['admin', 'super_admin'])->count(),
-            'new_users_today' => User::whereDate('created_at', $today)->count(),
-            'new_users_month' => User::where('created_at', '>=', $startOfMonth)->count(),
-            
-            // Shops
-            'total_shops' => Shop::count(),
-            'active_shops' => Shop::where('is_active', true)->count(),
-            'inactive_shops' => Shop::where('is_active', false)->count(),
-            'shops_under_construction' => Shop::where('is_under_construction', true)->count(),
-            'new_shops_month' => Shop::where('created_at', '>=', $startOfMonth)->count(),
-            
-            // Products (all shops combined)
-            'total_products' => Product::count(),
-            'active_products' => Product::where('is_active', true)->count(),
-            'out_of_stock' => Product::where('stock_status', 'out_of_stock')->count(),
-            'low_stock' => Product::where('stock_status', 'low_stock')->count(),
+            'total_revenue' => (float) ($orderStats->total_revenue ?? 0),
+            'today_revenue' => (float) ($orderStats->today_revenue ?? 0),
+            'monthly_revenue' => (float) ($orderStats->monthly_revenue ?? 0),
+            'last_month_revenue' => (float) ($orderStats->last_month_revenue ?? 0),
+            'total_orders' => (int) ($orderStats->total_orders ?? 0),
+            'today_orders' => (int) ($orderStats->today_orders ?? 0),
+            'monthly_orders' => (int) ($orderStats->monthly_orders ?? 0),
+            'pending_orders' => (int) ($orderStats->pending_orders ?? 0),
+            'total_users' => (int) ($userStats->total_users ?? 0),
+            'total_customers' => (int) ($userStats->total_customers ?? 0),
+            'total_shop_owners' => (int) ($userStats->total_shop_owners ?? 0),
+            'total_admins' => (int) ($userStats->total_admins ?? 0),
+            'new_users_today' => (int) ($userStats->new_users_today ?? 0),
+            'new_users_month' => (int) ($userStats->new_users_month ?? 0),
+            'total_shops' => (int) ($shopStats->total_shops ?? 0),
+            'active_shops' => (int) ($shopStats->active_shops ?? 0),
+            'inactive_shops' => (int) ($shopStats->inactive_shops ?? 0),
+            'shops_under_construction' => (int) ($shopStats->shops_under_construction ?? 0),
+            'new_shops_month' => (int) ($shopStats->new_shops_month ?? 0),
+            'total_products' => (int) ($productStats->total_products ?? 0),
+            'active_products' => (int) ($productStats->active_products ?? 0),
+            'out_of_stock' => (int) ($productStats->out_of_stock ?? 0),
+            'low_stock' => (int) ($productStats->low_stock ?? 0),
         ];
 
         // Top performing shops by revenue
@@ -102,7 +132,7 @@ class PlatformController extends Controller
             abort(403, 'Unauthorized access');
         }
 
-        $query = Shop::with(['user:id,username,email', 'products'])
+        $query = Shop::with(['user:id,username,email'])
             ->withCount('products');
 
         // Search filter

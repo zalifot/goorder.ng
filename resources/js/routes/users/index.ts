@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\PlatformController::toggleStatus
- * @see app/Http/Controllers/PlatformController.php:209
+ * @see app/Http/Controllers/PlatformController.php:239
  * @route '/vendor/users/{user}/toggle-status'
  */
 export const toggleStatus = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -16,7 +16,7 @@ toggleStatus.definition = {
 
 /**
 * @see \App\Http\Controllers\PlatformController::toggleStatus
- * @see app/Http/Controllers/PlatformController.php:209
+ * @see app/Http/Controllers/PlatformController.php:239
  * @route '/vendor/users/{user}/toggle-status'
  */
 toggleStatus.url = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -44,7 +44,7 @@ toggleStatus.url = (args: { user: string | number } | [user: string | number ] |
 
 /**
 * @see \App\Http\Controllers\PlatformController::toggleStatus
- * @see app/Http/Controllers/PlatformController.php:209
+ * @see app/Http/Controllers/PlatformController.php:239
  * @route '/vendor/users/{user}/toggle-status'
  */
 toggleStatus.patch = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -54,7 +54,7 @@ toggleStatus.patch = (args: { user: string | number } | [user: string | number ]
 
     /**
 * @see \App\Http\Controllers\PlatformController::toggleStatus
- * @see app/Http/Controllers/PlatformController.php:209
+ * @see app/Http/Controllers/PlatformController.php:239
  * @route '/vendor/users/{user}/toggle-status'
  */
     const toggleStatusForm = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -69,7 +69,7 @@ toggleStatus.patch = (args: { user: string | number } | [user: string | number ]
 
             /**
 * @see \App\Http\Controllers\PlatformController::toggleStatus
- * @see app/Http/Controllers/PlatformController.php:209
+ * @see app/Http/Controllers/PlatformController.php:239
  * @route '/vendor/users/{user}/toggle-status'
  */
         toggleStatusForm.patch = (args: { user: string | number } | [user: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
