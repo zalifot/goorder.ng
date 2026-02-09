@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\StaffController::store
- * @see app/Http/Controllers/StaffController.php:192
+ * @see app/Http/Controllers/StaffController.php:218
  * @route '/vendor/manage/roles'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -94,7 +94,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\StaffController::store
- * @see app/Http/Controllers/StaffController.php:192
+ * @see app/Http/Controllers/StaffController.php:218
  * @route '/vendor/manage/roles'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -103,7 +103,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\StaffController::store
- * @see app/Http/Controllers/StaffController.php:192
+ * @see app/Http/Controllers/StaffController.php:218
  * @route '/vendor/manage/roles'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -113,7 +113,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\StaffController::store
- * @see app/Http/Controllers/StaffController.php:192
+ * @see app/Http/Controllers/StaffController.php:218
  * @route '/vendor/manage/roles'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -123,7 +123,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\StaffController::store
- * @see app/Http/Controllers/StaffController.php:192
+ * @see app/Http/Controllers/StaffController.php:218
  * @route '/vendor/manage/roles'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -134,7 +134,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:218
+ * @see app/Http/Controllers/StaffController.php:244
  * @route '/vendor/manage/roles/{role}'
  */
 export const update = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -149,7 +149,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:218
+ * @see app/Http/Controllers/StaffController.php:244
  * @route '/vendor/manage/roles/{role}'
  */
 update.url = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -182,7 +182,7 @@ update.url = (args: { role: number | { id: number } } | [role: number | { id: nu
 
 /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:218
+ * @see app/Http/Controllers/StaffController.php:244
  * @route '/vendor/manage/roles/{role}'
  */
 update.put = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -192,7 +192,7 @@ update.put = (args: { role: number | { id: number } } | [role: number | { id: nu
 
     /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:218
+ * @see app/Http/Controllers/StaffController.php:244
  * @route '/vendor/manage/roles/{role}'
  */
     const updateForm = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -207,7 +207,7 @@ update.put = (args: { role: number | { id: number } } | [role: number | { id: nu
 
             /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:218
+ * @see app/Http/Controllers/StaffController.php:244
  * @route '/vendor/manage/roles/{role}'
  */
         updateForm.put = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -223,7 +223,7 @@ update.put = (args: { role: number | { id: number } } | [role: number | { id: nu
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:253
+ * @see app/Http/Controllers/StaffController.php:279
  * @route '/vendor/manage/roles/{role}'
  */
 export const destroy = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -238,7 +238,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:253
+ * @see app/Http/Controllers/StaffController.php:279
  * @route '/vendor/manage/roles/{role}'
  */
 destroy.url = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -271,7 +271,7 @@ destroy.url = (args: { role: number | { id: number } } | [role: number | { id: n
 
 /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:253
+ * @see app/Http/Controllers/StaffController.php:279
  * @route '/vendor/manage/roles/{role}'
  */
 destroy.delete = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -281,7 +281,7 @@ destroy.delete = (args: { role: number | { id: number } } | [role: number | { id
 
     /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:253
+ * @see app/Http/Controllers/StaffController.php:279
  * @route '/vendor/manage/roles/{role}'
  */
     const destroyForm = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -296,7 +296,7 @@ destroy.delete = (args: { role: number | { id: number } } | [role: number | { id
 
             /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:253
+ * @see app/Http/Controllers/StaffController.php:279
  * @route '/vendor/manage/roles/{role}'
  */
         destroyForm.delete = (args: { role: number | { id: number } } | [role: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

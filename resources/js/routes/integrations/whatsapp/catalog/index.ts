@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\WhatsAppController::setup
- * @see app/Http/Controllers/WhatsAppController.php:108
+ * @see app/Http/Controllers/WhatsAppController.php:146
  * @route '/vendor/integrations/whatsapp/catalog/setup'
  */
 export const setup = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ setup.definition = {
 
 /**
 * @see \App\Http\Controllers\WhatsAppController::setup
- * @see app/Http/Controllers/WhatsAppController.php:108
+ * @see app/Http/Controllers/WhatsAppController.php:146
  * @route '/vendor/integrations/whatsapp/catalog/setup'
  */
 setup.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ setup.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\WhatsAppController::setup
- * @see app/Http/Controllers/WhatsAppController.php:108
+ * @see app/Http/Controllers/WhatsAppController.php:146
  * @route '/vendor/integrations/whatsapp/catalog/setup'
  */
 setup.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -35,7 +35,7 @@ setup.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\WhatsAppController::setup
- * @see app/Http/Controllers/WhatsAppController.php:108
+ * @see app/Http/Controllers/WhatsAppController.php:146
  * @route '/vendor/integrations/whatsapp/catalog/setup'
  */
     const setupForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -45,7 +45,7 @@ setup.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\WhatsAppController::setup
- * @see app/Http/Controllers/WhatsAppController.php:108
+ * @see app/Http/Controllers/WhatsAppController.php:146
  * @route '/vendor/integrations/whatsapp/catalog/setup'
  */
         setupForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -56,7 +56,7 @@ setup.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     setup.form = setupForm
 /**
 * @see \App\Http\Controllers\WhatsAppController::sync
- * @see app/Http/Controllers/WhatsAppController.php:127
+ * @see app/Http/Controllers/WhatsAppController.php:165
  * @route '/vendor/integrations/whatsapp/catalog/sync'
  */
 export const sync = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -71,7 +71,7 @@ sync.definition = {
 
 /**
 * @see \App\Http\Controllers\WhatsAppController::sync
- * @see app/Http/Controllers/WhatsAppController.php:127
+ * @see app/Http/Controllers/WhatsAppController.php:165
  * @route '/vendor/integrations/whatsapp/catalog/sync'
  */
 sync.url = (options?: RouteQueryOptions) => {
@@ -80,7 +80,7 @@ sync.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\WhatsAppController::sync
- * @see app/Http/Controllers/WhatsAppController.php:127
+ * @see app/Http/Controllers/WhatsAppController.php:165
  * @route '/vendor/integrations/whatsapp/catalog/sync'
  */
 sync.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -90,7 +90,7 @@ sync.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\WhatsAppController::sync
- * @see app/Http/Controllers/WhatsAppController.php:127
+ * @see app/Http/Controllers/WhatsAppController.php:165
  * @route '/vendor/integrations/whatsapp/catalog/sync'
  */
     const syncForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -100,7 +100,7 @@ sync.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\WhatsAppController::sync
- * @see app/Http/Controllers/WhatsAppController.php:127
+ * @see app/Http/Controllers/WhatsAppController.php:165
  * @route '/vendor/integrations/whatsapp/catalog/sync'
  */
         syncForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

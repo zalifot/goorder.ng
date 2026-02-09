@@ -134,7 +134,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:133
+ * @see app/Http/Controllers/StaffController.php:134
  * @route '/vendor/manage/staff/{staff}'
  */
 export const update = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -149,7 +149,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:133
+ * @see app/Http/Controllers/StaffController.php:134
  * @route '/vendor/manage/staff/{staff}'
  */
 update.url = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -182,7 +182,7 @@ update.url = (args: { staff: number | { id: number } } | [staff: number | { id: 
 
 /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:133
+ * @see app/Http/Controllers/StaffController.php:134
  * @route '/vendor/manage/staff/{staff}'
  */
 update.put = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -192,7 +192,7 @@ update.put = (args: { staff: number | { id: number } } | [staff: number | { id: 
 
     /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:133
+ * @see app/Http/Controllers/StaffController.php:134
  * @route '/vendor/manage/staff/{staff}'
  */
     const updateForm = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -207,7 +207,7 @@ update.put = (args: { staff: number | { id: number } } | [staff: number | { id: 
 
             /**
 * @see \App\Http\Controllers\StaffController::update
- * @see app/Http/Controllers/StaffController.php:133
+ * @see app/Http/Controllers/StaffController.php:134
  * @route '/vendor/manage/staff/{staff}'
  */
         updateForm.put = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -223,7 +223,7 @@ update.put = (args: { staff: number | { id: number } } | [staff: number | { id: 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:175
+ * @see app/Http/Controllers/StaffController.php:176
  * @route '/vendor/manage/staff/{staff}'
  */
 export const destroy = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -238,7 +238,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:175
+ * @see app/Http/Controllers/StaffController.php:176
  * @route '/vendor/manage/staff/{staff}'
  */
 destroy.url = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -271,7 +271,7 @@ destroy.url = (args: { staff: number | { id: number } } | [staff: number | { id:
 
 /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:175
+ * @see app/Http/Controllers/StaffController.php:176
  * @route '/vendor/manage/staff/{staff}'
  */
 destroy.delete = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -281,7 +281,7 @@ destroy.delete = (args: { staff: number | { id: number } } | [staff: number | { 
 
     /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:175
+ * @see app/Http/Controllers/StaffController.php:176
  * @route '/vendor/manage/staff/{staff}'
  */
     const destroyForm = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -296,7 +296,7 @@ destroy.delete = (args: { staff: number | { id: number } } | [staff: number | { 
 
             /**
 * @see \App\Http\Controllers\StaffController::destroy
- * @see app/Http/Controllers/StaffController.php:175
+ * @see app/Http/Controllers/StaffController.php:176
  * @route '/vendor/manage/staff/{staff}'
  */
         destroyForm.delete = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -310,11 +310,91 @@ destroy.delete = (args: { staff: number | { id: number } } | [staff: number | { 
         })
     
     destroy.form = destroyForm
+/**
+* @see \App\Http\Controllers\StaffController::resetPassword
+ * @see app/Http/Controllers/StaffController.php:193
+ * @route '/vendor/manage/staff/{staff}/reset-password'
+ */
+export const resetPassword = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: resetPassword.url(args, options),
+    method: 'post',
+})
+
+resetPassword.definition = {
+    methods: ["post"],
+    url: '/vendor/manage/staff/{staff}/reset-password',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\StaffController::resetPassword
+ * @see app/Http/Controllers/StaffController.php:193
+ * @route '/vendor/manage/staff/{staff}/reset-password'
+ */
+resetPassword.url = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { staff: args }
+    }
+
+            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+            args = { staff: args.id }
+        }
+    
+    if (Array.isArray(args)) {
+        args = {
+                    staff: args[0],
+                }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+                        staff: typeof args.staff === 'object'
+                ? args.staff.id
+                : args.staff,
+                }
+
+    return resetPassword.definition.url
+            .replace('{staff}', parsedArgs.staff.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\StaffController::resetPassword
+ * @see app/Http/Controllers/StaffController.php:193
+ * @route '/vendor/manage/staff/{staff}/reset-password'
+ */
+resetPassword.post = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: resetPassword.url(args, options),
+    method: 'post',
+})
+
+    /**
+* @see \App\Http\Controllers\StaffController::resetPassword
+ * @see app/Http/Controllers/StaffController.php:193
+ * @route '/vendor/manage/staff/{staff}/reset-password'
+ */
+    const resetPasswordForm = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: resetPassword.url(args, options),
+        method: 'post',
+    })
+
+            /**
+* @see \App\Http\Controllers\StaffController::resetPassword
+ * @see app/Http/Controllers/StaffController.php:193
+ * @route '/vendor/manage/staff/{staff}/reset-password'
+ */
+        resetPasswordForm.post = (args: { staff: number | { id: number } } | [staff: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: resetPassword.url(args, options),
+            method: 'post',
+        })
+    
+    resetPassword.form = resetPasswordForm
 const staff = {
     index: Object.assign(index, index),
 store: Object.assign(store, store),
 update: Object.assign(update, update),
 destroy: Object.assign(destroy, destroy),
+resetPassword: Object.assign(resetPassword, resetPassword),
 }
 
 export default staff

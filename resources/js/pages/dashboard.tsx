@@ -29,23 +29,14 @@ interface Stats {
     active_products: number;
     out_of_stock: number;
     low_stock: number;
-    total_users: number;
-    new_users_today: number;
-    new_users_month: number;
     total_shops: number;
     active_shops: number;
-    total_categories: number;
-    active_categories: number;
-    total_general_categories: number;
-    active_general_categories: number;
 }
 
 interface Props {
     stats: Stats;
     weeklyRevenue: { name: string; value: number }[];
     weeklyOrders: { name: string; orders: number }[];
-    recentOrders: unknown[];
-    recentProducts: unknown[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -83,7 +74,7 @@ export default function Dashboard({ stats, weeklyRevenue, weeklyOrders }: Props)
                 <div>
                     <h1 className="text-lg font-semibold">Dashboard</h1>
                     <p className="text-xs text-muted-foreground">
-                        Quick snapshot of your business performance across all shops — revenue, orders, inventory, and shop activity at a glance.
+                        Your shops' performance at a glance — revenue, orders, inventory, and activity.
                     </p>
                 </div>
 
@@ -315,44 +306,31 @@ export default function Dashboard({ stats, weeklyRevenue, weeklyOrders }: Props)
 
                     <Card className="border border-border/40 shadow-none">
                         <CardHeader className="pb-2 pt-3 px-4">
-                            <CardTitle className="text-xs font-normal text-muted-foreground">Overview</CardTitle>
+                            <CardTitle className="text-xs font-normal text-muted-foreground">Order Summary</CardTitle>
                         </CardHeader>
                         <CardContent className="px-4 pb-3">
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between text-xs">
-                                    <span className="text-muted-foreground">Product Categories</span>
-                                    <span className="font-medium">{stats.total_categories}</span>
+                                    <span className="text-muted-foreground">Total Orders</span>
+                                    <span className="font-medium">{stats.total_orders}</span>
                                 </div>
                                 <div className="flex items-center justify-between text-xs">
-                                    <span className="text-muted-foreground">Active Categories</span>
-                                    <span className="font-medium">{stats.active_categories}</span>
+                                    <span className="text-muted-foreground">Pending</span>
+                                    <span className="font-medium text-amber-600">{stats.pending_orders}</span>
                                 </div>
-                                {stats.total_users > 0 && (
-                                    <>
-                                        <div className="my-2 border-t border-border/30" />
-                                        <div className="flex items-center justify-between text-xs">
-                                            <span className="text-muted-foreground">Total Users</span>
-                                            <span className="font-medium">{stats.total_users}</span>
-                                        </div>
-                                        <div className="flex items-center justify-between text-xs">
-                                            <span className="text-muted-foreground">New This Month</span>
-                                            <span className="font-medium">{stats.new_users_month}</span>
-                                        </div>
-                                    </>
-                                )}
-                                {stats.total_general_categories > 0 && (
-                                    <>
-                                        <div className="my-2 border-t border-border/30" />
-                                        <div className="flex items-center justify-between text-xs">
-                                            <span className="text-muted-foreground">Business Categories</span>
-                                            <span className="font-medium">{stats.total_general_categories}</span>
-                                        </div>
-                                        <div className="flex items-center justify-between text-xs">
-                                            <span className="text-muted-foreground">Active</span>
-                                            <span className="font-medium">{stats.active_general_categories}</span>
-                                        </div>
-                                    </>
-                                )}
+                                <div className="flex items-center justify-between text-xs">
+                                    <span className="text-muted-foreground">Completed</span>
+                                    <span className="font-medium text-green-600">{stats.completed_orders}</span>
+                                </div>
+                                <div className="my-2 border-t border-border/30" />
+                                <div className="flex items-center justify-between text-xs">
+                                    <span className="text-muted-foreground">Today's Orders</span>
+                                    <span className="font-medium">{stats.today_orders}</span>
+                                </div>
+                                <div className="flex items-center justify-between text-xs">
+                                    <span className="text-muted-foreground">Monthly Revenue</span>
+                                    <span className="font-medium">{formatCurrency(stats.monthly_revenue)}</span>
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
