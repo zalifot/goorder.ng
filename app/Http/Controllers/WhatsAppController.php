@@ -5,20 +5,56 @@ namespace App\Http\Controllers;
 use App\Models\Shop;
 use App\Models\WhatsappIntegration;
 use App\Services\WhatsAppCatalogService;
+use App\Services\WhatsAppService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class WhatsAppController extends Controller
 {
     /**
-     * Exchange the short-lived code from Embedded Signup for a long-lived token,
-     * then fetch the WABA ID and phone number.
+     * Redirect the user to Facebook's OAuth page for Embedded Signup.
+     * No JS SDK needed — server-side redirect.
      */
-    public function connect(Request $request)
+    public function redirect()
     {
-        $request->validate(['code' => 'required|string']);
+        $appId = config('services.meta.app_id');
+        $configId = config('services.meta.config_id');
+        $redirectUri = url('/vendor/integrations/whatsapp/callback');
+        $version = config('services.meta.graph_version', 'v21.0');
+
+        $params = http_build_query([
+            'client_id'     => $appId,
+            'config_id'     => $configId,
+            'redirect_uri'  => $redirectUri,
+            'response_type' => 'code',
+            'scope'         => 'whatsapp_business_management,whatsapp_business_messaging,business_management',
+        ]);
+
+        return redirect("https://www.facebook.com/{$version}/dialog/oauth?{$params}");
+    }
+
+    /**
+     * Handle the OAuth callback from Facebook after Embedded Signup.
+     */
+    public function callback(Request $request)
+    {
+        if ($request->has('error')) {
+            Log::warning('WhatsApp OAuth error', [
+                'error' => $request->error,
+                'reason' => $request->error_reason,
+                'description' => $request->error_description,
+            ]);
+            return redirect('/vendor/integrations')->with('error', 'WhatsApp connection cancelled or failed.');
+        }
+
+        $code = $request->query('code');
+        if (!$code) {
+            return redirect('/vendor/integrations')->with('error', 'No authorization code received from Facebook.');
+        }
 
         $version = config('services.meta.graph_version', 'v21.0');
+        $redirectUri = url('/vendor/integrations/whatsapp/callback');
 
         // Step 1: Exchange code for access token
         $tokenResponse = Http::get(
@@ -26,12 +62,14 @@ class WhatsAppController extends Controller
             [
                 'client_id'     => config('services.meta.app_id'),
                 'client_secret' => config('services.meta.app_secret'),
-                'code'          => $request->code,
+                'redirect_uri'  => $redirectUri,
+                'code'          => $code,
             ]
         );
 
         if ($tokenResponse->failed()) {
-            return back()->with('error', 'Failed to connect WhatsApp. Please try again.');
+            Log::error('WhatsApp token exchange failed', ['body' => $tokenResponse->body()]);
+            return redirect('/vendor/integrations')->with('error', 'Failed to connect WhatsApp. Please try again.');
         }
 
         $accessToken = $tokenResponse->json('access_token');
@@ -45,7 +83,7 @@ class WhatsAppController extends Controller
         $waba = $sharedWabas->json('data.0');
 
         if (!$waba) {
-            return back()->with('error', 'No WhatsApp Business Account found. Please ensure your account has a WABA.');
+            return redirect('/vendor/integrations')->with('error', 'No WhatsApp Business Account found. Please ensure you completed the signup.');
         }
 
         // Step 3: Get the owning business ID for catalog creation
@@ -64,7 +102,7 @@ class WhatsAppController extends Controller
         $phone = $phonesResponse->json('data.0');
 
         if (!$phone) {
-            return back()->with('error', 'No phone number found under your WhatsApp Business Account.');
+            return redirect('/vendor/integrations')->with('error', 'No phone number found under your WhatsApp Business Account.');
         }
 
         // Step 5: Store or update the integration
@@ -89,7 +127,7 @@ class WhatsAppController extends Controller
             []
         );
 
-        return back()->with('success', 'WhatsApp Business Account connected successfully!');
+        return redirect('/vendor/integrations')->with('success', 'WhatsApp Business Account connected successfully!');
     }
 
     /**
@@ -114,7 +152,7 @@ class WhatsAppController extends Controller
         try {
             $catalog->setup($integration, $catalogName);
         } catch (\Exception $e) {
-            \Log::error('WhatsApp catalog setup failed', ['error' => $e->getMessage()]);
+            Log::error('WhatsApp catalog setup failed', ['error' => $e->getMessage()]);
             return back()->with('error', 'Failed to set up catalog: ' . $e->getMessage());
         }
 
@@ -142,10 +180,93 @@ class WhatsAppController extends Controller
         try {
             $synced = $catalog->syncShopProducts($integration, $shop);
         } catch (\Exception $e) {
-            \Log::error('WhatsApp catalog sync failed', ['shop' => $shop->id, 'error' => $e->getMessage()]);
+            Log::error('WhatsApp catalog sync failed', ['shop' => $shop->id, 'error' => $e->getMessage()]);
             return back()->with('error', 'Sync failed: ' . $e->getMessage());
         }
 
         return back()->with('success', "Synced {$synced} products from \"{$shop->name}\" to your WhatsApp catalog.");
+    }
+
+    /**
+     * Send a message to a customer via WhatsApp Cloud API.
+     */
+    public function sendMessage(Request $request, WhatsAppService $whatsapp)
+    {
+        $request->validate([
+            'to'   => 'required|string',
+            'text' => 'required|string|max:4096',
+        ]);
+
+        $integration = WhatsappIntegration::where('user_id', auth()->id())
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        try {
+            $whatsapp->sendTextMessage($integration, $request->to, $request->text);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to send message: ' . $e->getMessage());
+        }
+
+        return back()->with('success', 'Message sent successfully!');
+    }
+
+    /**
+     * Verify webhook from Meta (GET request).
+     */
+    public function webhookVerify(Request $request)
+    {
+        $verifyToken = config('services.meta.webhook_verify_token');
+
+        if ($request->query('hub_mode') === 'subscribe'
+            && $request->query('hub_verify_token') === $verifyToken) {
+            return response($request->query('hub_challenge'), 200);
+        }
+
+        return response('Forbidden', 403);
+    }
+
+    /**
+     * Handle incoming webhook events from Meta (POST request).
+     */
+    public function webhookHandle(Request $request, WhatsAppService $whatsapp)
+    {
+        $payload = $request->all();
+
+        Log::info('WhatsApp webhook received', ['payload' => $payload]);
+
+        // Process each entry
+        $entries = $payload['entry'] ?? [];
+        foreach ($entries as $entry) {
+            $changes = $entry['changes'] ?? [];
+            foreach ($changes as $change) {
+                if ($change['field'] !== 'messages') {
+                    continue;
+                }
+
+                $value = $change['value'] ?? [];
+                $messages = $value['messages'] ?? [];
+                $metadata = $value['metadata'] ?? [];
+                $phoneNumberId = $metadata['phone_number_id'] ?? null;
+
+                if (!$phoneNumberId) {
+                    continue;
+                }
+
+                // Find the integration by phone number ID
+                $integration = WhatsappIntegration::where('phone_number_id', $phoneNumberId)
+                    ->where('is_active', true)
+                    ->first();
+
+                if (!$integration) {
+                    continue;
+                }
+
+                foreach ($messages as $message) {
+                    $whatsapp->handleIncomingMessage($integration, $message, $value['contacts'] ?? []);
+                }
+            }
+        }
+
+        return response('OK', 200);
     }
 }

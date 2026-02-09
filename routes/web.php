@@ -351,10 +351,12 @@ Route::middleware(['auth', 'role:admin,super_admin,shop_owner,staff'])->prefix('
                 'shops' => $shops,
             ]);
         })->name('integrations');
-        Route::post('integrations/whatsapp/connect', [WhatsAppController::class, 'connect'])->name('integrations.whatsapp.connect');
+        Route::get('integrations/whatsapp/redirect', [WhatsAppController::class, 'redirect'])->name('integrations.whatsapp.redirect');
+        Route::get('integrations/whatsapp/callback', [WhatsAppController::class, 'callback'])->name('integrations.whatsapp.callback');
         Route::delete('integrations/whatsapp/disconnect', [WhatsAppController::class, 'disconnect'])->name('integrations.whatsapp.disconnect');
         Route::post('integrations/whatsapp/catalog/setup', [WhatsAppController::class, 'setupCatalog'])->name('integrations.whatsapp.catalog.setup');
         Route::post('integrations/whatsapp/catalog/sync', [WhatsAppController::class, 'syncProducts'])->name('integrations.whatsapp.catalog.sync');
+        Route::post('integrations/whatsapp/send', [WhatsAppController::class, 'sendMessage'])->name('integrations.whatsapp.send');
 
         Route::get('transactions', [ShopController::class, 'allTransactions'])->name('transactions');
 
@@ -417,5 +419,9 @@ Route::middleware(['auth', 'role:admin,super_admin,shop_owner,staff'])->prefix('
     Route::post('/platform/admins', [PlatformController::class, 'createAdmin'])->name('platform.admins.store');
     Route::delete('/platform/admins/{user}', [PlatformController::class, 'deleteAdmin'])->name('platform.admins.destroy');
 });
+
+// WhatsApp Webhooks (public — Meta sends these without auth)
+Route::get('/webhooks/whatsapp', [WhatsAppController::class, 'webhookVerify'])->name('webhooks.whatsapp.verify');
+Route::post('/webhooks/whatsapp', [WhatsAppController::class, 'webhookHandle'])->name('webhooks.whatsapp.handle');
 
 require __DIR__.'/settings.php';

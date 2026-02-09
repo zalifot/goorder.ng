@@ -12,20 +12,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import { BookOpen, CheckCircle2, MessageCircle, Package, Phone, RefreshCw, ShoppingBag, Unplug } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
-
-declare global {
-    interface Window {
-        FB: {
-            init: (options: Record<string, unknown>) => void;
-            login: (
-                callback: (response: { authResponse?: { code: string } }) => void,
-                options: Record<string, unknown>
-            ) => void;
-        };
-        fbAsyncInit: () => void;
-    }
-}
+import { useState } from 'react';
 
 interface WhatsAppStatus {
     connected: boolean;
@@ -60,125 +47,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Integrations({ whatsapp, shops }: Props) {
-    const [connecting, setConnecting] = useState(false);
-    const [sdkReady, setSdkReady] = useState(false);
     const [settingUpCatalog, setSettingUpCatalog] = useState(false);
     const [syncingShop, setSyncingShop] = useState<number | null>(null);
 
-    const isHttps = window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-
-    // Load Facebook JS SDK
-    useEffect(() => {
-        const initFB = () => {
-            window.FB.init({
-                appId: import.meta.env.VITE_META_APP_ID,
-                autoLogAppEvents: true,
-                xfbml: true,
-                version: import.meta.env.VITE_META_GRAPH_VERSION || 'v21.0',
-            });
-            setSdkReady(true);
-        };
-
-        // SDK script already in DOM (e.g. Inertia SPA navigation back to this page)
-        if (document.getElementById('facebook-jssdk')) {
-            if (window.FB) {
-                initFB();
-            } else {
-                // Script tag exists but SDK hasn't loaded yet — wait for it
-                window.fbAsyncInit = initFB;
-            }
-            return;
-        }
-
-        // First load — set callback then inject script
-        window.fbAsyncInit = initFB;
-
-        const script = document.createElement('script');
-        script.id = 'facebook-jssdk';
-        script.src = 'https://connect.facebook.net/en_US/sdk.js';
-        script.async = true;
-        script.defer = true;
-        document.head.appendChild(script);
-    }, []);
-
-    // Listen for the Embedded Signup popup message event
-    useEffect(() => {
-        const handleMessage = (event: MessageEvent) => {
-            if (
-                event.origin !== 'https://www.facebook.com' &&
-                event.origin !== 'https://web.facebook.com'
-            ) {
-                return;
-            }
-            try {
-                const data = JSON.parse(event.data as string);
-                if (data.type === 'WA_EMBEDDED_SIGNUP') {
-                    // Optionally handle intermediate signup steps here
-                }
-            } catch {
-                // Not a JSON message
-            }
-        };
-
-        window.addEventListener('message', handleMessage);
-        return () => window.removeEventListener('message', handleMessage);
-    }, []);
-
-    const handleConnect = useCallback(() => {
-        // Check if page is HTTPS (required by Facebook)
-        if (window.location.protocol !== 'https:' && !window.location.hostname.includes('localhost')) {
-            alert('WhatsApp integration requires HTTPS. Please ensure your site is served over HTTPS.');
-            return;
-        }
-
-        // Double-check SDK is ready
-        if (!sdkReady) {
-            alert('Facebook SDK is still loading. Please wait a moment and try again.');
-            return;
-        }
-
-        // Triple-check that FB object exists and has login method
-        if (!window.FB || typeof window.FB.login !== 'function') {
-            console.error('FB SDK not properly initialized');
-            alert('Facebook SDK failed to initialize. Please refresh the page and try again.');
-            return;
-        }
-
-        setConnecting(true);
-
-        try {
-            window.FB.login(
-                (response) => {
-                    if (response.authResponse?.code) {
-                        router.post(
-                            '/vendor/integrations/whatsapp/connect',
-                            { code: response.authResponse.code },
-                            { onFinish: () => setConnecting(false) }
-                        );
-                    } else {
-                        setConnecting(false);
-                        if (response.status === 'unknown') {
-                            alert('Authentication cancelled or failed. Please try again.');
-                        }
-                    }
-                },
-                {
-                    config_id: import.meta.env.VITE_META_CONFIG_ID,
-                    response_type: 'code',
-                    override_default_response_type: true,
-                    extras: {
-                        setup: {},
-                        featureType: '',
-                        sessionInfoVersion: '3',
-                    },
-                }
-            );
-        } catch (error) {
-            console.error('FB.login error:', error);
-            setConnecting(false);
-            alert('Failed to launch Facebook login. Please refresh the page and try again.');
-        }
-    }, [sdkReady]);
+    const handleConnect = () => {
+        // Server-side redirect — no FB SDK needed
+        window.location.href = '/vendor/integrations/whatsapp/redirect';
+    };
 
     const handleDisconnect = () => {
         if (!confirm('Are you sure you want to disconnect your WhatsApp Business Account?')) return;
@@ -373,19 +248,9 @@ export default function Integrations({ whatsapp, shops }: Props) {
                                             Disconnect
                                         </Button>
                                     ) : (
-                                        <div className="flex flex-col items-end gap-1">
-                                            <Button
-                                                size="sm"
-                                                onClick={handleConnect}
-                                                disabled={connecting || !sdkReady || !isHttps}
-                                                title={!isHttps ? 'HTTPS required for WhatsApp integration' : ''}
-                                            >
-                                                {connecting ? 'Connecting...' : 'Connect'}
-                                            </Button>
-                                            {!isHttps && (
-                                                <span className="text-[10px] text-red-600">HTTPS required</span>
-                                            )}
-                                        </div>
+                                        <Button size="sm" onClick={handleConnect}>
+                                            Connect
+                                        </Button>
                                     )}
                                 </TableCell>
                             </TableRow>
