@@ -69,27 +69,29 @@ export default function Integrations({ whatsapp, shops }: Props) {
 
     // Load Facebook JS SDK
     useEffect(() => {
-        if (document.getElementById('facebook-jssdk')) {
-            // SDK already loaded, check if initialized
-            if (window.FB) {
-                // Give it a moment to fully initialize
-                setTimeout(() => setSdkReady(true), 100);
-            }
-            return;
-        }
-
-        window.fbAsyncInit = function () {
+        const initFB = () => {
             window.FB.init({
                 appId: import.meta.env.VITE_META_APP_ID,
                 autoLogAppEvents: true,
                 xfbml: true,
                 version: import.meta.env.VITE_META_GRAPH_VERSION || 'v21.0',
             });
-            // Add a small delay to ensure FB.init completes fully
-            setTimeout(() => {
-                setSdkReady(true);
-            }, 100);
+            setSdkReady(true);
         };
+
+        // SDK script already in DOM (e.g. Inertia SPA navigation back to this page)
+        if (document.getElementById('facebook-jssdk')) {
+            if (window.FB) {
+                initFB();
+            } else {
+                // Script tag exists but SDK hasn't loaded yet — wait for it
+                window.fbAsyncInit = initFB;
+            }
+            return;
+        }
+
+        // First load — set callback then inject script
+        window.fbAsyncInit = initFB;
 
         const script = document.createElement('script');
         script.id = 'facebook-jssdk';
