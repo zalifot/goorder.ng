@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/react';
-import { ArrowUpRight, BadgeCheck, Clock, Package, ShoppingCart, Store } from 'lucide-react';
+import { Head, router } from '@inertiajs/react';
+import { BadgeCheck, Clock, Package, ShoppingCart, Store } from 'lucide-react';
 
 interface Shop {
     id: number;
@@ -83,6 +84,24 @@ function getPaymentStatusColor(status: string): string {
         default:
             return 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400';
     }
+}
+
+const ORDER_STATUSES = [
+    { value: 'pending', label: 'Pending' },
+    { value: 'confirmed', label: 'Confirmed' },
+    { value: 'processing', label: 'Processing' },
+    { value: 'ready', label: 'Ready' },
+    { value: 'out_for_delivery', label: 'Out for Delivery' },
+    { value: 'delivered', label: 'Delivered' },
+    { value: 'cancelled', label: 'Cancelled' },
+];
+
+function handleStatusChange(shopPublicId: string, orderId: number, newStatus: string) {
+    router.patch(
+        `/vendor/manage/shop/${shopPublicId}/orders/${orderId}/status`,
+        { status: newStatus },
+        { preserveScroll: true },
+    );
 }
 
 export default function ShopOrders({ shop, orders, summary }: Props) {
@@ -184,9 +203,21 @@ export default function ShopOrders({ shop, orders, summary }: Props) {
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2 flex-wrap">
                                                     <p className="text-sm font-medium">{order.order_number}</p>
-                                                    <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${getStatusColor(order.status)}`}>
-                                                        {order.status}
-                                                    </span>
+                                                    <Select
+                                                        value={order.status}
+                                                        onValueChange={(value) => handleStatusChange(shop.public_id, order.id, value)}
+                                                    >
+                                                        <SelectTrigger className={`h-6 w-auto min-w-[110px] px-2 text-[10px] font-medium capitalize rounded-full border-0 ${getStatusColor(order.status)}`}>
+                                                            <SelectValue />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            {ORDER_STATUSES.map((s) => (
+                                                                <SelectItem key={s.value} value={s.value} className="text-xs capitalize">
+                                                                    {s.label}
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
                                                     <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${getPaymentStatusColor(order.payment_status)}`}>
                                                         {order.payment_status}
                                                     </span>

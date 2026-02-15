@@ -3,16 +3,16 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\WhatsAppController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\GeneralCategoryController;
-use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\DeliveryOptionController;
+use App\Http\Controllers\GeneralCategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PlatformController;
+use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\WhatsAppController;
 use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -52,7 +52,7 @@ Route::get('/marketplace', function () {
         ->with('user:id,username')
         ->latest()
         ->get();
-    
+
     return Inertia::render('marketplace', [
         'shops' => $shops,
         'canRegister' => Features::enabled(Features::registration()),
@@ -83,17 +83,17 @@ Route::get('/shop/{publicId}', function (string $publicId) {
     $categories = \App\Models\ProductCategory::whereIn('id', $products->pluck('category_id')->unique())
         ->where('is_active', true)
         ->get();
-    
+
     // Check if current user is the shop owner
     $isOwner = Auth::check() && Auth::id() === $shop->user_id;
-    
+
     // Get delivery slots for this specific shop (prefer shop-specific, fallback to global)
     $deliverySlots = \App\Models\DeliverySlot::where('user_id', $shop->user_id)
         ->where('shop_id', $shop->id)
         ->where('is_active', true)
         ->orderByRaw("FIELD(day_of_week, 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')")
         ->get();
-    
+
     // If no shop-specific slots, fall back to global slots
     if ($deliverySlots->isEmpty()) {
         $deliverySlots = \App\Models\DeliverySlot::where('user_id', $shop->user_id)
@@ -102,7 +102,7 @@ Route::get('/shop/{publicId}', function (string $publicId) {
             ->orderByRaw("FIELD(day_of_week, 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')")
             ->get();
     }
-    
+
     // Get delivery states for this specific shop (prefer shop-specific, fallback to global)
     $deliveryStates = \App\Models\DeliveryState::where('user_id', $shop->user_id)
         ->where('shop_id', $shop->id)
@@ -112,7 +112,7 @@ Route::get('/shop/{publicId}', function (string $publicId) {
                 ->where('shop_id', $shop->id);
         }])
         ->get();
-    
+
     // If no shop-specific states, fall back to global states
     if ($deliveryStates->isEmpty()) {
         $deliveryStates = \App\Models\DeliveryState::where('user_id', $shop->user_id)
@@ -124,7 +124,7 @@ Route::get('/shop/{publicId}', function (string $publicId) {
             }])
             ->get();
     }
-    
+
     return Inertia::render('vendor/show', [
         'shop' => $shop,
         'products' => $products,
@@ -154,6 +154,7 @@ Route::middleware('guest')->group(function () {
         // Allow admin, super_admin, shop_owner, and staff to login through vendor area
         if ($user && in_array($user->role, ['admin', 'super_admin', 'shop_owner', 'staff']) && Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
+
             return redirect()->intended('/vendor/dashboard');
         }
 
@@ -216,6 +217,7 @@ Route::middleware('guest')->group(function () {
         // Only allow users with 'user' role to login through customer area
         if ($user && $user->role === 'user' && Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
+
             return redirect()->intended('/customer/dashboard');
         }
 
@@ -264,6 +266,7 @@ Route::post('logout', function (Request $request) {
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
+
     return redirect('/');
 })->name('logout');
 
@@ -336,17 +339,18 @@ Route::middleware(['auth', 'role:admin,super_admin,shop_owner,staff'])->prefix('
             $shops = \App\Models\Shop::where('user_id', auth()->id())
                 ->withCount(['products' => fn ($q) => $q->where('is_active', true)])
                 ->get(['id', 'name', 'public_id', 'image']);
+
             return Inertia::render('integrations', [
                 'whatsapp' => $whatsapp ? [
-                    'connected'            => true,
+                    'connected' => true,
                     'display_phone_number' => $whatsapp->display_phone_number,
-                    'verified_name'        => $whatsapp->verified_name,
-                    'waba_name'            => $whatsapp->waba_name,
-                    'quality_rating'       => $whatsapp->quality_rating,
-                    'catalog_id'           => $whatsapp->catalog_id,
-                    'catalog_name'         => $whatsapp->catalog_name,
-                    'commerce_enabled'     => $whatsapp->commerce_enabled,
-                    'last_synced_at'       => $whatsapp->last_synced_at?->diffForHumans(),
+                    'verified_name' => $whatsapp->verified_name,
+                    'waba_name' => $whatsapp->waba_name,
+                    'quality_rating' => $whatsapp->quality_rating,
+                    'catalog_id' => $whatsapp->catalog_id,
+                    'catalog_name' => $whatsapp->catalog_name,
+                    'commerce_enabled' => $whatsapp->commerce_enabled,
+                    'last_synced_at' => $whatsapp->last_synced_at?->diffForHumans(),
                 ] : ['connected' => false],
                 'shops' => $shops,
             ]);
@@ -393,6 +397,7 @@ Route::middleware(['auth', 'role:admin,super_admin,shop_owner,staff'])->prefix('
     Route::get('/manage/shop/{publicId}', [ShopController::class, 'show'])->name('shops.show');
     Route::get('/manage/shop/{publicId}/analytics', [ShopController::class, 'analytics'])->name('shops.analytics');
     Route::get('/manage/shop/{publicId}/orders', [ShopController::class, 'shopOrders'])->name('shops.orders');
+    Route::patch('/manage/shop/{publicId}/orders/{order}/status', [ShopController::class, 'updateOrderStatus'])->name('shops.orders.update-status');
     Route::get('/manage/shop/{publicId}/transactions', [ShopController::class, 'shopTransactions'])->name('shops.transactions');
     Route::post('/shops', [ShopController::class, 'store'])->name('shops.store');
     Route::put('/shops/{shop}', [ShopController::class, 'update'])->name('shops.update');
@@ -414,7 +419,7 @@ Route::middleware(['auth', 'role:admin,super_admin,shop_owner,staff'])->prefix('
     Route::patch('/platform/shops/{shop}/toggle-status', [PlatformController::class, 'toggleShopStatus'])->name('platform.shops.toggle-status');
     Route::get('/platform/users', [PlatformController::class, 'users'])->name('platform.users');
     Route::patch('/platform/users/{user}/toggle-status', [PlatformController::class, 'toggleUserStatus'])->name('platform.users.toggle-status');
-    
+
     // Super Admin Only - Admin Management
     Route::post('/platform/admins', [PlatformController::class, 'createAdmin'])->name('platform.admins.store');
     Route::delete('/platform/admins/{user}', [PlatformController::class, 'deleteAdmin'])->name('platform.admins.destroy');

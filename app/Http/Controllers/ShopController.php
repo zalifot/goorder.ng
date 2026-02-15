@@ -7,10 +7,13 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Shop;
+use App\Models\WhatsappIntegration;
 use App\Services\CloudinaryService;
+use App\Services\WhatsAppService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -32,6 +35,7 @@ class ShopController extends Controller
         if ($user->role === 'staff') {
             return $user->staffShops()->pluck('shops.id')->toArray();
         }
+
         return Shop::where('user_id', $user->id)->pluck('id')->toArray();
     }
 
@@ -43,10 +47,13 @@ class ShopController extends Controller
         $user = auth()->user();
         if ($user->role === 'staff') {
             $staffShopIds = $user->staffShops()->pluck('shops.id');
+
             return Shop::where('public_id', $publicId)->whereIn('id', $staffShopIds)->firstOrFail();
         }
+
         return Shop::where('public_id', $publicId)->where('user_id', $user->id)->firstOrFail();
     }
+
     public function index()
     {
         $user = auth()->user();
@@ -84,7 +91,7 @@ class ShopController extends Controller
 
         // Apply search filter
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $query->where('name', 'like', '%'.$request->search.'%');
         }
 
         // Apply category filter
@@ -132,7 +139,7 @@ class ShopController extends Controller
         // Handle image
         if ($request->hasFile('image')) {
             $validated['image'] = $this->cloudinary->upload($request->file('image'), 'shops');
-        } elseif (!empty($validated['image_url'])) {
+        } elseif (! empty($validated['image_url'])) {
             $validated['image'] = $validated['image_url'];
         }
         unset($validated['image_url']);
@@ -141,7 +148,7 @@ class ShopController extends Controller
             'user_id' => auth()->id(),
             'general_category_id' => $validated['general_category_id'],
             'name' => $validated['name'],
-            'slug' => Str::slug($validated['name']) . '-' . uniqid(),
+            'slug' => Str::slug($validated['name']).'-'.uniqid(),
             'description' => $validated['description'] ?? null,
             'address' => $validated['address'] ?? null,
             'country_code' => $validated['country_code'],
@@ -189,7 +196,7 @@ class ShopController extends Controller
                 $this->cloudinary->delete($shop->image);
             }
             $validated['image'] = $this->cloudinary->upload($request->file('image'), 'shops');
-        } elseif (!empty($validated['image_url'])) {
+        } elseif (! empty($validated['image_url'])) {
             // Delete old image from Cloudinary if exists
             if ($shop->image && $this->cloudinary->isCloudinaryUrl($shop->image)) {
                 $this->cloudinary->delete($shop->image);
@@ -216,6 +223,7 @@ class ShopController extends Controller
         }
 
         $shop->delete();
+
         return redirect()->back();
     }
 
@@ -259,15 +267,15 @@ class ShopController extends Controller
         $orderStats = Order::where('shop_id', $shop->id)
             ->select([
                 DB::raw('COUNT(*) as total_orders'),
-                DB::raw("SUM(CASE WHEN DATE(created_at) = ? THEN 1 ELSE 0 END) as today_orders"),
-                DB::raw("SUM(CASE WHEN created_at >= ? THEN 1 ELSE 0 END) as monthly_orders"),
+                DB::raw('SUM(CASE WHEN DATE(created_at) = ? THEN 1 ELSE 0 END) as today_orders'),
+                DB::raw('SUM(CASE WHEN created_at >= ? THEN 1 ELSE 0 END) as monthly_orders'),
                 DB::raw("SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders"),
                 DB::raw("SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed_orders"),
                 DB::raw("SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) as cancelled_orders"),
                 DB::raw('SUM(total) as total_revenue'),
-                DB::raw("SUM(CASE WHEN DATE(created_at) = ? THEN total ELSE 0 END) as today_revenue"),
-                DB::raw("SUM(CASE WHEN created_at >= ? THEN total ELSE 0 END) as monthly_revenue"),
-                DB::raw("SUM(CASE WHEN created_at BETWEEN ? AND ? THEN total ELSE 0 END) as last_month_revenue"),
+                DB::raw('SUM(CASE WHEN DATE(created_at) = ? THEN total ELSE 0 END) as today_revenue'),
+                DB::raw('SUM(CASE WHEN created_at >= ? THEN total ELSE 0 END) as monthly_revenue'),
+                DB::raw('SUM(CASE WHEN created_at BETWEEN ? AND ? THEN total ELSE 0 END) as last_month_revenue'),
             ])
             ->addBinding([$today, $startOfMonth, $today, $startOfMonth, $startOfLastMonth, $endOfLastMonth], 'select')
             ->first();
@@ -276,7 +284,7 @@ class ShopController extends Controller
         $productStats = Product::where('shop_public_id', $shop->public_id)
             ->select([
                 DB::raw('COUNT(*) as total_products'),
-                DB::raw("SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active_products"),
+                DB::raw('SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active_products'),
                 DB::raw("SUM(CASE WHEN stock_status = 'out_of_stock' THEN 1 ELSE 0 END) as out_of_stock"),
                 DB::raw("SUM(CASE WHEN stock_status = 'low_stock' THEN 1 ELSE 0 END) as low_stock"),
                 DB::raw('SUM(views) as total_views'),
@@ -388,6 +396,42 @@ class ShopController extends Controller
             'orders' => $orders,
             'summary' => $summary,
         ]);
+    }
+
+    /**
+     * Update the status of an order and notify the customer via WhatsApp.
+     */
+    public function updateOrderStatus(Request $request, string $publicId, Order $order, WhatsAppService $whatsapp): \Illuminate\Http\RedirectResponse
+    {
+        $shop = $this->getAccessibleShop($publicId);
+
+        if ($order->shop_id !== $shop->id) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:pending,confirmed,processing,ready,out_for_delivery,delivered,cancelled',
+        ]);
+
+        $order->update(['status' => $validated['status']]);
+
+        // Send WhatsApp status update notification
+        try {
+            $integration = WhatsappIntegration::where('user_id', $shop->user_id)
+                ->where('is_active', true)
+                ->first();
+
+            if ($integration && $order->customer_phone) {
+                $whatsapp->sendOrderStatusUpdate($integration, $order);
+            }
+        } catch (\Exception $e) {
+            Log::warning('WhatsApp status notification failed', [
+                'order' => $order->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        return back()->with('success', "Order #{$order->order_number} status updated to {$validated['status']}.");
     }
 
     public function shopTransactions(string $publicId)

@@ -1,6 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../wayfinder'
 /**
- * @see routes/web.php:263
+ * @see routes/web.php:265
  * @route '/logout'
  */
 export const logout = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -14,7 +14,7 @@ logout.definition = {
 } satisfies RouteDefinition<["post"]>
 
 /**
- * @see routes/web.php:263
+ * @see routes/web.php:265
  * @route '/logout'
  */
 logout.url = (options?: RouteQueryOptions) => {
@@ -22,7 +22,7 @@ logout.url = (options?: RouteQueryOptions) => {
 }
 
 /**
- * @see routes/web.php:263
+ * @see routes/web.php:265
  * @route '/logout'
  */
 logout.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -31,7 +31,7 @@ logout.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 })
 
     /**
- * @see routes/web.php:263
+ * @see routes/web.php:265
  * @route '/logout'
  */
     const logoutForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -40,7 +40,7 @@ logout.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     })
 
             /**
- * @see routes/web.php:263
+ * @see routes/web.php:265
  * @route '/logout'
  */
         logoutForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -405,7 +405,7 @@ marketplace.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     
     marketplace.form = marketplaceForm
 /**
- * @see routes/web.php:204
+ * @see routes/web.php:205
  * @route '/login'
  */
 export const login = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -419,7 +419,7 @@ login.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:204
+ * @see routes/web.php:205
  * @route '/login'
  */
 login.url = (options?: RouteQueryOptions) => {
@@ -427,7 +427,7 @@ login.url = (options?: RouteQueryOptions) => {
 }
 
 /**
- * @see routes/web.php:204
+ * @see routes/web.php:205
  * @route '/login'
  */
 login.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -435,7 +435,7 @@ login.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
- * @see routes/web.php:204
+ * @see routes/web.php:205
  * @route '/login'
  */
 login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -444,7 +444,7 @@ login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
- * @see routes/web.php:204
+ * @see routes/web.php:205
  * @route '/login'
  */
     const loginForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -453,7 +453,7 @@ login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
- * @see routes/web.php:204
+ * @see routes/web.php:205
  * @route '/login'
  */
         loginForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -461,7 +461,7 @@ login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
- * @see routes/web.php:204
+ * @see routes/web.php:205
  * @route '/login'
  */
         loginForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -476,7 +476,7 @@ login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     
     login.form = loginForm
 /**
- * @see routes/web.php:239
+ * @see routes/web.php:241
  * @route '/register'
  */
 export const register = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -490,7 +490,7 @@ register.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:239
+ * @see routes/web.php:241
  * @route '/register'
  */
 register.url = (options?: RouteQueryOptions) => {
@@ -498,7 +498,7 @@ register.url = (options?: RouteQueryOptions) => {
 }
 
 /**
- * @see routes/web.php:239
+ * @see routes/web.php:241
  * @route '/register'
  */
 register.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -506,7 +506,7 @@ register.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
- * @see routes/web.php:239
+ * @see routes/web.php:241
  * @route '/register'
  */
 register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -515,7 +515,7 @@ register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
- * @see routes/web.php:239
+ * @see routes/web.php:241
  * @route '/register'
  */
     const registerForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -524,7 +524,7 @@ register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
- * @see routes/web.php:239
+ * @see routes/web.php:241
  * @route '/register'
  */
         registerForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -532,7 +532,7 @@ register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
- * @see routes/web.php:239
+ * @see routes/web.php:241
  * @route '/register'
  */
         registerForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -704,7 +704,7 @@ generalCategories.head = (options?: RouteQueryOptions): RouteDefinition<'head'> 
     generalCategories.form = generalCategoriesForm
 /**
 * @see \App\Http\Controllers\ShopController::orders
- * @see app/Http/Controllers/ShopController.php:426
+ * @see app/Http/Controllers/ShopController.php:470
  * @route '/vendor/orders'
  */
 export const orders = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -719,7 +719,7 @@ orders.definition = {
 
 /**
 * @see \App\Http\Controllers\ShopController::orders
- * @see app/Http/Controllers/ShopController.php:426
+ * @see app/Http/Controllers/ShopController.php:470
  * @route '/vendor/orders'
  */
 orders.url = (options?: RouteQueryOptions) => {
@@ -728,7 +728,7 @@ orders.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\ShopController::orders
- * @see app/Http/Controllers/ShopController.php:426
+ * @see app/Http/Controllers/ShopController.php:470
  * @route '/vendor/orders'
  */
 orders.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -737,7 +737,7 @@ orders.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\ShopController::orders
- * @see app/Http/Controllers/ShopController.php:426
+ * @see app/Http/Controllers/ShopController.php:470
  * @route '/vendor/orders'
  */
 orders.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -747,7 +747,7 @@ orders.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\ShopController::orders
- * @see app/Http/Controllers/ShopController.php:426
+ * @see app/Http/Controllers/ShopController.php:470
  * @route '/vendor/orders'
  */
     const ordersForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -757,7 +757,7 @@ orders.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\ShopController::orders
- * @see app/Http/Controllers/ShopController.php:426
+ * @see app/Http/Controllers/ShopController.php:470
  * @route '/vendor/orders'
  */
         ordersForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -766,7 +766,7 @@ orders.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\ShopController::orders
- * @see app/Http/Controllers/ShopController.php:426
+ * @see app/Http/Controllers/ShopController.php:470
  * @route '/vendor/orders'
  */
         ordersForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -859,7 +859,7 @@ deliveryOptions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> =>
     
     deliveryOptions.form = deliveryOptionsForm
 /**
- * @see routes/web.php:334
+ * @see routes/web.php:337
  * @route '/vendor/integrations'
  */
 export const integrations = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -873,7 +873,7 @@ integrations.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:334
+ * @see routes/web.php:337
  * @route '/vendor/integrations'
  */
 integrations.url = (options?: RouteQueryOptions) => {
@@ -881,7 +881,7 @@ integrations.url = (options?: RouteQueryOptions) => {
 }
 
 /**
- * @see routes/web.php:334
+ * @see routes/web.php:337
  * @route '/vendor/integrations'
  */
 integrations.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -889,7 +889,7 @@ integrations.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
- * @see routes/web.php:334
+ * @see routes/web.php:337
  * @route '/vendor/integrations'
  */
 integrations.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -898,7 +898,7 @@ integrations.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
- * @see routes/web.php:334
+ * @see routes/web.php:337
  * @route '/vendor/integrations'
  */
     const integrationsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -907,7 +907,7 @@ integrations.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
- * @see routes/web.php:334
+ * @see routes/web.php:337
  * @route '/vendor/integrations'
  */
         integrationsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -915,7 +915,7 @@ integrations.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
- * @see routes/web.php:334
+ * @see routes/web.php:337
  * @route '/vendor/integrations'
  */
         integrationsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -931,7 +931,7 @@ integrations.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     integrations.form = integrationsForm
 /**
 * @see \App\Http\Controllers\ShopController::transactions
- * @see app/Http/Controllers/ShopController.php:462
+ * @see app/Http/Controllers/ShopController.php:506
  * @route '/vendor/transactions'
  */
 export const transactions = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -946,7 +946,7 @@ transactions.definition = {
 
 /**
 * @see \App\Http\Controllers\ShopController::transactions
- * @see app/Http/Controllers/ShopController.php:462
+ * @see app/Http/Controllers/ShopController.php:506
  * @route '/vendor/transactions'
  */
 transactions.url = (options?: RouteQueryOptions) => {
@@ -955,7 +955,7 @@ transactions.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\ShopController::transactions
- * @see app/Http/Controllers/ShopController.php:462
+ * @see app/Http/Controllers/ShopController.php:506
  * @route '/vendor/transactions'
  */
 transactions.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -964,7 +964,7 @@ transactions.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\ShopController::transactions
- * @see app/Http/Controllers/ShopController.php:462
+ * @see app/Http/Controllers/ShopController.php:506
  * @route '/vendor/transactions'
  */
 transactions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -974,7 +974,7 @@ transactions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\ShopController::transactions
- * @see app/Http/Controllers/ShopController.php:462
+ * @see app/Http/Controllers/ShopController.php:506
  * @route '/vendor/transactions'
  */
     const transactionsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -984,7 +984,7 @@ transactions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\ShopController::transactions
- * @see app/Http/Controllers/ShopController.php:462
+ * @see app/Http/Controllers/ShopController.php:506
  * @route '/vendor/transactions'
  */
         transactionsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -993,7 +993,7 @@ transactions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\ShopController::transactions
- * @see app/Http/Controllers/ShopController.php:462
+ * @see app/Http/Controllers/ShopController.php:506
  * @route '/vendor/transactions'
  */
         transactionsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -1008,7 +1008,7 @@ transactions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     
     transactions.form = transactionsForm
 /**
- * @see routes/web.php:363
+ * @see routes/web.php:367
  * @route '/vendor/wallet'
  */
 export const wallet = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -1022,7 +1022,7 @@ wallet.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:363
+ * @see routes/web.php:367
  * @route '/vendor/wallet'
  */
 wallet.url = (options?: RouteQueryOptions) => {
@@ -1030,7 +1030,7 @@ wallet.url = (options?: RouteQueryOptions) => {
 }
 
 /**
- * @see routes/web.php:363
+ * @see routes/web.php:367
  * @route '/vendor/wallet'
  */
 wallet.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -1038,7 +1038,7 @@ wallet.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
- * @see routes/web.php:363
+ * @see routes/web.php:367
  * @route '/vendor/wallet'
  */
 wallet.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -1047,7 +1047,7 @@ wallet.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
- * @see routes/web.php:363
+ * @see routes/web.php:367
  * @route '/vendor/wallet'
  */
     const walletForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -1056,7 +1056,7 @@ wallet.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
- * @see routes/web.php:363
+ * @see routes/web.php:367
  * @route '/vendor/wallet'
  */
         walletForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -1064,7 +1064,7 @@ wallet.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
- * @see routes/web.php:363
+ * @see routes/web.php:367
  * @route '/vendor/wallet'
  */
         walletForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -1157,7 +1157,7 @@ users.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     
     users.form = usersForm
 /**
- * @see routes/web.php:370
+ * @see routes/web.php:374
  * @route '/vendor/systems'
  */
 export const systems = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -1171,7 +1171,7 @@ systems.definition = {
 } satisfies RouteDefinition<["get","head"]>
 
 /**
- * @see routes/web.php:370
+ * @see routes/web.php:374
  * @route '/vendor/systems'
  */
 systems.url = (options?: RouteQueryOptions) => {
@@ -1179,7 +1179,7 @@ systems.url = (options?: RouteQueryOptions) => {
 }
 
 /**
- * @see routes/web.php:370
+ * @see routes/web.php:374
  * @route '/vendor/systems'
  */
 systems.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -1187,7 +1187,7 @@ systems.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     method: 'get',
 })
 /**
- * @see routes/web.php:370
+ * @see routes/web.php:374
  * @route '/vendor/systems'
  */
 systems.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -1196,7 +1196,7 @@ systems.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
     /**
- * @see routes/web.php:370
+ * @see routes/web.php:374
  * @route '/vendor/systems'
  */
     const systemsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -1205,7 +1205,7 @@ systems.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     })
 
             /**
- * @see routes/web.php:370
+ * @see routes/web.php:374
  * @route '/vendor/systems'
  */
         systemsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -1213,7 +1213,7 @@ systems.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             method: 'get',
         })
             /**
- * @see routes/web.php:370
+ * @see routes/web.php:374
  * @route '/vendor/systems'
  */
         systemsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

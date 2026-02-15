@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         // First, add the new column if it doesn't exist
-        if (!Schema::hasColumn('products', 'shop_public_id')) {
+        if (! Schema::hasColumn('products', 'shop_public_id')) {
             Schema::table('products', function (Blueprint $table) {
                 $table->string('shop_public_id', 12)->nullable()->after('category_id');
             });
@@ -43,17 +43,24 @@ return new class extends Migration
                 }
             });
 
-            // For SQLite, we need to disable foreign key checks
             if (DB::getDriverName() === 'sqlite') {
+                // SQLite can't drop columns with FK references in the schema.
+                // Rebuild the table without the shop_id column.
                 DB::statement('PRAGMA foreign_keys=off');
-            }
-            
-            Schema::table('products', function (Blueprint $table) {
-                $table->dropColumn('shop_id');
-            });
 
-            if (DB::getDriverName() === 'sqlite') {
+                $columns = Schema::getColumnListing('products');
+                $columns = array_filter($columns, fn ($col) => $col !== 'shop_id');
+                $columnList = implode(', ', array_map(fn ($c) => '"'.$c.'"', $columns));
+
+                DB::statement('CREATE TABLE "products_new" AS SELECT '.$columnList.' FROM "products"');
+                DB::statement('DROP TABLE "products"');
+                DB::statement('ALTER TABLE "products_new" RENAME TO "products"');
+
                 DB::statement('PRAGMA foreign_keys=on');
+            } else {
+                Schema::table('products', function (Blueprint $table) {
+                    $table->dropColumn('shop_id');
+                });
             }
         }
     }
@@ -64,7 +71,7 @@ return new class extends Migration
     public function down(): void
     {
         // Add back the shop_id column if it doesn't exist
-        if (!Schema::hasColumn('products', 'shop_id')) {
+        if (! Schema::hasColumn('products', 'shop_id')) {
             Schema::table('products', function (Blueprint $table) {
                 $table->unsignedBigInteger('shop_id')->nullable()->after('category_id');
             });

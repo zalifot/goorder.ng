@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Http;
 class WhatsAppCatalogService
 {
     private string $version;
+
     private string $baseUrl;
 
     public function __construct()
@@ -33,8 +34,8 @@ class WhatsAppCatalogService
 
         // Step 3: Persist
         $integration->update([
-            'catalog_id'      => $catalogId,
-            'catalog_name'    => $catalogName,
+            'catalog_id' => $catalogId,
+            'catalog_name' => $catalogName,
             'commerce_enabled' => true,
         ]);
     }
@@ -50,12 +51,12 @@ class WhatsAppCatalogService
 
         $response = Http::withToken($token)
             ->post("{$this->baseUrl}/{$parentId}/owned_product_catalogs", [
-                'name'     => $name,
+                'name' => $name,
                 'vertical' => 'commerce',
             ]);
 
-        if ($response->failed() || !$response->json('id')) {
-            throw new \Exception('Failed to create catalog: ' . ($response->json('error.message') ?? $response->body()));
+        if ($response->failed() || ! $response->json('id')) {
+            throw new \Exception('Failed to create catalog: '.($response->json('error.message') ?? $response->body()));
         }
 
         return $response->json('id');
@@ -68,9 +69,9 @@ class WhatsAppCatalogService
     {
         $response = Http::withToken($token)
             ->post("{$this->baseUrl}/{$integration->phone_number_id}/whatsapp_commerce_settings", [
-                'is_cart_enabled'    => true,
+                'is_cart_enabled' => true,
                 'is_catalog_visible' => true,
-                'catalog_id'         => $catalogId,
+                'catalog_id' => $catalogId,
             ]);
 
         if ($response->failed()) {
@@ -109,7 +110,7 @@ class WhatsAppCatalogService
             $response = Http::withToken($token)
                 ->post("{$this->baseUrl}/{$catalogId}/items_batch", [
                     'allow_upsert' => true,
-                    'requests'     => $chunk,
+                    'requests' => $chunk,
                 ]);
 
             if ($response->successful()) {
@@ -117,8 +118,8 @@ class WhatsAppCatalogService
             } else {
                 \Log::error('WhatsApp catalog batch failed', [
                     'catalog' => $catalogId,
-                    'shop'    => $shop->id,
-                    'error'   => $response->json('error.message') ?? $response->body(),
+                    'shop' => $shop->id,
+                    'error' => $response->json('error.message') ?? $response->body(),
                 ]);
             }
         }
@@ -135,27 +136,27 @@ class WhatsAppCatalogService
     private function buildProductPayload(Product $product, Shop $shop, string $method = 'CREATE'): array
     {
         $availability = match ($product->stock_status) {
-            'in_stock'  => 'in stock',
+            'in_stock' => 'in stock',
             'low_stock' => 'in stock',
-            default     => 'out of stock',
+            default => 'out of stock',
         };
 
-        $shopUrl = config('app.url') . '/shop/' . $shop->public_id;
+        $productUrl = config('app.url').'/shop/'.$shop->public_id.'?product='.$product->id;
 
         return [
-            'method'      => $method,
-            'retailer_id' => 'product-' . $product->id,
-            'data'        => [
-                'name'         => $product->name,
-                'description'  => $product->description ?? $product->name,
+            'method' => $method,
+            'retailer_id' => 'product-'.$product->id,
+            'data' => [
+                'name' => $product->name,
+                'description' => $product->description ?? $product->name,
                 'availability' => $availability,
-                'condition'    => 'new',
-                'price'        => (int) ($product->sale_price * 100), // minor units (kobo)
-                'currency'     => 'NGN',
-                'image_url'    => $product->image_url ?: '',
-                'url'          => $shopUrl,
-                'brand'        => $shop->name,
-                'category'     => $product->category?->name ?? 'General',
+                'condition' => 'new',
+                'price' => (int) ($product->sale_price * 100), // minor units (kobo)
+                'currency' => 'NGN',
+                'image_url' => $product->image_url ?: '',
+                'url' => $productUrl,
+                'brand' => $shop->name,
+                'category' => $product->category?->name ?? 'General',
             ],
         ];
     }

@@ -7,9 +7,12 @@ use App\Models\DeliveryLocation;
 use App\Models\DeliveryState;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\WhatsappIntegration;
+use App\Services\WhatsAppService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -157,7 +160,7 @@ class OrderController extends Controller
     {
         $cartId = $request->query('cart_id');
 
-        if (!$cartId) {
+        if (! $cartId) {
             return redirect()->route('customer.cart')->with('error', 'No cart selected');
         }
 
@@ -166,7 +169,7 @@ class OrderController extends Controller
             ->where('user_id', Auth::id())
             ->first();
 
-        if (!$cart) {
+        if (! $cart) {
             return redirect()->route('customer.cart')->with('error', 'Cart not found');
         }
 
@@ -296,11 +299,46 @@ class OrderController extends Controller
 
             DB::commit();
 
+            // Send WhatsApp notifications (non-blocking)
+            $this->sendWhatsAppOrderNotifications($order);
+
             return redirect()->route('customer.orders')->with('success', 'Order placed successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Order creation failed', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+
             return back()->with('error', 'Failed to place order. Please try again.');
+        }
+    }
+
+    /**
+     * Send WhatsApp notifications for a new order (non-blocking).
+     */
+    private function sendWhatsAppOrderNotifications(Order $order): void
+    {
+        try {
+            $shop = $order->shop;
+            $integration = WhatsappIntegration::where('user_id', $shop->user_id)
+                ->where('is_active', true)
+                ->first();
+
+            if (! $integration) {
+                return;
+            }
+
+            $order->load('items');
+            $whatsapp = app(WhatsAppService::class);
+
+            if ($order->customer_phone) {
+                $whatsapp->sendOrderConfirmation($integration, $order);
+            }
+
+            $whatsapp->notifyVendorNewOrder($integration, $order);
+        } catch (\Exception $e) {
+            Log::warning('WhatsApp order notification failed', [
+                'order' => $order->id,
+                'error' => $e->getMessage(),
+            ]);
         }
     }
 }

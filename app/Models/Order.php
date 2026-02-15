@@ -31,6 +31,7 @@ class Order extends Model
         'total',
         'status',
         'payment_status',
+        'source',
     ];
 
     protected $casts = [
@@ -73,6 +74,7 @@ class Order extends Model
         $prefix = 'ORD';
         $date = now()->format('Ymd');
         $random = strtoupper(substr(uniqid(), -4));
+
         return "{$prefix}-{$date}-{$random}";
     }
 }
