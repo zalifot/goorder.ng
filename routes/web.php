@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Artisan;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
@@ -429,5 +430,11 @@ Route::middleware(['auth', 'role:admin,super_admin,shop_owner,staff'])->prefix('
 // WhatsApp Webhooks (public — Meta sends these without auth)
 Route::get('/webhooks/whatsapp', [WhatsAppController::class, 'webhookVerify'])->name('webhooks.whatsapp.verify');
 Route::post('/webhooks/whatsapp', [WhatsAppController::class, 'webhookHandle'])->name('webhooks.whatsapp.handle');
+
+Route::get('/clear-cache', function () {
+    Artisan::call('optimize:clear');
+
+    return response()->json(['message' => 'Cache cleared successfully.']);
+})->middleware(['auth', 'role:admin,super_admin']);
 
 require __DIR__.'/settings.php';
