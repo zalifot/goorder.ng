@@ -12,7 +12,9 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import { BookOpen, CheckCircle2, MessageCircle, Package, Phone, RefreshCw, ShoppingBag, Unplug } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+
+const META_CONFIG_ID = import.meta.env.VITE_META_CONFIG_ID;
 
 interface WhatsAppStatus {
     connected: boolean;
@@ -49,11 +51,35 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Integrations({ whatsapp, shops }: Props) {
     const [settingUpCatalog, setSettingUpCatalog] = useState(false);
     const [syncingShop, setSyncingShop] = useState<number | null>(null);
+    const [connecting, setConnecting] = useState(false);
 
-    const handleConnect = () => {
-        // Server-side redirect — no FB SDK needed
-        window.location.href = '/vendor/integrations/whatsapp/redirect';
-    };
+    const handleConnect = useCallback(() => {
+        if (typeof FB === 'undefined') {
+            alert('Facebook SDK not loaded. Please refresh the page and try again.');
+            return;
+        }
+
+        setConnecting(true);
+
+        FB.login(
+            (response) => {
+                if (response.authResponse?.code) {
+                    router.post(
+                        '/vendor/integrations/whatsapp/connect',
+                        { code: response.authResponse.code },
+                        { onFinish: () => setConnecting(false) },
+                    );
+                } else {
+                    setConnecting(false);
+                }
+            },
+            {
+                config_id: META_CONFIG_ID,
+                response_type: 'code',
+                override_default_response_type: true,
+            },
+        );
+    }, []);
 
     const handleDisconnect = () => {
         if (!confirm('Are you sure you want to disconnect your WhatsApp Business Account?')) return;
@@ -248,8 +274,8 @@ export default function Integrations({ whatsapp, shops }: Props) {
                                             Disconnect
                                         </Button>
                                     ) : (
-                                        <Button size="sm" onClick={handleConnect}>
-                                            Connect
+                                        <Button size="sm" onClick={handleConnect} disabled={connecting}>
+                                            {connecting ? 'Connecting...' : 'Connect'}
                                         </Button>
                                     )}
                                 </TableCell>

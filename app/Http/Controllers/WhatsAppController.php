@@ -131,6 +131,89 @@ class WhatsAppController extends Controller
     }
 
     /**
+     * Handle the auth code from the Facebook JS SDK Embedded Signup flow.
+     */
+    public function connectFromSDK(Request $request)
+    {
+        $request->validate(['code' => 'required|string']);
+
+        $code = $request->input('code');
+        $version = config('services.meta.graph_version', 'v21.0');
+
+        // Step 1: Exchange code for access token (no redirect_uri needed for JS SDK flow)
+        $tokenResponse = Http::get(
+            "https://graph.facebook.com/{$version}/oauth/access_token",
+            [
+                'client_id'     => config('services.meta.app_id'),
+                'client_secret' => config('services.meta.app_secret'),
+                'code'          => $code,
+            ]
+        );
+
+        if ($tokenResponse->failed()) {
+            Log::error('WhatsApp SDK token exchange failed', ['body' => $tokenResponse->body()]);
+            return back()->with('error', 'Failed to connect WhatsApp. Please try again.');
+        }
+
+        $accessToken = $tokenResponse->json('access_token');
+
+        // Step 2: List shared WABAs accessible with this token
+        $sharedWabas = Http::withToken($accessToken)
+            ->get("https://graph.facebook.com/{$version}/me/whatsapp_business_accounts", [
+                'fields' => 'id,name,currency,message_template_namespace',
+            ]);
+
+        $waba = $sharedWabas->json('data.0');
+
+        if (!$waba) {
+            return back()->with('error', 'No WhatsApp Business Account found. Please ensure you completed the signup.');
+        }
+
+        // Step 3: Get the owning business ID for catalog creation
+        $wabaDetails = Http::withToken($accessToken)
+            ->get("https://graph.facebook.com/{$version}/{$waba['id']}", [
+                'fields' => 'id,name,business',
+            ]);
+        $businessId = $wabaDetails->json('business.id');
+
+        // Step 4: Get the phone number(s) under this WABA
+        $phonesResponse = Http::withToken($accessToken)
+            ->get("https://graph.facebook.com/{$version}/{$waba['id']}/phone_numbers", [
+                'fields' => 'id,display_phone_number,verified_name,quality_rating',
+            ]);
+
+        $phone = $phonesResponse->json('data.0');
+
+        if (!$phone) {
+            return back()->with('error', 'No phone number found under your WhatsApp Business Account.');
+        }
+
+        // Step 5: Store or update the integration
+        WhatsappIntegration::updateOrCreate(
+            ['user_id' => auth()->id()],
+            [
+                'waba_id'              => $waba['id'],
+                'business_id'          => $businessId,
+                'waba_name'            => $waba['name'] ?? null,
+                'access_token'         => encrypt($accessToken),
+                'phone_number_id'      => $phone['id'],
+                'display_phone_number' => $phone['display_phone_number'],
+                'verified_name'        => $phone['verified_name'] ?? null,
+                'quality_rating'       => $phone['quality_rating'] ?? null,
+                'is_active'            => true,
+            ]
+        );
+
+        // Step 6: Subscribe to webhooks for this WABA
+        Http::withToken($accessToken)->post(
+            "https://graph.facebook.com/{$version}/{$waba['id']}/subscribed_apps",
+            []
+        );
+
+        return back()->with('success', 'WhatsApp Business Account connected successfully!');
+    }
+
+    /**
      * Disconnect the WhatsApp integration for the current user.
      */
     public function disconnect()

@@ -357,6 +357,7 @@ Route::middleware(['auth', 'role:admin,super_admin,shop_owner,staff'])->prefix('
         })->name('integrations');
         Route::get('integrations/whatsapp/redirect', [WhatsAppController::class, 'redirect'])->name('integrations.whatsapp.redirect');
         Route::get('integrations/whatsapp/callback', [WhatsAppController::class, 'callback'])->name('integrations.whatsapp.callback');
+        Route::post('integrations/whatsapp/connect', [WhatsAppController::class, 'connectFromSDK'])->name('integrations.whatsapp.connect');
         Route::delete('integrations/whatsapp/disconnect', [WhatsAppController::class, 'disconnect'])->name('integrations.whatsapp.disconnect');
         Route::post('integrations/whatsapp/catalog/setup', [WhatsAppController::class, 'setupCatalog'])->name('integrations.whatsapp.catalog.setup');
         Route::post('integrations/whatsapp/catalog/sync', [WhatsAppController::class, 'syncProducts'])->name('integrations.whatsapp.catalog.sync');
